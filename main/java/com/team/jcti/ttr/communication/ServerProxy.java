@@ -21,22 +21,11 @@ public class ServerProxy implements IServer {
 
     @Override
     public Object login(String username, String password) {
-        Object[] params = {username, password};
-        String[] paramTypes = {username.getClass().getName(), password.getClass().getName()};
-        Command command = new Command(SERVER_TARGET, "login", paramTypes, params);
-        clientCommunicator = new ClientCommunicator();
-        clientCommunicator.execute(command);
         return null;
     }
 
     @Override
     public Object register(String username, String password, String firstName, String lastName) {
-
-        Object[] params = {username, password, firstName, lastName};
-        String[] paramTypes = {username.getClass().getName(), password.getClass().getName(), firstName.getClass().getName(), lastName.getClass().getName()};
-        Command command = new Command(SERVER_TARGET, "register", paramTypes, params);
-        clientCommunicator = new ClientCommunicator();
-        clientCommunicator.execute(command);
         return null;
     }
 
@@ -57,6 +46,9 @@ public class ServerProxy implements IServer {
 
     @Override
     public Object getServerGames() {
+        Command command = new Command(SERVER_TARGET, "getServerGames", null, null);
+        clientCommunicator = new ClientCommunicator();
+        clientCommunicator.execute(command);
         return null;
     }
 

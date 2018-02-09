@@ -4,9 +4,9 @@ import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import model.Game;
 import model.User;
@@ -29,6 +29,7 @@ public class ClientModel {
     private String authToken;
     private Game activeGame;
     private List<Game> waitingGames;
+    private GameLobbyPresenter lobbyPresenter;
     private IPresenter activePresenter;
     private Map<String, String> properForms;
 
@@ -64,7 +65,8 @@ public class ClientModel {
         return authToken;
     }
 
-    public Map<String, String> getProperForms() {
-        return properForms;
+    public void setWaitingGames(Game[] games) {
+        waitingGames = Arrays.asList(games);
     }
+
 }

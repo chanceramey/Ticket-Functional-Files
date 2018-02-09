@@ -47,8 +47,9 @@ public class ClientProxy implements IClient {
 
     @Override
     public void onGetServerGameList(Game[] games) {
-
-    }
+        String[] paramTypes = {games.getClass().getName()};
+        Object[] params = {games};
+        this.command = new Command(CLIENT_TARGET, "onGetServerGameList", paramTypes, params);    }
 
     @Override
     public void addGametoList(Game game) {

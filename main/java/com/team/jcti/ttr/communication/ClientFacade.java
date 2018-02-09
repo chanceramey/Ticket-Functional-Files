@@ -48,7 +48,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void onGetServerGameList(Game[] games) {
-
+        mClientModel.setWaitingGames(games);
     }
 
     @Override
