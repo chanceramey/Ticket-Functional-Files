@@ -2,6 +2,7 @@ package server;
 
 import interfaces.IServer;
 import command.Command;
+import services.GameListService;
 
 /**
  * Created by Isaak on 2/2/2018.
@@ -34,6 +35,6 @@ public class ServerFacade implements IServer {
 
     @Override
     public Object getServerGames() {
-        return null;
+        return new GameListService().getGamesList();
     }
 }

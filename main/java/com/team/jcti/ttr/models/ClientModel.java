@@ -3,8 +3,8 @@ package com.team.jcti.ttr.models;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import model.Game;
 import model.User;
@@ -28,18 +28,12 @@ public class ClientModel {
     private Game activeGame;
     private List<Game> waitingGames;
     private GameLobbyPresenter lobbyPresenter;
-    private Map<String, String> properForms;
 
     private ClientModel() {
         this.user = null;
         this.authToken = "test";
         this.activeGame = null;
         this.waitingGames = new ArrayList<>();
-
-        properForms.put("username", ".+");
-        properForms.put("password", ".+");
-        properForms.put("ipAddress", "\\d+\\.\\d+\\.\\d+\\.\\d+\\");
-        properForms.put("portNumber", "\\d+");
     }
 
     public Game getGame() {
@@ -62,7 +56,8 @@ public class ClientModel {
         return authToken;
     }
 
-    public Map<String, String> getProperForms() {
-        return properForms;
+    public void setWaitingGames(Game[] games) {
+        waitingGames = Arrays.asList(games);
     }
+
 }
