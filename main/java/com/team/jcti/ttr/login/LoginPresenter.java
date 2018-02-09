@@ -1,6 +1,10 @@
 package com.team.jcti.ttr.login;
 
 
+
+import android.app.Activity;
+
+import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientModel;
 import com.team.jcti.ttr.models.ClientModel;
 
@@ -9,6 +13,8 @@ import com.team.jcti.ttr.models.ClientModel;
  */
 
 public class LoginPresenter implements ILoginPresenter{
+public class LoginPresenter implements ILoginPresenter, IPresenter {
+
     private ClientModel mClientModel = ClientModel.getInstance();
     private LoginActivity mLoginActivity = new LoginActivity();
     @Override
@@ -20,4 +26,11 @@ public class LoginPresenter implements ILoginPresenter{
     public void register(String username, String password) {
 
     }
+
+
+    @Override
+    public void displayError(String message) {
+
+    }
+
 }

@@ -45,13 +45,8 @@ public class CreateGameFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String gameName = gameNameField.getText().toString();
-                if (gameName.equals("")) {
-                    Toast.makeText(getActivity(), "Please Fill in the Game Name Field", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 if(numPlayersGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getActivity(), "Please Select a Button for Number of Players", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please select number of players", Toast.LENGTH_SHORT).show();
                     return;
                 };
                 int numPlayersId = numPlayersGroup.getCheckedRadioButtonId();
@@ -65,7 +60,6 @@ public class CreateGameFragment extends Fragment {
                     case "5": numPlayer = 5; break;
                     default: numPlayer = 0; break;
                 }
-
                 gameLobbyPresenter.createNewGame(numPlayer, gameName);
             }
         });

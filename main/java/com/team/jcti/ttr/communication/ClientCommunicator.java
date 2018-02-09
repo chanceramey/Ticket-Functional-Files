@@ -22,7 +22,6 @@ import command.ResultTransferObject;
 /**
  * Created by Jeff on 2/2/2018.
  */
-
 public class ClientCommunicator extends AsyncTask<Command, Void, Object> {
 
     private Gson gson = new Gson();
@@ -36,6 +35,7 @@ public class ClientCommunicator extends AsyncTask<Command, Void, Object> {
             result = (HttpURLConnection) url.openConnection();
             result.setRequestMethod("POST");
             result.setDoOutput(true);
+            result.setConnectTimeout(1000); //connect timeOut after 1 second
             result.connect();
         } catch (MalformedURLException e) {
             System.err.println("Malformed URL Error");
@@ -85,6 +85,7 @@ public class ClientCommunicator extends AsyncTask<Command, Void, Object> {
         Command command = commands[0];
 
         HttpURLConnection connection = openConnection("/command");
+        if (connection == null) return createErrorCommand("Could not connect with server");
         sendToServer(connection, command);
         Object result = getResult(connection);
 
@@ -98,7 +99,14 @@ public class ClientCommunicator extends AsyncTask<Command, Void, Object> {
         returnCommand.execute();
     }
 
-    private static final String SERVER_HOST = "laptop-e1khfita";
+    private Command createErrorCommand(String message) {
+        String CLIENT_TARGET = "com.team.jcti.ttr.communication.ClientFacade";
+        String[] paramTypes = {message.getClass().getName()};
+        Object[] params = {message};
+        return new Command(CLIENT_TARGET, "displayError", paramTypes, params);
+    }
+
+    private static final String SERVER_HOST = "10.0.2.2";
     private static final int SERVER_PORT = 8080;
     private static final String URL_PREFIX = "http://" + SERVER_HOST + ":" + SERVER_PORT;
 }
