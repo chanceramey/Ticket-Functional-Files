@@ -1,8 +1,10 @@
 package com.team.jcti.ttr.models;
 
+import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ public class ClientModel {
     private String authToken;
     private Game activeGame;
     private List<Game> waitingGames;
-    private GameLobbyPresenter lobbyPresenter;
+    private IPresenter activePresenter;
     private Map<String, String> properForms;
 
     private ClientModel() {
@@ -35,7 +37,7 @@ public class ClientModel {
         this.authToken = "test";
         this.activeGame = null;
         this.waitingGames = new ArrayList<>();
-
+        this.properForms = new HashMap<>();
         properForms.put("username", ".+");
         properForms.put("password", ".+");
         properForms.put("ipAddress", "\\d+\\.\\d+\\.\\d+\\.\\d+\\");
@@ -50,12 +52,12 @@ public class ClientModel {
         this.activeGame = game;
     }
 
-    public void setLobbyPresenter(GameLobbyPresenter presenter) {
-        this.lobbyPresenter = presenter;
+    public void setActivePresenter(IPresenter presenter) {
+        this.activePresenter = presenter;
     }
 
-    public GameLobbyPresenter getLobbyPresenter() {
-        return this.lobbyPresenter;
+    public IPresenter getActivePresenter() {
+        return this.activePresenter;
     }
 
     public String getAuth() {

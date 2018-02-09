@@ -3,6 +3,7 @@ package com.team.jcti.ttr.login;
 
 import android.app.Activity;
 
+import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.ClientModel;
 
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  * Created by Jeff on 2/2/2018.
  */
 
-public class LoginPresenter implements ILoginPresenter {
+public class LoginPresenter implements ILoginPresenter, IPresenter {
 
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
@@ -97,4 +98,8 @@ public class LoginPresenter implements ILoginPresenter {
 
     }
 
+    @Override
+    public void displayError(String message) {
+
+    }
 }

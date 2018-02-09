@@ -1,13 +1,14 @@
 package com.team.jcti.ttr.gamelist;
 
 
+import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientModel;
 
 /**
  * Created by Jeff on 2/2/2018.
  */
 
-public class GameListPresenter implements IGameListPresenter {
+public class GameListPresenter implements IGameListPresenter, IPresenter {
     private ClientModel mClientModel = ClientModel.getInstance();
     private GameListActivity mActivity = new GameListActivity();
     @Override
@@ -17,6 +18,11 @@ public class GameListPresenter implements IGameListPresenter {
 
     @Override
     public void join(String username, String gameId) {
+
+    }
+
+    @Override
+    public void displayError(String message) {
 
     }
 }

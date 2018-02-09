@@ -41,8 +41,12 @@ public class GameLobbyActivity extends AppCompatActivity {
     }
 
     public void switchFragments() {
-        Toast.makeText(this, "Entering lobby for new game!", Toast.LENGTH_SHORT).show();
+        toast("Entering Game Lobby!");
         startActivity(new Intent(this, GameLobbyActivity.class));
+    }
+
+    public void toast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 }

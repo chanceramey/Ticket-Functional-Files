@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.communication;
 
+import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.models.ClientModel;
 
@@ -24,8 +25,8 @@ public class ClientFacade implements IClient {
     }
 
     @Override
-    public void displayError() {
-
+    public void displayError(String message) {
+        mClientModel.getActivePresenter();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ClientFacade implements IClient {
     @Override
     public void onCreateGame(Game game) {
         mClientModel.setGame(game);
-        GameLobbyPresenter presenter = mClientModel.getLobbyPresenter();
+        GameLobbyPresenter presenter = (GameLobbyPresenter) mClientModel.getActivePresenter();
         presenter.onCreateGame();
     }
 
