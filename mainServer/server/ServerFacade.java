@@ -12,12 +12,16 @@ public class ServerFacade implements IServer {
 
     @Override
     public Object login(String username, String password) {
-        return null;
+        LoginService service = new LoginService();
+        Command command = service.login(username, password);
+        return command;
     }
 
     @Override
     public Object register(String username, String password, String firstName, String lastName) {
-        return null;
+        RegisterService service = new RegisterService();
+        Command command = service.register(username, password, firstName, lastName);
+        return command;
     }
 
     @Override

@@ -16,12 +16,16 @@ public class ClientProxy implements IClient {
 
     @Override
     public void onLogin(String authToken) {
-
+        String[] paramTypes = {authToken.getClass().getName()};
+        Object[] params = {authToken};
+        this.command = new Command(CLIENT_TARGET, "onLogin", paramTypes, params);
     }
 
     @Override
     public void onRegister(String authToken) {
-
+        String[] paramTypes = {authToken.getClass().getName()};
+        Object[] params = {authToken};
+        this.command = new Command(CLIENT_TARGET, "onRegister", paramTypes, params);
     }
 
     @Override
