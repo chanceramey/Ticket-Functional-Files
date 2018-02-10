@@ -2,6 +2,7 @@ package com.team.jcti.ttr.communication;
 
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
+import com.team.jcti.ttr.login.LoginPresenter;
 import com.team.jcti.ttr.models.ClientModel;
 
 import interfaces.IClient;
@@ -16,12 +17,16 @@ public class ClientFacade implements IClient {
 
     @Override
     public void onLogin(String authToken) {
-
+        mClientModel.setAuthToken(authToken);
+        LoginPresenter presenter = (LoginPresenter) mClientModel.getActivePresenter();
+        presenter.onLogin();
     }
 
     @Override
     public void onRegister(String authToken) {
-
+        mClientModel.setAuthToken(authToken);
+        LoginPresenter presenter = (LoginPresenter) mClientModel.getActivePresenter();
+        presenter.onRegister();
     }
 
     @Override

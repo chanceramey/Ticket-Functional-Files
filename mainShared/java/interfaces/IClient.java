@@ -14,7 +14,7 @@ public interface IClient {
 
     public void onRegister(String authToken);
 
-    public void displayError();
+    public void displayError(String message);
 
     public void promptRenewSession();
 
