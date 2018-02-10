@@ -41,7 +41,7 @@ public class ClientModel {
         this.properForms = new HashMap<>();
         properForms.put("username", ".+");
         properForms.put("password", ".+");
-        properForms.put("ipAddress", "\\d+\\.\\d+\\.\\d+\\.\\d+\\");
+        properForms.put("ipAddress", "\\d+\\.\\d+\\.\\d+\\.\\d+");
         properForms.put("portNumber", "\\d+");
     }
 

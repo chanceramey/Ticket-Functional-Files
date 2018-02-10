@@ -45,6 +45,7 @@ public class LoginPresenter implements ILoginPresenter, IPresenter {
 
     @Override
     public void login(String ipAddress, String port, String username, String password) {
+	inputErruros = new ArrayList<>();
 
 
         //validate login credential format
@@ -78,6 +79,7 @@ public class LoginPresenter implements ILoginPresenter, IPresenter {
 
     @Override
     public void register(String ipAddress, String port, String username, String password, String firstName, String lastName) {
+	inputErruros = new ArrayList<>();
 
 
         //validate login credential format
