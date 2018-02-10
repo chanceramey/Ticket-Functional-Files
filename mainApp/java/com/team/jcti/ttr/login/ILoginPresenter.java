@@ -11,6 +11,4 @@ public interface ILoginPresenter {
     void register(String ipAddress, String port, String username, String password, String firstName, String lastName);
     void onLogin();
     void onRegister();
-    void login(String username, String password);
-    void register(String username, String password);
 }

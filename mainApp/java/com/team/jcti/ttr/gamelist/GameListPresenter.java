@@ -31,7 +31,10 @@ public class GameListPresenter implements IGameListPresenter, IPresenter {
     }
 
     public Game[] getGames() {
-        mServerProxy.getServerGames();
+       //mServerProxy.getServerGames();
+        return null;
+    }
+
     @Override
     public void displayError(String message) {
     }

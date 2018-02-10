@@ -11,7 +11,5 @@ import java.util.ArrayList;
 public interface ILoginActivity {
     void onLogin();
     void onRegister();
-    void displayErrorMessages(ArrayList<String> errorMessages);
-    void onLogin(String username, String password);
-    void onRegister(String username, String password);
+    void displayErrorMessages(ArrayList<String> errorMessages);;
 }

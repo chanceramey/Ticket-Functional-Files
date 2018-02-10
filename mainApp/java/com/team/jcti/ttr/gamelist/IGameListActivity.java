@@ -6,6 +6,8 @@ package com.team.jcti.ttr.gamelist;
  */
 
 public interface IGameListActivity {
-    void onCreateGame(String username, int numPlayers);
-    void onJoin(String username, String gameId);
+    void onCreateGame();
+
+
+    void onJoin(String gameId);
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.Game;
 import model.User;
@@ -76,5 +77,9 @@ public class ClientModel {
 
     public void setAuthToken(String authToken) {
         AuthToken = authToken;
+    }
+
+    public Map<String, String> getProperForms() {
+        return properForms;
     }
 }

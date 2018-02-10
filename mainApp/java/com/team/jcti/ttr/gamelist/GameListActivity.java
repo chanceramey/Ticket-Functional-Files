@@ -37,7 +37,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         setContentView(R.layout.activity_create_join);
         mRecyclerGames = (RecyclerView) findViewById(R.id.recycler_view_games);
         mRecyclerGames.setLayoutManager(new LinearLayoutManager(this));
-        setGamesList(games);
+        //setGamesList(games);
 
         mCreateButton = (Button) findViewById(R.id.create_game_button);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
@@ -50,13 +50,13 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     }
 
     @Override
-    public void onCreateGame(String username, int numPlayers) {
+    public void onCreateGame() {
         Intent intent = new Intent(this, GameLobbyActivity.class);
         startActivity(intent);
     }
 
     @Override
-    public void onJoin(String userId, String gameId) {
+    public void onJoin(String gameId) {
 
     }
 
@@ -123,7 +123,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         @Override
         public void onClick(View view) {
             int index = getAdapterPosition();
-            onJoin(model[index].getGameId())
+            onJoin(model[index].getGameId());
             startGameLobbyActivity(model[index].getGameId());
 
         }

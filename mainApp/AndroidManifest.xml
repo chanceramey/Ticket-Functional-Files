@@ -17,14 +17,15 @@
         <activity
             android:name=".gamelobby.GameLobbyActivity"
             android:label="Game Lobby">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".login.LoginActivity"
-            android:label="Login and Register" />
+            android:label="Login and Register" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".gamelist.GameListActivity"
             android:label="Waiting Games List" />
