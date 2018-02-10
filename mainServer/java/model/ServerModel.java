@@ -136,10 +136,19 @@ public class ServerModel {
         }
     }
 
+    public Map<String, Game> getWaitingGames() {
+        return waitingGames;
+    }
+
+    public void setWaitingGames(Map<String, Game> waitingGames) {
+        this.waitingGames = waitingGames;
+    }
+
     /**
      * Adds a new Game to the Game list
      * @param game Game to be stored in the ServerModel
      */
+
     public void addWaitingGame(Game game) {
         waitingGames.put(game.getID(), game);
     }

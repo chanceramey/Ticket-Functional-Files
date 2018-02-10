@@ -1,22 +1,22 @@
 package com.team.jcti.ttr.login;
 
 
+
 import android.app.Activity;
 
 import com.team.jcti.ttr.IPresenter;
-import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.ClientModel;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
+import com.team.jcti.ttr.models.ClientModel;
 
 /**
  * Created by Jeff on 2/2/2018.
  */
 
+public class LoginPresenter implements ILoginPresenter{
 public class LoginPresenter implements ILoginPresenter, IPresenter {
 
     private ClientModel mClientModel = ClientModel.getInstance();
+<<<<<<< HEAD:mainApp/java/com/team/jcti/ttr/login/LoginPresenter.java
     private ServerProxy mServerProxy = ServerProxy.getInstance();
 
     private LoginActivity mLoginActivity;
@@ -74,10 +74,16 @@ public class LoginPresenter implements ILoginPresenter, IPresenter {
 
         }
 
+=======
+    private LoginActivity mLoginActivity = new LoginActivity();
+    @Override
+    public void login(String username, String password) {
+>>>>>>> master:main/java/com/team/jcti/ttr/login/LoginPresenter.java
 
     }
 
     @Override
+<<<<<<< HEAD:mainApp/java/com/team/jcti/ttr/login/LoginPresenter.java
     public void register(String ipAddress, String port, String username, String password, String firstName, String lastName) {
 	inputErruros = new ArrayList<>();
 
@@ -107,11 +113,16 @@ public class LoginPresenter implements ILoginPresenter, IPresenter {
             mServerProxy.register(username, password, firstName, lastName);
 
         }
+=======
+    public void register(String username, String password) {
+>>>>>>> master:main/java/com/team/jcti/ttr/login/LoginPresenter.java
 
     }
+
 
     @Override
     public void displayError(String message) {
         mLoginActivity.toast(message);
     }
+
 }
