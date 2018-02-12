@@ -71,6 +71,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         mRecyclerGames.setAdapter(adapter);
     }
 
+    @Override
     public void startGameLobbyActivity(String gameId) {
         Intent intent = new Intent(this, GameLobbyActivity.class);
         intent.putExtra("gameId", gameId);

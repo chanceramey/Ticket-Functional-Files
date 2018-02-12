@@ -14,4 +14,5 @@ public interface IGameListActivity {
     void setGamesList(List<Game> games);
     void onJoin();
     void toast(String message);
+    void startGameLobbyActivity(String gameId);
 }
