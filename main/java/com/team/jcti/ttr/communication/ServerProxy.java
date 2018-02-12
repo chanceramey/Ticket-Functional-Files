@@ -41,6 +41,11 @@ public class ServerProxy implements IServer {
 
     @Override
     public Object joinGame(String username, String gameId) {
+        Object[] params = {username, gameId};
+        String[] paramTypes = {username.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "joinGame", paramTypes, params);
+        clientCommunicator = new ClientCommunicator();
+        clientCommunicator.execute(command);
         return null;
     }
 

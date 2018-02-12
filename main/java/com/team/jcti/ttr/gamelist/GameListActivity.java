@@ -17,28 +17,29 @@ import android.widget.TextView;
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.gamelobby.GameLobbyActivity;
-import com.team.jcti.ttr.models.GameModel;
 
 import org.w3c.dom.Text;
 
 import model.Game;
+import model.User;
 
 
 public class GameListActivity extends AppCompatActivity implements IGameListActivity {
 
-    private GameListPresenter mPresenter = new GameListPresenter();
+    private GameListPresenter mPresenter;
     Button mCreateButton;
     private RecyclerView mRecyclerGames;
     private Adapter adapter;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_join);
-        mRecyclerGames = (RecyclerView) findViewById(R.id.recycler_view_games);
-        mRecyclerGames.setLayoutManager(new LinearLayoutManager(this));
-        setGamesList(games);
 
+        mPresenter  = new GameListPresenter(this);
+        mUser = mPresenter.getUser();
+        mPresenter.getGames();
         mCreateButton = (Button) findViewById(R.id.create_game_button);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,37 +48,34 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             }
         });
 
+
     }
 
     @Override
-    public void onCreateGame(String username, int numPlayers) {
-        Intent intent = new Intent(this, GameLobbyActivity.class);
-        startActivity(intent);
+    public void onCreateGame() {
+        mPresenter.create();
     }
 
     @Override
-    public void onJoin(String userId, String gameId) {
-
+    public void onJoin(String username, String gameId) {
+        mPresenter.join(username, gameId);
     }
 
-    public void setGamesList(GameModel[] games) {
+    public void setGamesList(Game[] games) {
+        mRecyclerGames = (RecyclerView) findViewById(R.id.recycler_view_games);
+        mRecyclerGames.setLayoutManager(new LinearLayoutManager(this));
         adapter = new Adapter(this, games);
         mRecyclerGames.setAdapter(adapter);
     }
 
-    public void startGameLobbyActivity(String gameId) {
-        Intent intent = new Intent(this, GameLobbyActivity.class);
-        intent.putExtra("gameId", gameId);
-        startActivity(intent);
-    }
 
 
     class Adapter extends RecyclerView.Adapter<Holder> {
 
-        private GameModel[] items;
+        private Game[] items;
         private LayoutInflater inflater;
 
-        public Adapter(Context context, GameModel[] items) {
+        public Adapter(Context context, Game[] items) {
             this.items = items;
             inflater = LayoutInflater.from(context);
         }
@@ -91,9 +89,8 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         @Override
         public void onBindViewHolder(Holder holder, int position) {
             String host = items[position].getHost();
-            String players = items[position].getPlayers();
-            String playersAllowed = items[position].getPlayersAllowed();
-            String playersInLobby = players + "/" + playersAllowed;
+            int players = items[position].getNumPlayers();
+            String playersInLobby = players + " waiting";
             holder.bind(host, playersInLobby);
         }
 
@@ -108,10 +105,10 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
 
         private TextView hostName;
         private String item;
-        private GameModel[] model;
+        private Game[] model;
         TextView numPlayers;
 
-        public Holder(View view, GameModel[] model) {
+        public Holder(View view, Game[] model) {
             super(view);
             hostName = (TextView) view.findViewById(R.id.host_name);
             numPlayers = (TextView) view.findViewById(R.id.num_players);
@@ -123,8 +120,8 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         @Override
         public void onClick(View view) {
             int index = getAdapterPosition();
-            onJoin(model[index].getGameId())
-            startGameLobbyActivity(model[index].getGameId());
+            onJoin(mUser.getUsername(), model[index].getGameID());
+           // startGameLobbyActivity(model[index].getGameId());
 
         }
 

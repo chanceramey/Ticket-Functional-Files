@@ -22,12 +22,12 @@ public class GameLobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
-        if (fragment == null) {
-            fragment = getFragment();
-            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
+//        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+//
+//        if (fragment == null) {
+//            fragment = getFragment();
+//            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+//        }
 
     }
 

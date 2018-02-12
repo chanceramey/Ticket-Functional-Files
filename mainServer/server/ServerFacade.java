@@ -33,8 +33,8 @@ public class ServerFacade implements IServer {
     }
 
     @Override
-    public Object joinGame(String username, String gameId) {
-        return null;
+    public Object joinGame(String userId, String gameId) {
+        return new GameListService().joinGame(userId, gameId);
     }
 
     @Override

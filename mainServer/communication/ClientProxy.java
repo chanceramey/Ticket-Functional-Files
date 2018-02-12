@@ -41,8 +41,10 @@ public class ClientProxy implements IClient {
     }
 
     @Override
-    public void onJoinGame(String gameID) {
-
+    public void onJoinGame(Game game) {
+        String[] paramTypes = {game.getClass().getName()};
+        Object[] params = {game};
+        this.command = new Command(CLIENT_TARGET, "onJoinGame", paramTypes, params);
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.Game;
 import model.User;
@@ -45,6 +46,7 @@ public class ClientModel {
         properForms.put("portNumber", "\\d+");
     }
 
+
     public Game getGame() {
         return activeGame;
     }
@@ -69,4 +71,11 @@ public class ClientModel {
         waitingGames = Arrays.asList(games);
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public List<Game> getWaitingGames() {
+        return waitingGames;
+    }
 }

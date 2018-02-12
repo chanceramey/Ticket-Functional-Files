@@ -6,6 +6,6 @@ package com.team.jcti.ttr.gamelist;
  */
 
 public interface IGameListPresenter {
-    void create(String username, int numPlayers);
+    void create();
     void join(String username, String gameId);
 }

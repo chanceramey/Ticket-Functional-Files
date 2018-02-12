@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <application
+    <application>
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,17 +18,23 @@
         <activity
             android:name=".gamelobby.GameLobbyActivity"
             android:label="Game Lobby">
+        </activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="Login and Register" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
-            android:label="Login and Register" />
-        <activity
             android:name=".gamelist.GameListActivity"
-            android:label="Waiting Games List" />
+            android:label="Waiting Games List">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
 
     </application>
 

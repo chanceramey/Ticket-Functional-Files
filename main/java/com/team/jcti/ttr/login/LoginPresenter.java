@@ -13,7 +13,6 @@ import com.team.jcti.ttr.models.ClientModel;
  */
 
 public class LoginPresenter implements ILoginPresenter{
-public class LoginPresenter implements ILoginPresenter, IPresenter {
 
     private ClientModel mClientModel = ClientModel.getInstance();
     private LoginActivity mLoginActivity = new LoginActivity();
@@ -28,9 +27,5 @@ public class LoginPresenter implements ILoginPresenter, IPresenter {
     }
 
 
-    @Override
-    public void displayError(String message) {
-
-    }
 
 }
