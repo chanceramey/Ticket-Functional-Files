@@ -1,7 +1,6 @@
 package com.team.jcti.ttr.login;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.gamelobby.GameLobbyActivity;
-
+import com.team.jcti.ttr.gamelist.GameListActivity;
 import java.util.ArrayList;
 
 
@@ -75,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
     public void onLogin() {
         toast("Login Successful");
 
-        Intent intent = new Intent(this, GameLobbyActivity.class);
+        Intent intent = new Intent(this, GameListActivity.class);
         startActivity(intent);
 
     }
@@ -83,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
     @Override
     public void onRegister() {
         toast("Register Successful");
-        Intent intent = new Intent(this, GameLobbyActivity.class);
+        Intent intent = new Intent(this, GameListActivity.class);
         startActivity(intent);
 
     }

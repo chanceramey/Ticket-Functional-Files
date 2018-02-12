@@ -43,8 +43,17 @@ public class ClientProxy implements IClient {
     }
 
     @Override
-    public void onJoinGame(String gameID) {
+    public void onJoinGame(Game game) {
+        String[] paramTypes = {game.getClass().getName()};
+        Object[] params = {game};
+        this.command = new Command(CLIENT_TARGET, "onJoinGame", paramTypes, params);
+    }
 
+    @Override
+    public void onLeaveGame() {
+        String[] paramTypes = {};
+        Object[] params = {};
+        this.command = new Command(CLIENT_TARGET, "onLeaveGame", paramTypes, params);
     }
 
     @Override
@@ -68,10 +77,10 @@ public class ClientProxy implements IClient {
     }
 
     @Override
-    public void updateGameInList(Game game) {
+    public void updateGame(Game game) {
         String[] paramTypes = {game.getClass().getName()};
         Object[] params = {game};
-        this.command = new Command(CLIENT_TARGET, "updateGameInList", paramTypes, params);
+        this.command = new Command(CLIENT_TARGET, "updateGame", paramTypes, params);
     }
 
     @Override

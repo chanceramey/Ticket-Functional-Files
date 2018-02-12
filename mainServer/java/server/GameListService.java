@@ -4,6 +4,7 @@ import java.util.Map;
 
 import command.Command;
 import communication.ClientProxy;
+import model.AuthToken;
 import model.Game;
 import model.ServerModel;
 
@@ -13,6 +14,7 @@ import model.ServerModel;
 
 public class GameListService {
     ClientProxy clientProxy = new ClientProxy();
+    ServerModel mServerModel = ServerModel.getInstance();
 
     public Command[] getGamesList(String auth) {
         try {
@@ -22,6 +24,7 @@ public class GameListService {
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
+        mServerModel.addGameListClient(auth);
         Map<String, Game> gameMap = ServerModel.getInstance().getWaitingGames();
         Game[] gameArray = new Game[gameMap.size()];
         int index = 0;
@@ -32,5 +35,104 @@ public class GameListService {
         clientProxy.onGetServerGameList(gameArray);
         Command[] commands = {clientProxy.getCommand()};
         return commands;
+    }
+
+    public Command[] joinGame(String authToken, String gameId) {
+        String username;
+        try {
+            username = mServerModel.getUserFromAuth(authToken);
+        } catch (ServerModel.AuthTokenNotFoundException e) {
+            clientProxy.promptRenewSession();
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+        Game game;
+        try {
+            game = mServerModel.getGame(gameId);
+        } catch (ServerModel.GameNotFoundException e) {
+            clientProxy.displayError("Game not found. Please try again.");
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+        if (game.getPlayerIDs().size() == game.getNumPlayers()) {
+            clientProxy.displayError("Game is full. Cannot join!");
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+
+        //Player can Join Game!
+        game.joinGame(username, authToken);
+        mServerModel.removeGameListClient(authToken);
+        clientProxy.updateGame(game);
+        for (String auth : game.getPlayerIDs().keySet()) {
+            if(auth.equals(authToken)) continue;
+            mServerModel.addCommand(auth, clientProxy.getCommand());
+        }
+        for (String auth : mServerModel.getGameListClients()) {
+            mServerModel.addCommand(auth, clientProxy.getCommand());
+        }
+
+        clientProxy.onJoinGame(game);
+        Command[] commands = {clientProxy.getCommand()};
+        return commands;
+    }
+
+    public Command[] leaveGame(String authToken, String gameId) {
+        String username;
+        try {
+            username = mServerModel.getUserFromAuth(authToken);
+        } catch (ServerModel.AuthTokenNotFoundException e) {
+            clientProxy.promptRenewSession();
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+        Game game;
+        try {
+            game = mServerModel.getGame(gameId);
+        } catch (ServerModel.GameNotFoundException e) {
+            clientProxy.displayError("Game not found. Please try again.");
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+        if (game.getHost().equals(authToken)) return removeGame(game, authToken);
+
+        //Player can Leave Game!
+        game.getPlayerIDs().remove(authToken);
+        game.getPlayers().remove(username);
+        clientProxy.updateGame(game);
+        for (String auth : game.getPlayerIDs().keySet()) {
+            mServerModel.addCommand(auth, clientProxy.getCommand());
+        }
+        for (String auth : mServerModel.getGameListClients()) {
+            mServerModel.addCommand(auth, clientProxy.getCommand());
+        }
+
+        clientProxy.onLeaveGame();
+        Command[] commands = {clientProxy.getCommand()};
+        return commands;
+    }
+
+    private Command[] removeGame(Game game, String authtoken) {
+        try {
+            mServerModel.deleteGame(game.getID());
+        } catch (ServerModel.GameNotFoundException e) {
+            clientProxy.displayError("Error: Could not find game.");
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+
+        clientProxy.removeGameFromList(game.getID());
+        for (String auth : mServerModel.getGameListClients()) {
+            mServerModel.addCommand(auth, clientProxy.getCommand());
+        }
+
+        clientProxy.onLeaveGame();
+        for (String auth : game.getPlayerIDs().keySet()) {
+            if(auth.equals(authtoken)) continue;
+            mServerModel.addCommand(auth, clientProxy.getCommand());
+        }
+        Command[] commands = {clientProxy.getCommand()};
+        return commands;
+
     }
 }

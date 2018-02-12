@@ -35,7 +35,6 @@ public class RegisterService {
         User user = new User(username, password, firstName, lastName);
         String authToken = serverModel.addAuthForUser(username);
         serverModel.addUser(user);
-        serverModel.addGameListClient(authToken);
 
         clientProxy.onRegister(authToken);
         Command[] commands = {clientProxy.getCommand()};

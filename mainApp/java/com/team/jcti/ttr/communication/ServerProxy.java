@@ -28,7 +28,6 @@ public class ServerProxy implements IServer {
         return null;
     }
 
-
     @Override
     public Object register(String username, String password, String firstName, String lastName) {
         Object[] params = {username, password, firstName, lastName};
@@ -48,7 +47,20 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Object joinGame(String username, String gameId) {
+    public Object joinGame(String authToken, String gameId) {
+        Object[] params = {authToken, gameId};
+        String[] paramTypes = {authToken.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "joinGame", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+    @Override
+    public Object leaveGame(String authToken, String gameId) {
+        Object[] params = {authToken, gameId};
+        String[] paramTypes = {authToken.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "leaveGame", paramTypes, params);
+        new SendCommandTask().execute(command);
         return null;
     }
 

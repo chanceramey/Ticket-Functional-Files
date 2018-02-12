@@ -32,8 +32,6 @@ public class LoginService {
         }
 
         String authToken = serverModel.addAuthForUser(username);
-        serverModel.addGameListClient(authToken);
-
 
         clientProxy.onLogin(authToken);
         Command[] commands = {clientProxy.getCommand()};

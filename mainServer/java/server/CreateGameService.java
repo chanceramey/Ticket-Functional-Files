@@ -25,7 +25,7 @@ public class CreateGameService {
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
-        Game game = new Game(numPlayers, username, gameName, UUID.randomUUID().toString());
+        Game game = new Game(numPlayers, username, gameName, UUID.randomUUID().toString(), authToken);
         serverModel.addWaitingGame(game);
         serverModel.removeGameListClient(authToken);
         clientProxy.addGametoList(game);

@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.models.ClientModel;
 
 /**
  * Created by Tanner Jensen on 2/4/2018.
@@ -34,7 +35,7 @@ public class CreateGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_create_game, container, false);
 
-        gameLobbyPresenter = new GameLobbyPresenter((GameLobbyActivity) getActivity());
+        this.gameLobbyPresenter = (GameLobbyPresenter) ClientModel.getInstance().getActivePresenter();
 
         gameNameField = (EditText) v.findViewById(R.id.game_name_field);
         numPlayersGroup = (RadioGroup) v.findViewById(R.id.num_players_group);

@@ -10,6 +10,8 @@ import com.team.jcti.ttr.models.ClientModel;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import model.Game;
+
 /**
  * Created by Jeff on 2/2/2018.
  */
@@ -104,4 +106,10 @@ public class LoginPresenter implements ILoginPresenter, IPresenter {
     public void displayError(String message) {
         mLoginActivity.toast(message);
     }
+
+    @Override
+    public void updateGame(Game game) {}
+
+    @Override
+    public void update() {}
 }

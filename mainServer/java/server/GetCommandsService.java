@@ -1,5 +1,7 @@
 package server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import command.Command;
@@ -23,8 +25,9 @@ public class GetCommandsService {
              Command[] commands = {mClientProxy.getCommand()};
              return commands;
         }
-        Queue userCommands = mServerModel.getCommandQueue(auth);
+        List userCommands = mServerModel.getCommandQueue(auth);
         Command[] commands = (Command[]) userCommands.toArray();
+        userCommands = new ArrayList();
         return commands;
     }
 }

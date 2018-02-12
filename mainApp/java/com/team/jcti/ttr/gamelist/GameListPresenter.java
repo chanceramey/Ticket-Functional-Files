@@ -1,13 +1,10 @@
 package com.team.jcti.ttr.gamelist;
 
-
-import android.content.Intent;
-
 import com.team.jcti.ttr.communication.ServerProxy;
-import com.team.jcti.ttr.gamelobby.GameLobbyActivity;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientModel;
-import com.team.jcti.ttr.models.GameModel;
+
+import java.util.List;
 
 import model.Game;
 
@@ -17,25 +14,47 @@ import model.Game;
 
 public class GameListPresenter implements IGameListPresenter, IPresenter {
     private ClientModel mClientModel = ClientModel.getInstance();
-    private GameListActivity mActivity = new GameListActivity();
+    private IGameListActivity mActivity;
     private ServerProxy mServerProxy = ServerProxy.getInstance();
 
-    @Override
-    public void create(String username, int numPlayers) {
-
+    public GameListPresenter(IGameListActivity activity) {
+        this.mActivity = activity;
+        mClientModel.setActivePresenter(this);
+        mServerProxy.getServerGames(mClientModel.getAuthToken());
     }
 
     @Override
-    public void join(String username, String gameId) {
-
+    public void join(String gameId) {
+        mServerProxy.joinGame(mClientModel.getAuthToken(), gameId);
     }
 
-    public Game[] getGames() {
-       //mServerProxy.getServerGames();
-        return null;
+    public List<Game> getGames() {
+       return mClientModel.getWaitingGames();
     }
 
     @Override
     public void displayError(String message) {
+        mActivity.toast(message);
+    }
+
+    @Override
+    public void updateGame(Game game) {
+        for(int i = 0; i < mClientModel.getWaitingGames().size(); i++) {
+            if (game.getID().equals(mClientModel.getWaitingGames().get(i))) {
+                mClientModel.getWaitingGames().remove(i);
+                mClientModel.getWaitingGames().set(i, game);
+                return;
+            }
+        }
+        update();
+    }
+
+    public void onJoinGame() {
+        mActivity.onJoin();
+    }
+
+    @Override
+    public void update() {
+        mActivity.setGamesList(mClientModel.getWaitingGames());
     }
 }

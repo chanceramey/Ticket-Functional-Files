@@ -28,7 +28,6 @@ public class ClientModel {
         return SINGLETON;
     }
 
-    private User user;
     private String authToken;
     private Game activeGame;
     private List<Game> waitingGames;
@@ -37,7 +36,6 @@ public class ClientModel {
     private Map<String, String> properForms;
 
     private ClientModel() {
-        this.user = null;
         this.authToken = null;
         this.activeGame = null;
         this.waitingGames = new ArrayList<>();
@@ -69,9 +67,11 @@ public class ClientModel {
         return this.activePresenter;
     }
 
-    public void setWaitingGames(Game[] games) {
-        waitingGames = Arrays.asList(games);
+    public void setWaitingGames(List<Game> games) {
+        this.waitingGames = games;
     }
+
+    public List<Game> getWaitingGames() { return waitingGames;}
 
     public String getAuthToken() {
         return authToken;

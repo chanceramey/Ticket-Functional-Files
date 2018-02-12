@@ -8,25 +8,27 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.gamelobby.GameLobbyActivity;
-import com.team.jcti.ttr.models.GameModel;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 import model.Game;
 
 
 public class GameListActivity extends AppCompatActivity implements IGameListActivity {
 
-    private GameListPresenter mPresenter = new GameListPresenter();
+    private GameListPresenter mPresenter;
     Button mCreateButton;
     private RecyclerView mRecyclerGames;
     private Adapter adapter;
@@ -35,11 +37,13 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_join);
+
+        mPresenter = new GameListPresenter(this);
+
         mRecyclerGames = (RecyclerView) findViewById(R.id.recycler_view_games);
         mRecyclerGames.setLayoutManager(new LinearLayoutManager(this));
-        //setGamesList(games);
 
-        mCreateButton = (Button) findViewById(R.id.create_game_button);
+        mCreateButton = (Button) findViewById(R.id.create_new_game);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,11 +60,13 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     }
 
     @Override
-    public void onJoin(String gameId) {
-
+    public void onJoin() {
+        Intent intent = new Intent(this, GameLobbyActivity.class);
+        startActivity(intent);
     }
 
-    public void setGamesList(GameModel[] games) {
+    @Override
+    public void setGamesList(List<Game> games) {
         adapter = new Adapter(this, games);
         mRecyclerGames.setAdapter(adapter);
     }
@@ -71,67 +77,65 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         startActivity(intent);
     }
 
+    public void toast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
 
     class Adapter extends RecyclerView.Adapter<Holder> {
 
-        private GameModel[] items;
+        private List<Game> games;
         private LayoutInflater inflater;
 
-        public Adapter(Context context, GameModel[] items) {
-            this.items = items;
+        public Adapter(Context context, List<Game> games) {
+            this.games = games;
             inflater = LayoutInflater.from(context);
         }
 
         @Override
         public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = inflater.inflate(R.layout.list_item, parent, false);
-            return new Holder(view, items);
+            Holder viewholder = new Holder(view);
+            view.setOnClickListener(viewholder);
+            return viewholder;
         }
 
         @Override
         public void onBindViewHolder(Holder holder, int position) {
-            String host = items[position].getHost();
-            String players = items[position].getPlayers();
-            String playersAllowed = items[position].getPlayersAllowed();
-            String playersInLobby = players + "/" + playersAllowed;
-            holder.bind(host, playersInLobby);
+            Game game = games.get(position);
+            holder.bind(game);
         }
 
         @Override
         public int getItemCount() {
-            return items.length;
+            return games.size();
         }
 
     }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView hostName;
-        private String item;
-        private GameModel[] model;
+        private TextView gameName;
         TextView numPlayers;
+        private Game game;
 
-        public Holder(View view, GameModel[] model) {
+
+        public Holder(View view) {
             super(view);
-            hostName = (TextView) view.findViewById(R.id.host_name);
+            gameName = (TextView) view.findViewById(R.id.host_name);
             numPlayers = (TextView) view.findViewById(R.id.num_players);
-            hostName.setOnClickListener(this);
-            this.model = model;
-
+            //gameName.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            int index = getAdapterPosition();
-            onJoin(model[index].getGameId());
-            startGameLobbyActivity(model[index].getGameId());
-
+            mPresenter.join(game.getID());
         }
 
-        void bind(String host, String playersInLobby) {
-            this.item = item;
-            hostName.setText(host);
-            numPlayers.setText(playersInLobby);
+        void bind(Game game) {
+            this.game = game;
+            gameName.setText(game.getGameName());
+            numPlayers.setText(game.getNumPlayersString());
         }
     }
 }

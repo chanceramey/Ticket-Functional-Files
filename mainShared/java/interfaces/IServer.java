@@ -14,6 +14,8 @@ public interface IServer {
 
     public Object joinGame(String authtoken, String gameId);
 
+    public Object leaveGame(String authToken, String gameId);
+
     public Object getServerGames(String auth);
 
     public Object getCommands(String auth);

@@ -55,7 +55,7 @@ public class ServerModel {
     private Map<String, Game> activeGames;
 
     //Queue of commands to be executed by
-    private Map<String, Queue<Command>> sessionCommandQueue;
+    private Map<String, List<Command>> sessionCommandQueue;
 
     /**
      * Constructor of ServerModel Main function is to initialize server data collections
@@ -64,13 +64,11 @@ public class ServerModel {
      */
     private ServerModel() {
         this.users = new HashMap<>();
-        User testUser = new User("test", "secret", "Testy", "McTestface");
-        users.put(testUser.getUsername(), testUser);
         this.authTokens = new HashMap<>();
-        AuthToken testAuth = new AuthToken(testUser.getUsername(), "test");
-        authTokens.put(testAuth.getToken(), testAuth);
         this.gameListClients = new HashSet<>();
         this.waitingGames = new HashMap<>();
+        Game testGame = new Game(2, "potatoman", "Test Game", "12938fsd2jk128", "123jk3j238dsj");
+        waitingGames.put(testGame.getID(), testGame);
         this.activeGames = new HashMap<>();
         this.sessionCommandQueue = new HashMap<>();
 
@@ -193,11 +191,11 @@ public class ServerModel {
      */
     public void addCommand(String auth, Command command) {
         if(sessionCommandQueue.containsKey(auth)) {
-            sessionCommandQueue.get(auth).offer(command);
+            sessionCommandQueue.get(auth).add(command);
         } else {
-            Queue<Command> queue = new PriorityQueue<>();
-            queue.offer(command);
-            sessionCommandQueue.put(auth, queue);
+            List<Command> list = new ArrayList<>();
+            list.add(command);
+            sessionCommandQueue.put(auth, list);
         }
     }
 
@@ -209,7 +207,7 @@ public class ServerModel {
         return this.gameListClients;
     }
 
-    public Queue<Command> getCommandQueue(String auth) {
+    public List<Command> getCommandQueue(String auth) {
         return this.sessionCommandQueue.get(auth);
     }
 

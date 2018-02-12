@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.gamelist.GameListActivity;
 
 
 /**
@@ -23,7 +24,6 @@ public class GameLobbyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby);
 
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
         if (fragment == null) {
             fragment = getFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
@@ -43,6 +43,11 @@ public class GameLobbyActivity extends AppCompatActivity {
     public void switchFragments() {
         toast("Entering Game Lobby!");
         startActivity(new Intent(this, GameLobbyActivity.class));
+    }
+
+    public void enterGameList() {
+        Intent intent = new Intent(this, GameListActivity.class);
+        startActivity(intent);
     }
 
     public void toast(String message) {

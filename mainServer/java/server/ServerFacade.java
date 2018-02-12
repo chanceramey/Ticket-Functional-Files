@@ -32,8 +32,17 @@ public class ServerFacade implements IServer {
     }
 
     @Override
-    public Object joinGame(String username, String gameId) {
-        return null;
+    public Object joinGame(String authToken, String gameId) {
+        GameListService service = new GameListService();
+        Command[] commands = service.joinGame(authToken, gameId);
+        return commands;
+    }
+
+    @Override
+    public Object leaveGame(String authToken, String gameId) {
+        GameListService service = new GameListService();
+        Command[] commands = service.leaveGame(authToken, gameId);
+        return commands;
     }
 
     @Override

@@ -20,7 +20,9 @@ public interface IClient {
 
     public void onCreateGame(Game game);
 
-    public void onJoinGame(String gameID);
+    public void onJoinGame(Game game);
+
+    public void onLeaveGame();
 
     public void onGetServerGameList(Game[] games);
 
@@ -28,5 +30,5 @@ public interface IClient {
 
     public void removeGameFromList(String gameID);
 
-    public void updateGameInList(Game game);
+    public void updateGame(Game game);
 }
