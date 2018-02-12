@@ -47,4 +47,8 @@ public class Game {
     public String getID() {
         return gameID;
     }
+
+    public String getGameID() {
+        return gameID;
+    }
 }

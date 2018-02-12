@@ -20,7 +20,7 @@ public interface IClient {
 
     public void onCreateGame(Game game);
 
-    public void onJoinGame(String gameID);
+    public void onJoinGame(Game game);
 
     public void onGetServerGameList(Game[] games);
 
