@@ -5,6 +5,8 @@ import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import model.Game;
 
@@ -12,7 +14,7 @@ import model.Game;
  * Created by Jeff on 2/2/2018.
  */
 
-public class GameListPresenter implements IGameListPresenter, IPresenter {
+public class GameListPresenter implements IGameListPresenter, IPresenter, Observer {
     private ClientModel mClientModel = ClientModel.getInstance();
     private IGameListActivity mActivity;
     private ServerProxy mServerProxy = ServerProxy.getInstance();
@@ -40,10 +42,9 @@ public class GameListPresenter implements IGameListPresenter, IPresenter {
     @Override
     public void updateGame(Game game) {
         for(int i = 0; i < mClientModel.getWaitingGames().size(); i++) {
-            if (game.getID().equals(mClientModel.getWaitingGames().get(i))) {
+            if (game.getID().equals(mClientModel.getWaitingGames().get(i).getID())) {
                 mClientModel.getWaitingGames().remove(i);
-                mClientModel.getWaitingGames().set(i, game);
-                return;
+                mClientModel.getWaitingGames().add(i, game);
             }
         }
         update();
@@ -57,4 +58,11 @@ public class GameListPresenter implements IGameListPresenter, IPresenter {
     public void update() {
         mActivity.setGamesList(mClientModel.getWaitingGames());
     }
+
+    public void setActivePresenter() {
+        mClientModel.setActivePresenter(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {update();}
 }

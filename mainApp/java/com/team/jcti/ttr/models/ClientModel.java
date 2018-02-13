@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Timer;
 
 import model.Game;
@@ -18,7 +19,7 @@ import model.User;
  * Created by Jeff on 2/2/2018.
  */
 
-public class ClientModel {
+public class ClientModel extends Observable {
 
     private static ClientModel SINGLETON;
     public static ClientModel getInstance() {
@@ -31,7 +32,6 @@ public class ClientModel {
     private String authToken;
     private Game activeGame;
     private List<Game> waitingGames;
-    private GameLobbyPresenter lobbyPresenter;
     private IPresenter activePresenter;
     private Map<String, String> properForms;
 
@@ -48,7 +48,7 @@ public class ClientModel {
         //Set Poller to go every second
         Timer timer = new Timer();
         int SECOND = 1000; //1,000 milliseconds in one second
-        timer.schedule(new Poller(this), SECOND);
+        timer.schedule(new Poller(this), SECOND, SECOND);
     }
 
     public Game getGame() {
