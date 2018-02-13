@@ -25,9 +25,16 @@ public class GetCommandsService {
              Command[] commands = {mClientProxy.getCommand()};
              return commands;
         }
-        List userCommands = mServerModel.getCommandQueue(auth);
-        Command[] commands = (Command[]) userCommands.toArray();
-        userCommands = new ArrayList();
+        List<Command> userCommands = mServerModel.getCommandQueue(auth);
+        Command[] commands;
+        if (userCommands == null) commands = new Command[] {};
+        else{
+            commands = new Command[userCommands.size()];
+            for (int i = 0; i < userCommands.size(); i++) {
+                commands[i] = userCommands.get(i);
+            }
+        }
+        mServerModel.emptyCommandQueue(auth);
         return commands;
     }
 }

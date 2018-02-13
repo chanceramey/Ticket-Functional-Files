@@ -25,6 +25,11 @@ public class CreateGameService {
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
+        if (serverModel.hasGameName(gameName)) {
+            clientProxy.displayError("Game name already in use");
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
         Game game = new Game(numPlayers, username, gameName, UUID.randomUUID().toString(), authToken);
         serverModel.addWaitingGame(game);
         serverModel.removeGameListClient(authToken);
