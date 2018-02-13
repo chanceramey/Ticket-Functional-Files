@@ -14,7 +14,7 @@ import model.Game;
  * Created by Tanner Jensen on 2/4/2018.
  */
 
-public class GameLobbyPresenter implements IPresenter, Serializable {
+public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     private GameLobbyActivity mGameLobbyActivity;
     private GameLobbyFragment mGameLobbyFragment;
     private ClientModel mClientModel = ClientModel.getInstance();
@@ -32,10 +32,12 @@ public class GameLobbyPresenter implements IPresenter, Serializable {
     }
 
     public boolean hasGame() {
-        if (mClientModel.getGame() == null)
-            return false;
-        else
+        Game myGame = mClientModel.getGame();
+        if (myGame != null) {
             return true;
+        } else {
+            return false;
+        }
     }
 
     public void createNewGame(int numPlayers, String gameName) {
@@ -59,6 +61,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable {
 
     @Override
     public void updateGame(Game game) {
+        this.game = game;
         mClientModel.setGame(game);
         mGameLobbyFragment.updateGameInfo();
     }
@@ -79,11 +82,16 @@ public class GameLobbyPresenter implements IPresenter, Serializable {
     }
 
     public void leaveGame() {
-        mClientModel.setGame(null);
         mServerProxy.leaveGame(mClientModel.getAuthToken(), game.getID());
     }
 
     public void onLeaveGame() {
+        mGameLobbyFragment = null;
         mGameLobbyActivity.enterGameList();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        update();
     }
 }

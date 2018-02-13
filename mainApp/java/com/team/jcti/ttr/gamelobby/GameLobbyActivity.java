@@ -32,12 +32,15 @@ public class GameLobbyActivity extends AppCompatActivity {
     }
 
     private Fragment getFragment() {
-        if(!mPresenter.hasGame()) {
-            return new CreateGameFragment();
+        Fragment myFragment = null;
+        Boolean hasGame = mPresenter.hasGame();
+        if(hasGame) {
+            myFragment = new GameLobbyFragment();
+        } else {
+            myFragment = new CreateGameFragment();
         }
-        else {
-            return new GameLobbyFragment();
-        }
+
+        return myFragment;
     }
 
     public void switchFragments() {

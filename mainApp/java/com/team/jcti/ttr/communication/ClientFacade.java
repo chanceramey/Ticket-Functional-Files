@@ -6,7 +6,9 @@ import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.login.LoginPresenter;
 import com.team.jcti.ttr.models.ClientModel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import interfaces.IClient;
 import model.Game;
@@ -59,6 +61,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void onLeaveGame() {
+        mClientModel.setGame(null);
         GameLobbyPresenter presenter = (GameLobbyPresenter) mClientModel.getActivePresenter();
         presenter.onLeaveGame();
     }
@@ -66,20 +69,25 @@ public class ClientFacade implements IClient {
 
     @Override
     public void onGetServerGameList(Game[] games) {
-        mClientModel.setWaitingGames(Arrays.asList(games));
+        List<Game> myGames = new ArrayList<>();
+        for (Game thisGame: games) {
+            myGames.add(thisGame);
+        }
+        mClientModel.setWaitingGames(myGames);
         mClientModel.getActivePresenter().update();
     }
 
     @Override
     public void addGametoList(Game game) {
-        mClientModel.getWaitingGames().add(game);
+        List<Game> gameList = mClientModel.getWaitingGames();
+        gameList.add(game);
         mClientModel.getActivePresenter().update();
     }
 
     @Override
     public void removeGameFromList(String gameID) {
         for(int i = 0; i < mClientModel.getWaitingGames().size(); i++) {
-            if (gameID.equals(mClientModel.getWaitingGames().get(i))) {
+            if (gameID.equals(mClientModel.getWaitingGames().get(i).getID())) {
                 mClientModel.getWaitingGames().remove(i);
                 return;
             }

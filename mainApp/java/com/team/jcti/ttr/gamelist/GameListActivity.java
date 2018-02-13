@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.gamelobby.GameLobbyActivity;
+import com.team.jcti.ttr.models.ClientModel;
 
 import org.w3c.dom.Text;
 
@@ -51,6 +52,12 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.setActivePresenter();
     }
 
     @Override
