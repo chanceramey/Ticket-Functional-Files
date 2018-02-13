@@ -211,6 +211,17 @@ public class ServerModel {
         return this.sessionCommandQueue.get(auth);
     }
 
+    public void emptyCommandQueue(String auth) {
+        this.sessionCommandQueue.remove(auth);
+    }
+
+    public boolean hasGameName(String gameName) {
+        for (String gameID : waitingGames.keySet()) {
+            if (gameName.equals(waitingGames.get(gameID).getGameName())) return true;
+        }
+        return false;
+    }
+
 
     public class UserNotFoundException extends Exception {}
     public class AuthTokenNotFoundException extends Exception {}
