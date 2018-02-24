@@ -31,14 +31,14 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
         //initialize input fields
         setContentView(R.layout.activity_login);
-        mUsername = findViewById(R.id.username);
-        mPassword = findViewById(R.id.password);
-        mIpAddress = findViewById(R.id.ipAddress);
-        mPortNumber = findViewById(R.id.portNumber);
-        mFirstName = findViewById(R.id.firstName);
-        mLastName = findViewById(R.id.lastName);
-        mLoginButton = findViewById(R.id.loginButton);
-        mRegisterButton = findViewById(R.id.registerButton);
+        mUsername = (EditText) findViewById(R.id.username);
+        mPassword = (EditText) findViewById(R.id.password);
+        mIpAddress = (EditText) findViewById(R.id.ipAddress);
+        mPortNumber = (EditText) findViewById(R.id.portNumber);
+        mFirstName = (EditText) findViewById(R.id.firstName);
+        mLastName = (EditText) findViewById(R.id.lastName);
+        mLoginButton = (Button) findViewById(R.id.loginButton);
+        mRegisterButton = (Button) findViewById(R.id.registerButton);
 
         //send login fields data to presenter
         mLoginButton.setOnClickListener(new View.OnClickListener() {
