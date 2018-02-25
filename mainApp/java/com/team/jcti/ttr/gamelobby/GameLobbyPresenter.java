@@ -90,6 +90,14 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
         mGameLobbyActivity.enterGameList();
     }
 
+    public void startGame() {
+        mServerProxy.startGame(mClientModel.getAuthToken(), game.getID());
+    }
+
+    public void onGameStarted() {
+        mGameLobbyActivity.enterGameActivity();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         update();

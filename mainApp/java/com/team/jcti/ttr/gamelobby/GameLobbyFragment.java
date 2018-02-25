@@ -47,23 +47,7 @@ public class GameLobbyFragment extends Fragment{
         mLeaveGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Are you sure you want to leave this game? If you are the host leaving this game will permanently delete game.");
-                builder.setCancelable(true);
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.setPositiveButton("Leave Game", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mGameLobbyPresenter.leaveGame();
-                        Toast.makeText(getActivity(),"Leaving Game!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.create().show();
+              onLeaveButtonPressed();
             }
         });
 
@@ -71,35 +55,7 @@ public class GameLobbyFragment extends Fragment{
         mStartGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mGameLobbyPresenter.isHost()) {
-                    int currentPlayers = mGameLobbyPresenter.getGame().getPlayers().size();
-                    int maxPlayers = mGameLobbyPresenter.getGame().getNumPlayers();
-                    if (currentPlayers == 1) {
-                        Toast.makeText(getActivity(), "Must have at least two players to start a game", Toast.LENGTH_SHORT).show();
-                    } else if (currentPlayers < maxPlayers) {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(String.format("Are you sure you want to start the game with only %d players", currentPlayers));
-                        builder.setCancelable(true);
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getActivity(),"Starting Game!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        builder.create().show();
-                    }
-                    else {
-                        Toast.makeText(getActivity(),"Starting Game!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "Only the host can start the game", Toast.LENGTH_LONG).show();
-                }
+                onStartButtonPressed();
             }
         });
 
@@ -112,4 +68,62 @@ public class GameLobbyFragment extends Fragment{
         mNumPlayersText.setText(mGameLobbyPresenter.getGame().getNumPlayersString());
         mPlayersNamesText.setText(mGameLobbyPresenter.getGame().getPlayersNames());
     }
+
+    private void onStartButtonPressed() {
+        if(mGameLobbyPresenter.isHost()) {
+            int currentPlayers = mGameLobbyPresenter.getGame().getPlayers().size();
+            int maxPlayers = mGameLobbyPresenter.getGame().getNumPlayers();
+            if (currentPlayers == 1) {
+                Toast.makeText(getActivity(), "Must have at least two players to start a game", Toast.LENGTH_SHORT).show();
+            } else if (currentPlayers < maxPlayers) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(String.format("Are you sure you want to start the game with only %d players", currentPlayers));
+                builder.setCancelable(true);
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity(),"Starting Game!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.create().show();
+            }
+            else {
+                Toast.makeText(getActivity(),"Starting Game!", Toast.LENGTH_SHORT).show();
+                startGame();
+            }
+        } else {
+            Toast.makeText(getActivity(), "Only the host can start the game", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void onLeaveButtonPressed() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Are you sure you want to leave this game? If you are the host, leaving this game will permanently delete game.");
+        builder.setCancelable(true);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton("Leave Game", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mGameLobbyPresenter.leaveGame();
+                Toast.makeText(getActivity(),"Leaving Game!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.create().show();
+    }
+
+    private void startGame() {
+        mGameLobbyPresenter.startGame();
+    }
+
 }

@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
     package="com.team.jcti.ttr">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,20 +16,20 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".gamelobby.GameLobbyActivity"
-            android:label="Game Lobby">
-        </activity>
+            android:label="Game Lobby"></activity>
         <activity
             android:name=".login.LoginActivity"
-            android:label="Login and Register" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            android:label="Login and Register">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".gamelist.GameListActivity"
             android:label="Waiting Games List" />
-
+        <activity android:name=".game.GameActivity"></activity>
     </application>
 
 </manifest>

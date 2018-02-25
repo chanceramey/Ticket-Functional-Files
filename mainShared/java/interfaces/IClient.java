@@ -24,6 +24,8 @@ public interface IClient {
 
     public void onLeaveGame();
 
+    public void onGameStarted();
+
     public void onGetServerGameList(Game[] games);
 
     public void addGametoList(Game game);

@@ -52,7 +52,7 @@ public class ServerModel {
     private Map<String, Game> waitingGames;
 
     //Collection of all games that have been actually been started
-    private Map<String, Game> activeGames;
+    private Map<String, ServerGameModel> activeGames;
 
     //Queue of commands to be executed by
     private Map<String, List<Command>> sessionCommandQueue;
@@ -67,8 +67,6 @@ public class ServerModel {
         this.authTokens = new HashMap<>();
         this.gameListClients = new HashSet<>();
         this.waitingGames = new HashMap<>();
-        Game testGame = new Game(2, "potatoman", "Test Game", "12938fsd2jk128", "123jk3j238dsj");
-        waitingGames.put(testGame.getID(), testGame);
         this.activeGames = new HashMap<>();
         this.sessionCommandQueue = new HashMap<>();
 
@@ -163,9 +161,6 @@ public class ServerModel {
         if (waitingGames.containsKey(gameID)) {
             return waitingGames.get(gameID);
         }
-        else if (activeGames.containsKey(gameID)) {
-            return activeGames.get(gameID);
-        }
         else throw new GameNotFoundException();
     }
 
@@ -220,6 +215,13 @@ public class ServerModel {
             if (gameName.equals(waitingGames.get(gameID).getGameName())) return true;
         }
         return false;
+    }
+
+    public void startGame(String gameId) {
+        Game game = waitingGames.remove(gameId);
+        ServerGameModel gameModel = new ServerGameModel(game);
+        activeGames.put(gameId, gameModel);
+        gameModel.startGame();
     }
 
 

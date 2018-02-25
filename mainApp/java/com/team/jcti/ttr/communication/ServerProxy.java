@@ -82,6 +82,15 @@ public class ServerProxy implements IServer {
         return null;
     }
 
+    @Override
+    public Object startGame(String auth, String gameId) {
+        Object[] params = {auth, gameId};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "startGame", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
     private final String SERVER_TARGET = "server.ServerFacade";
 }
 

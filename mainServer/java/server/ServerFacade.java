@@ -26,7 +26,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public Object createGame(int numPlayers, String gameName, String authToken) {
-        CreateGameService service = new CreateGameService();
+        GameLobbyService service = new GameLobbyService();
         Command[] commands = service.createGame(numPlayers, gameName, authToken);
         return commands;
     }
@@ -40,7 +40,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public Object leaveGame(String authToken, String gameId) {
-        GameListService service = new GameListService();
+        GameLobbyService service = new GameLobbyService();
         Command[] commands = service.leaveGame(authToken, gameId);
         return commands;
     }
@@ -54,6 +54,13 @@ public class ServerFacade implements IServer {
     public Object getCommands(String authtoken) {
         GetCommandsService service = new GetCommandsService();
         Command[] commands = service.getCommands(authtoken);
+        return commands;
+    }
+
+    @Override
+    public Object startGame(String auth, String gameId) {
+        GameLobbyService service = new GameLobbyService();
+        Command[] commands = service.startGame(auth, gameId);
         return commands;
     }
 }

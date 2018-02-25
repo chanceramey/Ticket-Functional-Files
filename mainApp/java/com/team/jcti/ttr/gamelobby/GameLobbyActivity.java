@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.game.GameActivity;
 import com.team.jcti.ttr.gamelist.GameListActivity;
 
 
@@ -50,6 +51,11 @@ public class GameLobbyActivity extends AppCompatActivity {
 
     public void enterGameList() {
         Intent intent = new Intent(this, GameListActivity.class);
+        startActivity(intent);
+    }
+
+    public void enterGameActivity() {
+        Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
 

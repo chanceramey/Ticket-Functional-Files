@@ -19,4 +19,6 @@ public interface IServer {
     public Object getServerGames(String auth);
 
     public Object getCommands(String auth);
+
+    public Object startGame(String auth, String gameId);
 }
