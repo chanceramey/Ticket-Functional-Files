@@ -8,10 +8,8 @@ public class DestinationCard {
     private int pointValue;
     private String srcCity;
     private String destCity;
-    private String id;
 
-    public DestinationCard(String id, String destCity, String srcCity, int pointValue) {
-        this.id = id;
+    public DestinationCard(String destCity, String srcCity, int pointValue) {
         this.destCity = destCity;
         this.srcCity = srcCity;
         this.pointValue = pointValue;
@@ -27,9 +25,5 @@ public class DestinationCard {
 
     public String getDestCity() {
         return destCity;
-    }
-
-    public String getId() {
-        return id;
     }
 }

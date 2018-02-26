@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Player {
 
-    private String id;
+    private int id;
     private String user;
     private Color color;
 
@@ -18,7 +18,7 @@ public class Player {
 
     private List<Route> routesClaimed;
 
-    public Player(String user, Color color, String id) {
+    public Player(String user, Color color, int id) {
         this.user = user;
         this.color = color;
         this.id = id;
@@ -28,7 +28,7 @@ public class Player {
         this.routesClaimed = new ArrayList<>();
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

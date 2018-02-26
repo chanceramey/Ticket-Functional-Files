@@ -21,7 +21,7 @@ public class TrainCardDeck {
 
     private void initializeDeck() {
         for (TrainCard color : TrainCard.values()) {
-            for (int i = 0; i < (color == TrainCard.LOCOMOTIVE ? 14 : 12); i++) {
+            for (int i = 0; i < (color == TrainCard.WILD ? 14 : 12); i++) {
                 deck.add(color);
             }
         }
@@ -34,6 +34,38 @@ public class TrainCardDeck {
         for (int i = length - 1; i >= 0; i++) {
             int randomPos = rand.nextInt(i + 1);
             resultDeck.add(startDeck.remove(randomPos));
+        }
+    }
+
+    public TrainCard[] drawCards(int numToDraw) {
+        //If player tries to draw more cards than are currently in deck, shuffle discard and add to deck
+        if (numToDraw > deck.size()) {
+            shuffle(discard, deck);
+            //if after reshuffle, there still aren't enough cards, only draw as many as possible
+            if (numToDraw > deck.size()) numToDraw = deck.size();
+        }
+        TrainCard[] cards = new TrainCard[numToDraw];
+        for (int i = 0; i < numToDraw; i++) {
+            cards[i] = deck.remove(0);
+        }
+        return cards;
+    }
+
+    public TrainCard drawCard() {
+        //If there are no cards in deck, reshuffle discard into deck
+        if (deck.size() == 0) {
+            shuffle(discard, deck);
+            //If after shuffle there still are no cards return no cards (no cards left)
+            if (deck.size() == 0) return null;
+        }
+        //remove and return card at first position in deck
+        return deck.remove(0);
+    }
+
+    public void discard(TrainCard[] discarded) {
+        //Put each card in the discarded array into the discard deck
+        for (int i = 0; i < discarded.length; i ++) {
+            discard.add(discarded[i]);
         }
     }
 

@@ -13,5 +13,5 @@ public enum TrainCard {
     BLACK,
     YELLOW,
     PURPLE,
-    LOCOMOTIVE
+    WILD
 }
