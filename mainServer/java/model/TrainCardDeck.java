@@ -31,7 +31,7 @@ public class TrainCardDeck {
     private void shuffle(List<TrainCard> startDeck, List<TrainCard> resultDeck) {
         Random rand = new Random();
         int length = startDeck.size();
-        for (int i = length - 1; i >= 0; i++) {
+        for (int i = length - 1; i >= 0; i--) {
             int randomPos = rand.nextInt(i + 1);
             resultDeck.add(startDeck.remove(randomPos));
         }

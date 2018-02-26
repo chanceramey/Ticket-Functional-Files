@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,8 +14,12 @@ public class Player {
     private String user;
     private Color color;
 
+    private int numTrainCards;
     private List<TrainCard> trainCards;
+    private int numDestCards;
     private List<DestinationCard> destCards;
+
+    private int points;
 
     private List<Route> routesClaimed;
 
@@ -50,5 +55,58 @@ public class Player {
 
     public List<Route> getRoutesClaimed() {
         return routesClaimed;
+    }
+
+    public void addTrainCards(TrainCard[] cards) {
+        Collections.addAll(trainCards, cards);
+        this.numTrainCards = trainCards.size();
+    }
+
+    public void addTrainCards(int num) {
+        numTrainCards += num;
+    }
+
+    public TrainCard[] removeTrainCards(int[] pos) {
+        TrainCard[] discarded = new TrainCard[pos.length];
+        for (int i = 0; i < pos.length; i++) {
+            discarded[i] = trainCards.remove(pos[i]);
+        }
+        this.numTrainCards = trainCards.size();
+        return discarded;
+    }
+
+    public void removeTrainCards(int num) {
+        numTrainCards -= num;
+    }
+
+
+    public void addDestCards(DestinationCard[] cards) {
+        Collections.addAll(destCards, cards);
+        this.numDestCards = destCards.size();
+    }
+
+    public void addDestCards(int num) { this.numDestCards += num; }
+
+    public DestinationCard[] removeDestCards(int[] pos) {
+        DestinationCard[] discarded = new DestinationCard[pos.length];
+        for (int i = 0; i < pos.length; i++) {
+            discarded[i] = destCards.remove(pos[i]);
+        }
+        this.numDestCards = destCards.size();
+        return discarded;
+    }
+
+    public void removeDestCards(int num) { this.numDestCards -= num; }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int getNumDestCards() {
+        return numDestCards;
+    }
+
+    public int getNumTrainCards() {
+        return numTrainCards;
     }
 }

@@ -11,7 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import interfaces.IClient;
+import model.DestinationCard;
 import model.Game;
+import model.TrainCard;
 
 /**
  * Created by Jeff on 2/2/2018.
@@ -66,6 +68,12 @@ public class ClientFacade implements IClient {
         presenter.onLeaveGame();
     }
 
+    @Override
+    public void onGameStarted() {
+        GameLobbyPresenter presenter = (GameLobbyPresenter) mClientModel.getActivePresenter();
+        presenter.onGameStarted();
+    }
+
 
     @Override
     public void onGetServerGameList(Game[] games) {
@@ -99,5 +107,30 @@ public class ClientFacade implements IClient {
     public void updateGame(Game game) {
        IPresenter presenter = mClientModel.getActivePresenter();
        presenter.updateGame(game);
+    }
+
+    @Override
+    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
+
+    }
+
+    @Override
+    public void discardTrainCards(Integer player, Integer numCards, int[] pos) {
+
+    }
+
+    @Override
+    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
+
+    }
+
+    @Override
+    public void discardDestCards(Integer player, Integer numCards, int[] pos) {
+
+    }
+
+    @Override
+    public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
+
     }
 }

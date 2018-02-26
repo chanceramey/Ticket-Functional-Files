@@ -3,6 +3,8 @@ package server;
 import java.util.UUID;
 
 import communication.ClientProxy;
+import model.Color;
+import model.ServerGameModel;
 import model.ServerModel;
 import command.Command;
 import model.Game;
@@ -25,17 +27,21 @@ public class GameLobbyService {
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
+
         if (mServerModel.hasGameName(gameName)) {
             clientProxy.displayError("Game name already in use");
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
+
         Game game = new Game(numPlayers, username, gameName, UUID.randomUUID().toString(), authToken);
         mServerModel.addWaitingGame(game);
         mServerModel.removeGameListClient(authToken);
         clientProxy.addGametoList(game);
+
         for (String auth : mServerModel.getGameListClients()) {
             mServerModel.addCommand(auth, clientProxy.getCommand());
+
         }
         clientProxy.onCreateGame(game);
         Command[] commands = {clientProxy.getCommand()};
@@ -51,6 +57,7 @@ public class GameLobbyService {
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
+
         Game game;
         try {
             game = mServerModel.getGame(gameId);
@@ -58,6 +65,7 @@ public class GameLobbyService {
             clientProxy.displayError("Game not found. Please try again.");
             Command[] commands = {clientProxy.getCommand()};
             return commands;
+
         }
         if (game.getHost().equals(authToken)) return removeGame(game, authToken);
 
@@ -118,13 +126,14 @@ public class GameLobbyService {
             return new Command[] {clientProxy.getCommand()};
         }
 
-        mServerModel.startGame(gameId);
+        ServerGameModel gameModel = mServerModel.startGame(gameId);
 
         clientProxy.removeGameFromList(gameId);
         for (String client : mServerModel.getGameListClients()) {
             mServerModel.addCommand(client, clientProxy.getCommand());
         }
 
+        clientProxy.onGameStarted();
         for (String client : game.getPlayerIDs().keySet()) {
             if (client.equals(auth)) continue;
             mServerModel.addCommand(client, clientProxy.getCommand());

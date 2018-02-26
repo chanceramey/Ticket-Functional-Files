@@ -217,11 +217,12 @@ public class ServerModel {
         return false;
     }
 
-    public void startGame(String gameId) {
+    public ServerGameModel startGame(String gameId) {
         Game game = waitingGames.remove(gameId);
         ServerGameModel gameModel = new ServerGameModel(game);
         activeGames.put(gameId, gameModel);
         gameModel.startGame();
+        return gameModel;
     }
 
 
