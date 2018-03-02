@@ -1,5 +1,7 @@
 package interfaces;
 
+import model.GameHistory;
+
 /**
  * Created by Isaak on 2/2/2018.
  */
@@ -21,4 +23,6 @@ public interface IServer {
     public Object getCommands(String auth);
 
     public Object startGame(String auth, String gameId);
+
+    public Object sendMessage(String auth, String gameId, GameHistory historyObj); // sends message from the chat activity
 }

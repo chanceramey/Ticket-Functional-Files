@@ -2,6 +2,7 @@ package com.team.jcti.ttr.communication;
 
 import command.Command;
 import interfaces.IServer;
+import model.GameHistory;
 
 /**
  * Created by Jeff on 2/2/2018.
@@ -87,6 +88,14 @@ public class ServerProxy implements IServer {
         Object[] params = {auth, gameId};
         String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
         Command command = new Command(SERVER_TARGET, "startGame", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+    public Object sendMessage(String auth, String gameId, GameHistory historyObj) {
+        Object[] params = {auth, gameId, historyObj};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), historyObj.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "sendMessage", paramTypes, params);
         new SendCommandTask().execute(command);
         return null;
     }

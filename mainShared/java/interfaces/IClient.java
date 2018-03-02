@@ -3,6 +3,7 @@ package interfaces;
 import java.util.List;
 
 import model.Game;
+import model.GameHistory;
 
 /**
  * Created by Isaak on 2/2/2018.
@@ -33,4 +34,5 @@ public interface IClient {
     public void removeGameFromList(String gameID);
 
     public void updateGame(Game game);
+
 }

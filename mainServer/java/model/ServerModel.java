@@ -1,5 +1,7 @@
 package model;
 
+import com.sun.security.ntlm.Server;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -222,6 +224,10 @@ public class ServerModel {
         ServerGameModel gameModel = new ServerGameModel(game);
         activeGames.put(gameId, gameModel);
         gameModel.startGame();
+    }
+
+    public ServerGameModel getActiveGame(String gameId) {
+        return activeGames.get(gameId);
     }
 
 

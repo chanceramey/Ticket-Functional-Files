@@ -1,8 +1,11 @@
 package communication;
 
+import java.util.List;
+
 import command.Command;
 import interfaces.IClient;
 import model.Game;
+import model.GameHistory;
 
 /**
  * Created by Isaak on 2/2/2018.
@@ -87,6 +90,9 @@ public class ClientProxy implements IClient {
     public void promptRenewSession() {
         this.command = new Command(CLIENT_TARGET, "promptRenewSession", null, null);
     }
+
+
+
 
     public Command getCommand() {
         return this.command;

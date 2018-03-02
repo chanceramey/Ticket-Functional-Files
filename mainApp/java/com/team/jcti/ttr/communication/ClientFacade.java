@@ -12,6 +12,7 @@ import java.util.List;
 
 import interfaces.IClient;
 import model.Game;
+import model.GameHistory;
 
 /**
  * Created by Jeff on 2/2/2018.
@@ -100,4 +101,5 @@ public class ClientFacade implements IClient {
        IPresenter presenter = mClientModel.getActivePresenter();
        presenter.updateGame(game);
     }
+
 }

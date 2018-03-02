@@ -2,6 +2,7 @@ package server;
 
 import interfaces.IServer;
 import command.Command;
+import model.GameHistory;
 
 /**
  * Created by Isaak on 2/2/2018.
@@ -61,6 +62,13 @@ public class ServerFacade implements IServer {
     public Object startGame(String auth, String gameId) {
         GameLobbyService service = new GameLobbyService();
         Command[] commands = service.startGame(auth, gameId);
+        return commands;
+    }
+
+    @Override
+    public Object sendMessage(String auth, String gameId, GameHistory historyObj) {
+        MessageService service = new MessageService();
+        Command[] commands = service.sendMessage(auth, gameId, historyObj);
         return commands;
     }
 }

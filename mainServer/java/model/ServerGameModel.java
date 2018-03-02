@@ -19,7 +19,9 @@ public class ServerGameModel {
 
     List<DestinationCard> destCardDeck;
 
-    List<Command> gameHistoryCommands;
+    List<Command> gameHistoryCommands = new ArrayList<>();
+
+    List<GameHistory> gameHistory;
 
     public ServerGameModel(Game game) {
         initializePlayersList(game);
@@ -47,5 +49,13 @@ public class ServerGameModel {
 
     public void startGame() {
 
+    }
+
+    public void addGameHistory(GameHistory historyObj) {
+        gameHistory.add(historyObj);
+    }
+
+    public List<GameHistory> getGameHistory() {
+        return gameHistory;
     }
 }
