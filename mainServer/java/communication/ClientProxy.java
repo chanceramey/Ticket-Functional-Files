@@ -1,10 +1,13 @@
 package communication;
 
+import java.util.List;
+
 import command.Command;
 import interfaces.IClient;
 import model.Color;
 import model.DestinationCard;
 import model.Game;
+import model.GameHistory;
 import model.TrainCard;
 
 /**
@@ -111,7 +114,6 @@ public class ClientProxy implements IClient {
         }
         return new Command(CLIENT_TARGET, methodName, paramTypes, params);
     }
-
 
     public Command getCommand() {
         return this.command;

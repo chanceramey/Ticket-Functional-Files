@@ -5,6 +5,7 @@ import java.util.List;
 import model.Color;
 import model.DestinationCard;
 import model.Game;
+import model.GameHistory;
 import model.TrainCard;
 
 /**

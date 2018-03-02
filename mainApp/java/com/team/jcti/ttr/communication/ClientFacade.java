@@ -13,6 +13,7 @@ import java.util.List;
 import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
+import model.GameHistory;
 import model.TrainCard;
 
 /**

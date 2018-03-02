@@ -23,8 +23,10 @@ public class ServerGameModel {
     private TrainCardDeck trainCardDeck;
     private TrainCard[] faceUpTrainCards;
 
-    private DestCardDeck destCardDeck;
+    List<Command> gameHistoryCommands = new ArrayList<>();
 
+    List<GameHistory> gameHistory;
+    private DestCardDeck destCardDeck;
     private List<Command> gameHistoryCommands;
 
     public ServerGameModel(Game game) {
@@ -98,5 +100,13 @@ public class ServerGameModel {
             playerColors[i] = players.get(i).getColor();
         }
         return playerColors;
+    }
+
+    public void addGameHistory(GameHistory historyObj) {
+        gameHistory.add(historyObj);
+    }
+
+    public List<GameHistory> getGameHistory() {
+        return gameHistory;
     }
 }
