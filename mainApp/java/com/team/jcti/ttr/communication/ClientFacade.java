@@ -23,15 +23,17 @@ public class ClientFacade implements IClient {
     private ClientModel mClientModel = ClientModel.getInstance();
 
     @Override
-    public void onLogin(String authToken) {
+    public void onLogin(String authToken, String username) {
         mClientModel.setAuthToken(authToken);
+        mClientModel.setUsername(username);
         LoginPresenter presenter = (LoginPresenter) mClientModel.getActivePresenter();
         presenter.onLogin();
     }
 
     @Override
-    public void onRegister(String authToken) {
+    public void onRegister(String authToken, String username) {
         mClientModel.setAuthToken(authToken);
+        mClientModel.setUsername(username);
         LoginPresenter presenter = (LoginPresenter) mClientModel.getActivePresenter();
         presenter.onRegister();
     }

@@ -2,9 +2,11 @@ package com.team.jcti.ttr.gamelobby;
 
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -71,7 +73,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     }
 
     boolean isHost() {
-        if (game.getHost().equals(mClientModel.getAuthToken())) return true;
+        if (game.getHost().equals(mClientModel.getUsername())) return true;
         else return false;
     }
 
@@ -95,6 +97,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     }
 
     public void onGameStarted() {
+        ClientGameModel.getInstance().startGame(game.getPlayers());
         mGameLobbyActivity.enterGameActivity();
     }
 

@@ -33,7 +33,7 @@ public class LoginService {
 
         String authToken = serverModel.addAuthForUser(username);
 
-        clientProxy.onLogin(authToken);
+        clientProxy.onLogin(authToken, username);
         Command[] commands = {clientProxy.getCommand()};
         return commands;
     }

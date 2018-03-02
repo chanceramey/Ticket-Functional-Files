@@ -19,13 +19,13 @@ public class ClientProxy implements IClient {
     }
 
     @Override
-    public void onLogin(String authToken) {
-        this.command = createCommand("onLogin", authToken);
+    public void onLogin(String authToken, String username) {
+        this.command = createCommand("onLogin", authToken, username);
     }
 
     @Override
-    public void onRegister(String authToken) {
-        this.command = createCommand("onRegister", authToken);
+    public void onRegister(String authToken, String username) {
+        this.command = createCommand("onRegister", authToken, username);
     }
 
     @Override

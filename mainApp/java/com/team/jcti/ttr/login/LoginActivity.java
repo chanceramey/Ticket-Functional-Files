@@ -72,7 +72,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
     @Override
     public void onLogin() {
         toast("Login Successful");
-
         Intent intent = new Intent(this, GameListActivity.class);
         startActivity(intent);
 
@@ -83,7 +82,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         toast("Register Successful");
         Intent intent = new Intent(this, GameListActivity.class);
         startActivity(intent);
-
     }
 
 

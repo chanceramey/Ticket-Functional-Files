@@ -73,7 +73,7 @@ public class GameLobbyFragment extends Fragment{
         if(mGameLobbyPresenter.isHost()) {
             int currentPlayers = mGameLobbyPresenter.getGame().getPlayers().size();
             int maxPlayers = mGameLobbyPresenter.getGame().getNumPlayers();
-            if (currentPlayers == 1) {
+            if (currentPlayers == 0) {
                 Toast.makeText(getActivity(), "Must have at least two players to start a game", Toast.LENGTH_SHORT).show();
             } else if (currentPlayers < maxPlayers) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -89,13 +89,14 @@ public class GameLobbyFragment extends Fragment{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getActivity(),"Starting Game!", Toast.LENGTH_SHORT).show();
+                        mGameLobbyPresenter.startGame();
                     }
                 });
                 builder.create().show();
             }
             else {
                 Toast.makeText(getActivity(),"Starting Game!", Toast.LENGTH_SHORT).show();
-                startGame();
+                mGameLobbyPresenter.startGame();
             }
         } else {
             Toast.makeText(getActivity(), "Only the host can start the game", Toast.LENGTH_LONG).show();
@@ -120,10 +121,6 @@ public class GameLobbyFragment extends Fragment{
             }
         });
         builder.create().show();
-    }
-
-    private void startGame() {
-        mGameLobbyPresenter.startGame();
     }
 
 }

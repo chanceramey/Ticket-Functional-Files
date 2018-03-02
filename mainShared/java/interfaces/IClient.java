@@ -13,9 +13,9 @@ import model.TrainCard;
 
 public interface IClient {
 
-    public void onLogin(String authToken);
+    public void onLogin(String authToken, String username);
 
-    public void onRegister(String authToken);
+    public void onRegister(String authToken, String username);
 
     public void displayError(String message);
 
