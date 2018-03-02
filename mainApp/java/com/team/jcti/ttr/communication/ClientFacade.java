@@ -11,8 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import interfaces.IClient;
+import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.TrainCard;
 
 /**
  * Created by Jeff on 2/2/2018.
@@ -22,15 +24,17 @@ public class ClientFacade implements IClient {
     private ClientModel mClientModel = ClientModel.getInstance();
 
     @Override
-    public void onLogin(String authToken) {
+    public void onLogin(String authToken, String username) {
         mClientModel.setAuthToken(authToken);
+        mClientModel.setUsername(username);
         LoginPresenter presenter = (LoginPresenter) mClientModel.getActivePresenter();
         presenter.onLogin();
     }
 
     @Override
-    public void onRegister(String authToken) {
+    public void onRegister(String authToken, String username) {
         mClientModel.setAuthToken(authToken);
+        mClientModel.setUsername(username);
         LoginPresenter presenter = (LoginPresenter) mClientModel.getActivePresenter();
         presenter.onRegister();
     }
@@ -65,6 +69,12 @@ public class ClientFacade implements IClient {
         mClientModel.setGame(null);
         GameLobbyPresenter presenter = (GameLobbyPresenter) mClientModel.getActivePresenter();
         presenter.onLeaveGame();
+    }
+
+    @Override
+    public void onGameStarted() {
+        GameLobbyPresenter presenter = (GameLobbyPresenter) mClientModel.getActivePresenter();
+        presenter.onGameStarted();
     }
 
 
@@ -102,4 +112,28 @@ public class ClientFacade implements IClient {
        presenter.updateGame(game);
     }
 
+    @Override
+    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
+
+    }
+
+    @Override
+    public void discardTrainCards(Integer player, Integer numCards, int[] pos) {
+
+    }
+
+    @Override
+    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
+
+    }
+
+    @Override
+    public void discardDestCards(Integer player, Integer numCards, int[] pos) {
+
+    }
+
+    @Override
+    public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
+
+    }
 }

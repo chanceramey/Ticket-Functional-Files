@@ -26,4 +26,9 @@ public class DestinationCard {
     public String getDestCity() {
         return destCity;
     }
+
+    @Override
+    public String toString() {
+        return String.format("DestCard: {src: %s, dest: %s, points: %d}", srcCity, destCity, pointValue);
+    }
 }

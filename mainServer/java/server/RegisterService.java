@@ -36,7 +36,7 @@ public class RegisterService {
         String authToken = serverModel.addAuthForUser(username);
         serverModel.addUser(user);
 
-        clientProxy.onRegister(authToken);
+        clientProxy.onRegister(authToken, username);
         Command[] commands = {clientProxy.getCommand()};
         return commands;
     }

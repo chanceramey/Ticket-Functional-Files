@@ -107,6 +107,7 @@ public class LoginPresenter implements ILoginPresenter, IPresenter {
         mLoginActivity.toast(message);
     }
 
+
     @Override
     public void updateGame(Game game) {}
 

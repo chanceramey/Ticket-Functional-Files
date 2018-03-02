@@ -30,6 +30,7 @@ public class ClientModel extends Observable {
     }
 
     private String authToken;
+    private String username;
     private Game activeGame;
     private List<Game> waitingGames;
     private IPresenter activePresenter;
@@ -83,5 +84,13 @@ public class ClientModel extends Observable {
 
     public Map<String, String> getProperForms() {
         return properForms;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
