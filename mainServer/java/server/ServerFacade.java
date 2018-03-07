@@ -71,4 +71,11 @@ public class ServerFacade implements IServer {
         Command[] commands = service.sendMessage(auth, gameId, historyObj);
         return commands;
     }
+
+    @Override
+    public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
+        GetCommandsService service = new GetCommandsService();
+        Command[] commands = service.getGameCommands(auth, gameID, gameHistoryPosition);
+        return commands;
+    }
 }

@@ -1,7 +1,5 @@
 package model;
 
-import com.sun.security.ntlm.Server;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,8 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -227,8 +223,11 @@ public class ServerModel {
         return gameModel;
     }
 
-    public ServerGameModel getActiveGame (String gameId) throws GameNotFoundException {
-        return activeGames.get(gameId);
+    public ServerGameModel getActiveGame(String gameId) throws GameNotFoundException {
+        if (activeGames.containsKey(gameId))
+            return activeGames.get(gameId);
+        else throw new GameNotFoundException();
+
     }
 
 
