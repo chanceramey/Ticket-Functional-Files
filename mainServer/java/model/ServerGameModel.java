@@ -23,8 +23,6 @@ public class ServerGameModel {
     private TrainCardDeck trainCardDeck;
     private TrainCard[] faceUpTrainCards;
 
-    List<Command> gameHistoryCommands = new ArrayList<>();
-
     List<GameHistory> gameHistory;
     private DestCardDeck destCardDeck;
     private List<Command> gameHistoryCommands;
@@ -108,5 +106,14 @@ public class ServerGameModel {
 
     public List<GameHistory> getGameHistory() {
         return gameHistory;
+    }
+
+    public Command[] getGameCommands(int gameHistoryPosition) {
+        int numNewCommands = gameHistoryCommands.size() - gameHistoryPosition;
+        Command[] commands = new Command[numNewCommands];
+        for (int i = 0; i < numNewCommands; i++) {
+            commands[i] = gameHistoryCommands.get(i + gameHistoryPosition);
+        }
+        return commands;
     }
 }

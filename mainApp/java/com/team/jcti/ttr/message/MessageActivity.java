@@ -37,7 +37,7 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
 
         }
         mMessage = (EditText) findViewById(R.id.chat_message);
-        mSendButton = (Button) findViewById(R.id.create_new_game);
+        mSendButton = (Button) findViewById(R.id.send_message_button);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +50,7 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
     @Override
     public void sendMessage() {
         if (mMessage != null) {
-            mPresenter.sendMessage(mMessage.toString());
+            mPresenter.sendMessage(mMessage.getText().toString());
         } else {} // do nothing if there is no message typed out
     }
 
