@@ -7,5 +7,5 @@ import model.GameHistory;
  */
 
 public interface IMessagePresenter {
-    void updateGameHistory();
+    void updateGameHistory(GameHistory gameHistory);
 }

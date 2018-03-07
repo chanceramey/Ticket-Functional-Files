@@ -60,7 +60,8 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
     }
 
     @Override
-    public void updateGameHistory() {
-        update();
+    public void updateGameHistory(GameHistory gameHistory) {
+        mActiveGame.addGameHistoryObj(gameHistory);
     }
+
 }

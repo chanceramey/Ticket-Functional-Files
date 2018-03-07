@@ -2,6 +2,8 @@ package com.team.jcti.ttr.communication;
 
 import android.os.AsyncTask;
 
+import com.team.jcti.ttr.models.ClientGameModel;
+
 import command.Command;
 
 /**
@@ -21,8 +23,15 @@ public class SendCommandTask extends AsyncTask<Command, Void, Object>{
     @Override
     protected void onPostExecute(Object commands) {
         Command[] responseCommands = (Command[]) commands;
+        incrementGameHistoryPosition(responseCommands.length);
         for (int i = 0; i < responseCommands.length; i++) {
             responseCommands[i].execute();
+        }
+    }
+
+    protected void incrementGameHistoryPosition(int numCommands) {
+        if (ClientGameModel.getInstance().isActive()) {
+            ClientGameModel.getInstance().increment(numCommands);
         }
     }
 }

@@ -61,8 +61,14 @@ public class ClientGameModel extends Observable {
         return gameHistoryArr;
     }
 
+    public void addGameHistoryObj (GameHistory gameHistory) {
+        gameHistoryArr.add(gameHistory);
+    }
+
+
     public String getGameId() {
         return gameId;
+    }
     public boolean isActive() {
         return active;
     }
@@ -73,5 +79,9 @@ public class ClientGameModel extends Observable {
 
     public String getGameID() {
         return gameID;
+    }
+
+    public void increment(int numCommands) {
+        gameHistoryPosition += numCommands;
     }
 }
