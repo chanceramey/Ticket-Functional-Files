@@ -1,9 +1,14 @@
 package com.team.jcti.ttr.models;
 
+import com.team.jcti.ttr.IPresenter;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import model.Color;
+import model.GameHistory;
+
 import model.Game;
 import model.Player;
 
@@ -11,7 +16,7 @@ import model.Player;
  * Created by Jeff on 2/2/2018.
  */
 
-public class ClientGameModel {
+public class ClientGameModel extends Observable {
 
     private static ClientGameModel SINGLETON;
     public static ClientGameModel getInstance() {
@@ -27,6 +32,9 @@ public class ClientGameModel {
     private String gameID;
     private int userPlayer;
     private int gameHistoryPosition;
+    private List<GameHistory> gameHistoryArr;
+    private String gameId;
+    private IPresenter activePresenter;
 
     public void startGame(Game game) {
         this.gameID = game.getID();
@@ -42,6 +50,19 @@ public class ClientGameModel {
         gameHistoryPosition = 0;
     }
 
+    public void setActivePresenter(IPresenter presenter) {
+        activePresenter = presenter;
+    }
+    public IPresenter getActivePresenter() {
+        return activePresenter;
+    }
+
+    public List<GameHistory> getGameHistory() {
+        return gameHistoryArr;
+    }
+
+    public String getGameId() {
+        return gameId;
     public boolean isActive() {
         return active;
     }

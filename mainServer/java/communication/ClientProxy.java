@@ -75,6 +75,10 @@ public class ClientProxy implements IClient {
     }
 
     @Override
+    public void receiveMessage(GameHistory gameHistory) {
+        this.command = createCommand("receiveMessage", gameHistory);
+    }
+    @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
         this.command = createCommand("drawTrainCards", player, numCards, cards);
     }

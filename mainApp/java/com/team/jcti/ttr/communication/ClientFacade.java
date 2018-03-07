@@ -4,6 +4,7 @@ import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.gamelist.GameListPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.login.LoginPresenter;
+import com.team.jcti.ttr.message.IMessagePresenter;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.ArrayList;
@@ -112,6 +113,11 @@ public class ClientFacade implements IClient {
        presenter.updateGame(game);
     }
 
+    @Override
+    public void receiveMessage(GameHistory gameHistory) {
+        IMessagePresenter presenter = (IMessagePresenter) mClientModel.getActivePresenter();
+        presenter.updateGameHistory(gameHistory);
+    }
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
 
