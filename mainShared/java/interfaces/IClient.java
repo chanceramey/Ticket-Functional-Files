@@ -38,6 +38,8 @@ public interface IClient {
 
     public void updateGame(Game game);
 
+    public void receiveMessage(GameHistory gameHistory);
+
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards);
 
     public void discardTrainCards(Integer player, Integer numCards, int[] pos);
