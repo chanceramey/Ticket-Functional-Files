@@ -109,4 +109,9 @@ public class ServerGameModel {
     public List<GameHistory> getGameHistory() {
         return gameHistory;
     }
+
+    public void sendMessage(GameHistory gameHistory) {
+        clientProxy.receiveMessage(gameHistory);
+        gameHistoryCommands.add(clientProxy.getCommand());
+    }
 }

@@ -24,6 +24,7 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         mPresenter = new MessagePresenter(this);
+        mPresenter.updateGameHistory();
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container_message);

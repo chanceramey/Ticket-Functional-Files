@@ -227,7 +227,7 @@ public class ServerModel {
         return gameModel;
     }
 
-    public ServerGameModel getActiveGame(String gameId) {
+    public ServerGameModel getActiveGame (String gameId) throws GameNotFoundException {
         return activeGames.get(gameId);
     }
 
