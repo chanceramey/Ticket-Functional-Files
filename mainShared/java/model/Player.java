@@ -18,10 +18,20 @@ public class Player {
     private List<TrainCard> trainCards;
     private int numDestCards;
     private List<DestinationCard> destCards;
+    private int numTrains;
+    private boolean turn = false; // if it is this player's turn or not
 
     private int points;
 
     private List<Route> routesClaimed;
+
+    public int getNumTrains() {
+        return numTrains;
+    }
+
+    public void setNumTrains(int numTrains) {
+        this.numTrains = numTrains;
+    }
 
     public Player(String user, Color color, int id) {
         this.user = user;
@@ -31,6 +41,7 @@ public class Player {
         this.trainCards = new ArrayList<>();
         this.destCards = new ArrayList<>();
         this.routesClaimed = new ArrayList<>();
+        this.numTrains = 45;
     }
 
     public int getId() {
@@ -55,6 +66,10 @@ public class Player {
 
     public List<Route> getRoutesClaimed() {
         return routesClaimed;
+    }
+
+    public boolean isTurn() {
+        return turn;
     }
 
     public void addTrainCards(TrainCard[] cards) {
