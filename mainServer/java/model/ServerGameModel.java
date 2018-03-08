@@ -111,6 +111,7 @@ public class ServerGameModel {
     public void sendMessage(GameHistory gameHistory) {
         clientProxy.receiveMessage(gameHistory);
         gameHistoryCommands.add(clientProxy.getCommand());
+    }
       
     public Command[] getGameCommands(int gameHistoryPosition) {
         int numNewCommands = gameHistoryCommands.size() - gameHistoryPosition;

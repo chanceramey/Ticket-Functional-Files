@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.List;
@@ -22,25 +23,19 @@ import model.GameHistory;
 public class MessageFragment extends Fragment {
    private RecyclerView mHistoryRecycler;
    private Adapter mAdapter;
-   private ClientModel mClientModel = ClientModel.getInstance();
+   private ClientGameModel mClientGameModel = ClientGameModel.getInstance();
    private MessagePresenter mPresenter;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.mPresenter = (MessagePresenter) mClientModel.getActivePresenter();
-        mPresenter.setFragment(this);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_message, container, false);
-
+        this.mPresenter = (MessagePresenter) mClientGameModel.getActivePresenter();
+        mPresenter.setFragment(this);
         mHistoryRecycler = (RecyclerView) v.findViewById(R.id.recycler_view_chat);
         mHistoryRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        mPresenter.update();
 
         return v;
     }

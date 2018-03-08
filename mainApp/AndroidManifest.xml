@@ -30,8 +30,15 @@
             android:name=".gamelist.GameListActivity"
             android:label="Waiting Games List"/>
         <activity android:name=".game.GameActivity"/>
-        <activity android:name=".message.MessageActivity"
-                  android:screenOrientation="landscape">
+        <activity
+            android:name=".message.MessageActivity"
+            android:label="Chat"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".playerInfo.PlayerInfoActivity"
+            android:label="Player Info"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 

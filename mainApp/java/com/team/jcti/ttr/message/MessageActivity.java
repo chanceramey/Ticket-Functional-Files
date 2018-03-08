@@ -33,10 +33,8 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
             fm.beginTransaction()
                     .add(R.id.fragment_container_message, fragment)
                     .commit();
-
-
         }
-        mPresenter.update();
+//        mPresenter.update();
         mMessage = (EditText) findViewById(R.id.chat_message);
         mSendButton = (Button) findViewById(R.id.send_message_button);
         mSendButton.setOnClickListener(new View.OnClickListener() {

@@ -8,4 +8,5 @@ import model.GameHistory;
 
 public interface IMessagePresenter {
     void updateGameHistory(GameHistory gameHistory);
+    void sendMessage(String message);
 }

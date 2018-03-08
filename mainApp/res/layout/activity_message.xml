@@ -9,7 +9,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container_message"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="250dp" />
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"

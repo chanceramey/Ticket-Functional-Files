@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 public class Poller extends TimerTask{
     private ClientModel mClientModel;
-    private ClientGameModel mGameModel;
+    private ClientGameModel mGameModel = ClientGameModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
 
     public Poller(ClientModel cm) {

@@ -52,6 +52,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             }
         });
 
+
     }
 
     @Override
