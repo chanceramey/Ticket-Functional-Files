@@ -103,7 +103,7 @@ public class ServerProxy implements IServer {
 
     @Override
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
-        Object[] params = {gameID, gameHistoryPosition};
+        Object[] params = {auth, gameID, gameHistoryPosition};
         String[] paramTypes = {auth.getClass().getName(), gameID.getClass().getName(), gameHistoryPosition.getClass().getName() };
         Command command = new Command(SERVER_TARGET, "getGameCommands", paramTypes, params);
         new SendCommandTask().execute(command);

@@ -16,9 +16,9 @@ import model.ServerModel;
 public class GetCommandsService extends AbstractService {
 
     public Command[] getCommands(String auth) {
-        String user = null;
+
         try {
-            user = mServerModel.getUserFromAuth(auth);
+            mServerModel.getUserFromAuth(auth);
         } catch (ServerModel.AuthTokenNotFoundException e) {
            return promptRenewSession();
         }
@@ -35,16 +35,16 @@ public class GetCommandsService extends AbstractService {
         return commands;
     }
 
-    public Command[] getGameCommands(String auth, String gameID, int gameHistoryPosition) {
-        String user = null;
+    public Command[] getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
         try {
-            user = mServerModel.getUserFromAuth(auth);
+           mServerModel.getUserFromAuth(auth);
         } catch (ServerModel.AuthTokenNotFoundException e) {
             return promptRenewSession();
         }
-        ServerGameModel game = null;
+
+        ServerGameModel game;
         try {
-            mServerModel.getActiveGame(gameID);
+            game = mServerModel.getActiveGame(gameID);
         } catch (ServerModel.GameNotFoundException e) {
             return displayError("Game Not Found");
         }

@@ -21,13 +21,11 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
     private ServerProxy mServerProxy = ServerProxy.getInstance();
     private IMessageActivity mActivity;
     private MessageFragment mFragment;
-    private Game mGame;
     private ClientGameModel mActiveGame = ClientGameModel.getInstance();
 
     public MessagePresenter(IMessageActivity activity) {
         this.mActivity = activity;
         mActiveGame.setActivePresenter(this);
-        mGame = mClientModel.getGame();
     }
 
     @Override
@@ -40,9 +38,9 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
 //        mClientModel.setGame(game);
 //        mGame = game;
     }
+
     @Override
     public void update() {
-        List<GameHistory> hist = mActiveGame.getGameHistory();
         mFragment.setHistory(mActiveGame.getGameHistory());
     }
 
@@ -53,8 +51,7 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
     public void sendMessage(String message) {
         GameHistory historyObj = new GameHistory(null, message);
         String auth = mClientModel.getAuthToken();
-//        String gameId = mActiveGame.getGameId();
-        String gameId = "ab123"; // for testing
+        String gameId = mActiveGame.getGameId();
         mServerProxy.sendMessage(auth, gameId, historyObj);
     }
 
@@ -65,6 +62,7 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
     @Override
     public void updateGameHistory(GameHistory gameHistory) {
         mActiveGame.addGameHistoryObj(gameHistory);
+        mFragment.setHistory(mActiveGame.getGameHistory());
     }
 
 }

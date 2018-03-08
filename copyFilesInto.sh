@@ -58,3 +58,5 @@ else
 	rm -rf mainShared/*
 	cp -r $PROJECT_DIR/shared/src/main/* mainShared/
 fi
+
+exit 0

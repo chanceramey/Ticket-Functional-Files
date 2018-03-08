@@ -110,9 +110,9 @@ public class GameLobbyService {
     }
 
     public Command[] startGame(String auth, String gameId) {
-        String username;
+
         try {
-            username = mServerModel.getUserFromAuth(auth);
+            mServerModel.getUserFromAuth(auth);
         } catch (ServerModel.AuthTokenNotFoundException e) {
             clientProxy.promptRenewSession();
             return new Command[] {clientProxy.getCommand()};
@@ -126,7 +126,7 @@ public class GameLobbyService {
             return new Command[] {clientProxy.getCommand()};
         }
 
-        ServerGameModel gameModel = mServerModel.startGame(gameId);
+        mServerModel.startGame(gameId);
 
         clientProxy.removeGameFromList(gameId);
         for (String client : mServerModel.getGameListClients()) {

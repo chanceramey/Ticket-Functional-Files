@@ -7,6 +7,7 @@ package model;
 public class GameHistory {
     String mUser;
     String mMessage;
+    boolean chat;
 
     public String getUser() {
         return mUser;
@@ -27,6 +28,7 @@ public class GameHistory {
     public GameHistory(String user, String message) {
         this.mUser = user;
         this.mMessage = message;
+        this.chat = false;
     }
 
     public  String getPlayerName() {
@@ -35,5 +37,13 @@ public class GameHistory {
 
     public String toString() {
         return mMessage;
+    }
+
+    public void setChat(boolean c) {
+        this.chat = c;
+    }
+
+    public boolean isChat() {
+        return chat;
     }
 }
