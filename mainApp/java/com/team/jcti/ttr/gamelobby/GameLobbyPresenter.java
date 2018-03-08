@@ -97,7 +97,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     }
 
     public void onGameStarted() {
-        ClientGameModel.getInstance().startGame(game.getPlayers());
+        ClientGameModel.getInstance().startGame(game);
         mGameLobbyActivity.enterGameActivity();
     }
 

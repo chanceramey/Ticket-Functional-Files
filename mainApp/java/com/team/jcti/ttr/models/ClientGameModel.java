@@ -32,7 +32,7 @@ public class ClientGameModel extends Observable {
     private String gameID;
     private int userPlayer;
     private int gameHistoryPosition;
-    private List<GameHistory> gameHistoryArr;
+    private List<GameHistory> gameHistoryArr = new ArrayList<>();
     private String gameId;
     private IPresenter activePresenter;
 
@@ -65,6 +65,9 @@ public class ClientGameModel extends Observable {
         gameHistoryArr.add(gameHistory);
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
 
     public String getGameId() {
         return gameId;
