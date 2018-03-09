@@ -77,7 +77,9 @@ public class ClientCommunicator {
                 InputStream respBody = connection.getInputStream();
                 ResultTransferObject transferObject = (ResultTransferObject)
                         gson.fromJson(new InputStreamReader(respBody), ResultTransferObject.class);
-                result = transferObject.getResult();
+                //result = transferObject.getResult();
+                //changed this during merge. Change back if broken. Line 26 of client communicator seems to cast result to a transfer object and call getResult().
+                result = transferObject
             }
         } catch (Exception e) {
             e.printStackTrace();
