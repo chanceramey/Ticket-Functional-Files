@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_menu"
+        android:title="Chat"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_scoreboard"
+        android:title="Score"
+        app:showAsAction="ifRoom"/>
+
+</menu>

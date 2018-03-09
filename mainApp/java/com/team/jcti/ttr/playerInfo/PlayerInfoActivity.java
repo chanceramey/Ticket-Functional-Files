@@ -75,6 +75,8 @@ public class PlayerInfoActivity extends AppCompatActivity {
         private TextView points;
         private TextView trains;
         private TextView turn;
+        private TextView numTrainCards;
+        private TextView numDestCards;
         private Player player;
 
 
@@ -84,6 +86,8 @@ public class PlayerInfoActivity extends AppCompatActivity {
             points = (TextView) view.findViewById(R.id.player_points);
             trains = (TextView) view.findViewById(R.id.player_num_trains);
             turn = (TextView) view.findViewById(R.id.player_turn);
+            numTrainCards = (TextView) view.findViewById(R.id.player_num_train_cards);
+            numDestCards = (TextView) view.findViewById(R.id.player_num_dest_cards);
         }
 
         @Override
@@ -93,10 +97,12 @@ public class PlayerInfoActivity extends AppCompatActivity {
         void bind(Player p) {
             this.player = p;
             playerName.setText(p.getUser());
-            points.setText(p.getPoints());
-            trains.setText(p.getNumTrains());
+            points.setText(Integer.toString(p.getPoints()));
+            trains.setText(Integer.toString(p.getNumTrains()));
+            numTrainCards.setText(Integer.toString(p.getNumTrainCards()));
+            numDestCards.setText(Integer.toString(p.getNumDestCards()));
             if (p.isTurn()) {
-                turn.setText("**YES**");
+                turn.setText("***");
             }
         }
     }

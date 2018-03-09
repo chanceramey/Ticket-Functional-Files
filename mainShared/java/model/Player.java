@@ -14,7 +14,7 @@ public class Player {
     private String user;
     private Color color;
 
-    private int numTrainCards;
+    private int numTrainCards = 0;
     private List<TrainCard> trainCards;
     private int numDestCards;
     private List<DestinationCard> destCards;
