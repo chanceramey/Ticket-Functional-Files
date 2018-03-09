@@ -85,11 +85,11 @@ public class ClientFacade implements IClient {
 
     @Override
     public void onGetServerGameList(Game[] games) {
-        List<Game> gamesList = new ArrayList<>();
-        for (Game game : games) {
-            gamesList.add(game);
+        List<Game> myGames = new ArrayList<>();
+        for (Game thisGame: games) {
+            myGames.add(thisGame);
         }
-        mClientModel.setWaitingGames(gamesList);
+        mClientModel.setWaitingGames(myGames);
         mClientModel.getActivePresenter().update();
     }
 

@@ -28,13 +28,13 @@ public class GameListService {
         }
         mServerModel.addGameListClient(auth);
         Map<String, Game> gameMap = ServerModel.getInstance().getWaitingGames();
-        Game[] games = new Game[gameMap.size()];
+        Game[] gameArray = new Game[gameMap.size()];
         int index = 0;
         for (Game g : gameMap.values()) {
-            games[index] = g;
+            gameArray[index] = g;
             index++;
         }
-        clientProxy.onGetServerGameList(games);
+        clientProxy.onGetServerGameList(gameArray);
         Command[] commands = {clientProxy.getCommand()};
         return commands;
     }

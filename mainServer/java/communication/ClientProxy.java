@@ -49,7 +49,7 @@ public class ClientProxy implements IClient {
 
     @Override
     public void onLeaveGame() {
-        this.command = createCommand("onLeaveGame");
+        this.command = createCommand("onJoinGame");
     }
 
     @Override
@@ -57,9 +57,8 @@ public class ClientProxy implements IClient {
 
     @Override
     public void onGetServerGameList(Game[] games) {
-        String[] paramTypes = {games.getClass().getName()};
-        Object[] params = {games};
-        this.command = new Command(CLIENT_TARGET, "onGetServerGameList", paramTypes, params);    }
+        this.command = createCommand("onGetServerGameList", games);
+    }
 
     @Override
     public void addGametoList(Game game) {
@@ -124,7 +123,5 @@ public class ClientProxy implements IClient {
     public Command getCommand() {
         return this.command;
     }
-
-    private String CLIENT_TARGET = "com.team.jcti.ttr.communication.ClientFacade";
 
 }
