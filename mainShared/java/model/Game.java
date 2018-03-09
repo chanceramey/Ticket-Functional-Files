@@ -21,7 +21,7 @@ public class Game {
 
     public Game(int numPlayers, String user, String gameName, String gameID, String auth) {
         this.numPlayers = numPlayers;
-        this.host = user;
+        this.host = auth;
         this.gameName = gameName;
         this.gameID = gameID;
         this.playerIDs.put(auth, user);
