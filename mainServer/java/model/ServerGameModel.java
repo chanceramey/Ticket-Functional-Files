@@ -121,19 +121,4 @@ public class ServerGameModel {
         }
         return commands;
     }
-
-    //ikes
-    public Player getPlayerFromUsername(String username){ //checkback
-
-        for(Player player : players){
-            if(player.getUser().equals(username)){
-                return player;
-            }
-        }
-        return null;
-    }
-
-    public DestCardDeck getDestCardDeck(){
-        return destCardDeck;
-    }
 }

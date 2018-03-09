@@ -8,7 +8,6 @@ import model.Color;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
-import model.Player;
 import model.TrainCard;
 
 /**
@@ -79,7 +78,6 @@ public class ClientProxy implements IClient {
     public void receiveMessage(GameHistory gameHistory) {
         this.command = createCommand("receiveMessage", gameHistory);
     }
-
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
         this.command = createCommand("drawTrainCards", player, numCards, cards);

@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.message;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +35,9 @@ public class MessageFragment extends Fragment {
         this.mPresenter = (MessagePresenter) mClientGameModel.getActivePresenter();
         mPresenter.setFragment(this);
         mHistoryRecycler = (RecyclerView) v.findViewById(R.id.recycler_view_chat);
-        mHistoryRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        LinearLayoutManager layout = new LinearLayoutManager(this.getActivity());
+        layout.setStackFromEnd(true);
+        mHistoryRecycler.setLayoutManager(layout);
         mPresenter.update();
 
         return v;
@@ -81,7 +84,6 @@ public class MessageFragment extends Fragment {
 
         private TextView playerName;
         private TextView message;
-        private GameHistory item;
 
 
         public Holder(View view) {
@@ -95,9 +97,17 @@ public class MessageFragment extends Fragment {
         }
 
         void bind(GameHistory item) {
-            this.item = item;
-            playerName.setText(item.getPlayerName());
-            message.setText(item.toString());
+            if (item.isChat()) {
+                playerName.setTextColor(Color.BLACK);
+                message.setTextColor(Color.DKGRAY);
+                playerName.setText(item.getPlayerName());
+                message.setText(item.toString());
+            } else {
+                playerName.setText("");
+                message.setTextColor(Color.RED);
+                message.setText(item.toString());
+            }
+
         }
     }
 }

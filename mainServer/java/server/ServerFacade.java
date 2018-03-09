@@ -1,10 +1,7 @@
 package server;
 
-import java.util.List;
-
 import interfaces.IServer;
 import command.Command;
-import model.DestinationCard;
 import model.GameHistory;
 
 /**
@@ -64,35 +61,18 @@ public class ServerFacade implements IServer {
     @Override
     public Object startGame(String auth, String gameId) {
         GameLobbyService service = new GameLobbyService();
-        Command[] commands = service.startGame(auth, gameId);
-        return commands;
+         return service.startGame(auth, gameId);
     }
 
     @Override
     public Object sendMessage(String auth, String gameId, GameHistory historyObj) {
         MessageService service = new MessageService();
-        Command[] commands = service.sendMessage(auth, gameId, historyObj);
-        return commands;
+        return service.sendMessage(auth, gameId, historyObj);
     }
 
     @Override
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
         GetCommandsService service = new GetCommandsService();
-        Command[] commands = service.getGameCommands(auth, gameID, gameHistoryPosition);
-        return commands;
-    }
-
-    @Override
-    public Object drawDestinationCards(String auth, String gameId) {
-        DrawDestCardsService service = new DrawDestCardsService();
-        Command[] commands = service.drawDestinationCards(auth, gameId);
-        return commands;
-    }
-
-    @Override
-    public Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions) {
-        ReturnDestCardsService service = new ReturnDestCardsService();
-        Command[] commands = service.returnDestinationCards(auth, gameId, rejectedCardPositions);
-        return commands;
+        return service.getGameCommands(auth, gameID, gameHistoryPosition);
     }
 }

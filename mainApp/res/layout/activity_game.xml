@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_layout"
-    android:layout_width="match_parent"
+<LinearLayout
     android:layout_height="match_parent"
-    android:gravity="bottom">
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_margin="8dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_weight=".1"
+        android:layout_height="match_parent"
+        android:id="@+id/deck_fragment">
 
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight=".9"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".7"
+                android:id="@+id/map_fragment">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".1"
+                android:id="@+id/players_card_fragment">
+            </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
