@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Observable;
 
 import model.Color;
+import model.DestinationCard;
 import model.GameHistory;
 
 import model.Game;
 import model.Player;
+import model.TrainCard;
 
 /**
  * Created by Jeff on 2/2/2018.
@@ -85,5 +87,13 @@ public class ClientGameModel extends Observable {
 
     public void increment(int numCommands) {
         gameHistoryPosition += numCommands;
+    }
+
+    public List<TrainCard> getPlayersTrainCards() {
+        return players.get(userPlayer).getTrainCards();
+    }
+
+    public List<DestinationCard> getPlayersDestCards() {
+        return players.get(userPlayer).getDestCards();
     }
 }

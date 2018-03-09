@@ -1,0 +1,218 @@
+[
+  {
+    "id": "los_angeles",
+    "name": "Los Angeles",
+    "x": "98",
+    "y": "453"
+  },
+  {
+    "id": "san_francisco",
+    "name": "San Francisco",
+    "x": "27",
+    "y": "343"
+  },
+  {
+    "id": "portland",
+    "name": "Portland",
+    "x": "39",
+    "y": "159"
+  },
+  {
+    "id": "seattle",
+    "name": "Seattle",
+    "x": "59",
+    "y": "113"
+  },
+  {
+    "id": "vancouver",
+    "name": "Vancouver",
+    "x": "62",
+    "y": "61"
+  },
+  {
+    "id": "phoenix",
+    "name": "Phoenix",
+    "x": "211",
+    "y": "448"
+  },
+  {
+    "id": "las_vegas",
+    "name": "Las Vegas",
+    "x": "159",
+    "y": "387"
+  },
+  {
+    "id": "salt_lake_city",
+    "name": "Salt Lake City",
+    "x": "211",
+    "y": "284"
+  },
+  {
+    "id": "calgary",
+    "name": "Calgary",
+    "x": "186",
+    "y": "44"
+  },
+  {
+    "id": "montreal",
+    "name": "Montreal",
+    "x": "800",
+    "y": "39"
+  },
+  {
+    "id": "boston",
+    "name": "Boston",
+    "x": "866",
+    "y": "95"
+  },
+  {
+    "id": "new_york",
+    "name": "New York",
+    "x": "817",
+    "y": "164"
+  },
+  {
+    "id": "washington",
+    "name": "Washington",
+    "x": "826",
+    "y": "250"
+  },
+  {
+    "id": "raleigh",
+    "name": "Raleigh",
+    "x": "770",
+    "y": "313"
+  },
+  {
+    "id": "el_paso",
+    "name": "El Paso",
+    "x": "322",
+    "y": "482"
+  },
+  {
+    "id": "santa_fe",
+    "name": "Santa Fe",
+    "x": "327",
+    "y": "399"
+  },
+  {
+    "id": "denver",
+    "name": "Denver",
+    "x": "333",
+    "y": "313"
+  },
+  {
+    "id": "helena",
+    "name": "Helena",
+    "x": "280",
+    "y": "168"
+  },
+  {
+    "id": "houston",
+    "name": "Houston",
+    "x": "530",
+    "y": "498"
+  },
+  {
+    "id": "dallas",
+    "name": "Dallas",
+    "x": "492",
+    "y": "461"
+  },
+  {
+    "id": "oklahoma_city",
+    "name": "Oklahoma City",
+    "x": "473",
+    "y": "378"
+  },
+  {
+    "id": "kansas_city",
+    "name": "Kansas City",
+    "x": "492",
+    "y": "296"
+  },
+  {
+    "id": "omaha",
+    "name": "Omaha",
+    "x": "472",
+    "y": "259"
+  },
+  {
+    "id": "duluth",
+    "name": "Duluth",
+    "x": "502",
+    "y": "162"
+  },
+  {
+    "id": "winnipeg",
+    "name": "Winnipeg",
+    "x": "396",
+    "y": "54"
+  },
+  {
+    "id": "sault_st_marie",
+    "name": "Sault St. Marie",
+    "x": "620",
+    "y": "102"
+  },
+  {
+    "id": "chicago",
+    "name": "Chicago",
+    "x": "616",
+    "y": "221"
+  },
+  {
+    "id": "saint_louis",
+    "name": "Saint Louis",
+    "x": "572",
+    "y": "298"
+  },
+  {
+    "id": "little_rock",
+    "name": "Little Rock",
+    "x": "558",
+    "y": "382"
+  },
+  {
+    "id": "new_orleans",
+    "name": "New Orleans",
+    "x": "618",
+    "y": "490"
+  },
+  {
+    "id": "toronto",
+    "name": "Toronto",
+    "x": "722",
+    "y": "111"
+  },
+  {
+    "id": "pittsburgh",
+    "name": "Pittsburgh",
+    "x": "739",
+    "y": "207"
+  },
+  {
+    "id": "nashville",
+    "name": "Nashville",
+    "x": "661",
+    "y": "344"
+  },
+  {
+    "id": "atlanta",
+    "name": "Atlanta",
+    "x": "708",
+    "y": "369"
+  },
+  {
+    "id": "charleston",
+    "name": "Charleston",
+    "x": "796",
+    "y": "373"
+  },
+  {
+    "id": "miami",
+    "name": "Miami",
+    "x": "827",
+    "y": "522"
+  }
+]

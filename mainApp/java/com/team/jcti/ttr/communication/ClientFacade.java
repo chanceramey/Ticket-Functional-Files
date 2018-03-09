@@ -17,6 +17,7 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.Player;
 import model.TrainCard;
 
 /**
@@ -112,7 +113,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void updateGame(Game game) {
-       IPresenter presenter = mClientModel.getActivePresenter();
+        IPresenter presenter = mClientModel.getActivePresenter();
        presenter.updateGame(game);
     }
 
@@ -124,11 +125,13 @@ public class ClientFacade implements IClient {
     }
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
-        String user = mGameModel.getPlayers().get(player).getUser();
+        //MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
+        Player p = mGameModel.getPlayers().get(player);
+        p.addTrainCards(cards);
+        String user = p.getUser();
         String message = String.format("***%s drew %d Train cards***", user, numCards);
         GameHistory drewCards = new GameHistory(user, message);
-        presenter.updateGameHistory(drewCards);
+       // presenter.updateGameHistory(drewCards);
 
     }
 
