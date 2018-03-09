@@ -64,6 +64,10 @@ public class ServerCommunicator {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream respBody = exchange.getResponseBody();
                 ResultTransferObject resultTransferObject = new ResultTransferObject(result.getClass().getName(), result);
+                if(command.getMethodName().equals("getGameCommands")) {
+                    resultTransferObject.setGameHistoryPos((int) command.getParameters()[2]);
+                }
+
                 String json = gson.toJson(resultTransferObject);
                 writeString(json, respBody);
                 respBody.close();
