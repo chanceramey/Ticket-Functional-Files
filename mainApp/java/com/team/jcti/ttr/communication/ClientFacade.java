@@ -1,12 +1,11 @@
 package com.team.jcti.ttr.communication;
 
 import com.team.jcti.ttr.IPresenter;
+import com.team.jcti.ttr.drawdestinationcard.IDrawDestinationCardPresenter;
 import com.team.jcti.ttr.gamelist.GameListPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.login.LoginPresenter;
 import com.team.jcti.ttr.message.IMessagePresenter;
-import com.team.jcti.ttr.message.MessagePresenter;
-import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.Player;
 import model.TrainCard;
 
 /**
@@ -25,7 +25,6 @@ import model.TrainCard;
 
 public class ClientFacade implements IClient {
     private ClientModel mClientModel = ClientModel.getInstance();
-    private ClientGameModel mGameModel = ClientGameModel.getInstance();
 
     @Override
     public void onLogin(String authToken, String username) {
@@ -118,17 +117,11 @@ public class ClientFacade implements IClient {
 
     @Override
     public void receiveMessage(GameHistory gameHistory) {
-        gameHistory.setChat(true);
-        MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
+        IMessagePresenter presenter = (IMessagePresenter) mClientModel.getActivePresenter();
         presenter.updateGameHistory(gameHistory);
     }
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
-        String user = mGameModel.getPlayers().get(player).getUser();
-        String message = String.format("***%s drew %d Train cards***", user, numCards);
-        GameHistory drewCards = new GameHistory(user, message);
-        presenter.updateGameHistory(drewCards);
 
     }
 
@@ -139,12 +132,13 @@ public class ClientFacade implements IClient {
 
     @Override
     public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
-
+        IDrawDestinationCardPresenter presenter = (IDrawDestinationCardPresenter) mClientModel.getActivePresenter();
+        presenter.updateCards(player, numCards, cards);
     }
 
     @Override
     public void discardDestCards(Integer player, Integer numCards, int[] pos) {
-
+        //comeback
     }
 
     @Override

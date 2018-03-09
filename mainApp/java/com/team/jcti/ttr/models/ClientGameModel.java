@@ -29,14 +29,15 @@ public class ClientGameModel extends Observable {
     boolean active = false;
 
     private List<Player> players;
-    private String gameId;
+    private String gameID;
     private int userPlayer;
     private int gameHistoryPosition;
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
+    private String gameId;
     private IPresenter activePresenter;
 
     public void startGame(Game game) {
-        this.gameId = game.getID();
+        this.gameID = game.getID();
         List<String> playerStrings = game.getPlayers();
         this.players = new ArrayList<>();
         Color[] colors = Color.values();
@@ -45,7 +46,7 @@ public class ClientGameModel extends Observable {
             Player player = new Player(playerStrings.get(i), colors[i], i);
             players.add(player);
         }
-        this.active = true;
+        active = true;
         gameHistoryPosition = 0;
     }
 
@@ -80,10 +81,22 @@ public class ClientGameModel extends Observable {
     }
 
     public String getGameID() {
-        return gameId;
+        return gameID;
     }
 
     public void increment(int numCommands) {
         gameHistoryPosition += numCommands;
+    }
+
+    //ikes
+
+    public Player getPlayerById(int id){ //checkback
+        for(Player player : players){
+            if(player.getId() == id){
+
+                return player;
+            }
+        }
+        return null;
     }
 }

@@ -10,9 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
 
 import model.Game;
+import model.Player;
 import model.User;
 
 /**
@@ -93,4 +95,5 @@ public class ClientModel extends Observable {
     public String getUsername() {
         return username;
     }
+
 }
