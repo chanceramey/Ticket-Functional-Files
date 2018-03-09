@@ -86,4 +86,16 @@ public class ClientGameModel extends Observable {
     public void increment(int numCommands) {
         gameHistoryPosition += numCommands;
     }
+
+    //ikes
+
+    public Player getPlayerById(int id){ //checkback
+        for(Player player : players){
+            if(player.getId() == id){
+
+                return player;
+            }
+        }
+        return null;
+    }
 }

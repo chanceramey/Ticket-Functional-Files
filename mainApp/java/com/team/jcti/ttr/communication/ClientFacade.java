@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.communication;
 
 import com.team.jcti.ttr.IPresenter;
+import com.team.jcti.ttr.drawdestinationcard.IDrawDestinationCardPresenter;
 import com.team.jcti.ttr.gamelist.GameListPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.login.LoginPresenter;
@@ -139,7 +140,8 @@ public class ClientFacade implements IClient {
 
     @Override
     public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
-
+        IDrawDestinationCardPresenter presenter = (IDrawDestinationCardPresenter) mClientModel.getActivePresenter();
+        presenter.updateCards(player, numCards, cards);
     }
 
     @Override
