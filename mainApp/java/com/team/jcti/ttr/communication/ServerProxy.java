@@ -1,7 +1,10 @@
 package com.team.jcti.ttr.communication;
 
+import java.util.List;
+
 import command.Command;
 import interfaces.IServer;
+import model.DestinationCard;
 import model.GameHistory;
 
 /**
@@ -103,9 +106,27 @@ public class ServerProxy implements IServer {
 
     @Override
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
-        Object[] params = {auth, gameID, gameHistoryPosition};
+        Object[] params = {gameID, gameHistoryPosition};
         String[] paramTypes = {auth.getClass().getName(), gameID.getClass().getName(), gameHistoryPosition.getClass().getName() };
         Command command = new Command(SERVER_TARGET, "getGameCommands", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+    @Override
+    public Object drawDestinationCards(String auth, String gameId) { //ikes
+        Object[] params = {auth, gameId};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "drawDestinationCards", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+    @Override
+    public Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions) {
+        Object[] params = {auth, gameId, rejectedCardPositions};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), rejectedCardPositions.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "returnDestinationCards", paramTypes, params);
         new SendCommandTask().execute(command);
         return null;
     }

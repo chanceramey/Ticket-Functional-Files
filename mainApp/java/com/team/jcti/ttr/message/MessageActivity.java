@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,18 +36,6 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
         }
 //        mPresenter.update();
         mMessage = (EditText) findViewById(R.id.chat_message);
-        mMessage.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
-                        keyCode == KeyEvent.KEYCODE_ENTER) {
-                    sendMessage();
-                    return true;
-                }
-                return false;
-            }
-        });
-
         mSendButton = (Button) findViewById(R.id.send_message_button);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +50,6 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
     public void sendMessage() {
         if (mMessage != null) {
             mPresenter.sendMessage(mMessage.getText().toString());
-            mMessage.setText("");
         } else {} // do nothing if there is no message typed out
     }
 
