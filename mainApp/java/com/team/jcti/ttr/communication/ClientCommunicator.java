@@ -79,7 +79,7 @@ public class ClientCommunicator {
                         gson.fromJson(new InputStreamReader(respBody), ResultTransferObject.class);
                 //result = transferObject.getResult();
                 //changed this during merge. Change back if broken. Line 26 of client communicator seems to cast result to a transfer object and call getResult().
-                result = transferObject
+                result = transferObject;
             }
         } catch (Exception e) {
             e.printStackTrace();
