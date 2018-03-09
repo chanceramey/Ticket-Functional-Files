@@ -75,16 +75,4 @@ public class ServerFacade implements IServer {
         GetCommandsService service = new GetCommandsService();
         return service.getGameCommands(auth, gameID, gameHistoryPosition);
     }
-
-    @Override
-    public Object drawDestinationCards(String auth, String gameId) {
-        DrawDestCardsService service = new DrawDestCardsService();
-        return service.drawDestinationCards(auth, gameId);
-    }
-
-    @Override
-    public Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions) {
-        ReturnDestCardsService service = new ReturnDestCardsService();
-        return service.returnDestinationCards(auth, gameId, rejectedCardPositions);
-    }
 }

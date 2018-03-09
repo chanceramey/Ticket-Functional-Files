@@ -27,8 +27,4 @@ public interface IServer {
     public Object sendMessage(String auth, String gameId, GameHistory historyObj); // sends message from the chat activity
 
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition);
-
-    Object drawDestinationCards(String auth, String gameId); //ikes
-
-    Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions);
 }

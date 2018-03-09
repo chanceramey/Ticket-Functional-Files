@@ -29,9 +29,6 @@ public class Player {
         return numTrains;
     }
 
-    public void setNumTrains(int numTrains) {
-        this.numTrains = numTrains;
-    }
 
     public Player(String user, Color color, int id) {
         this.user = user;
