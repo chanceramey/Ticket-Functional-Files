@@ -66,7 +66,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public Object sendMessage(String auth, String gameId, GameHistory historyObj) {
-        MessageService service = new MessageService();
+        GameService service = new GameService();
         return service.sendMessage(auth, gameId, historyObj);
     }
 
@@ -74,5 +74,11 @@ public class ServerFacade implements IServer {
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
         GetCommandsService service = new GetCommandsService();
         return service.getGameCommands(auth, gameID, gameHistoryPosition);
+    }
+
+    @Override
+    public Object claimRoute(String auth, String gameID, String routeID) {
+        GameService service = new GameService();
+        return service.claimRoute(auth, gameID, routeID);
     }
 }

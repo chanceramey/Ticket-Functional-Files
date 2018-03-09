@@ -103,7 +103,9 @@ public class ServerProxy implements IServer {
     public Object claimRoute(String auth, String gameId, String routeId) {
         Object[] params = {auth, gameId, routeId};
         String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), routeId.getClass().getName()};
-        Command command = new Command(SERVER_TARGET, "sendMessage", paramTypes, params);
+        Command command = new Command(SERVER_TARGET, "claimRoute", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
     }
 
     @Override

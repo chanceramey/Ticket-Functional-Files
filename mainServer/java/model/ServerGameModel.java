@@ -92,6 +92,15 @@ public class ServerGameModel {
         return playerStrings;
     }
 
+    public Player getPlayerFromUsername(String user) {
+        for (Player p : players) {
+            if (p.getUser().equals(user)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public Color[] getPlayerColors() {
         Color[] playerColors = new Color[players.size()];
         for (int i = 0; i < playerColors.length; i++) {
@@ -120,5 +129,13 @@ public class ServerGameModel {
             commands[i] = gameHistoryCommands.get(i + gameHistoryPosition);
         }
         return commands;
+    }
+
+    public void claimRoute(String user, String routeID) {
+        Player userPlayer = getPlayerFromUsername(user);
+        userPlayer.addRoute(routeID);
+
+        clientProxy.claimedRoute(userPlayer.getId(), routeID);
+        gameHistoryCommands.add(clientProxy.getCommand());
     }
 }

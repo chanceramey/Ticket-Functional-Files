@@ -12,6 +12,8 @@ public class Route {
     private String destCity;
     private int length;
     private TrainCard colorOfDuplicate;
+    private boolean claimed;
+    private Color claimedColor;
 
     public Route(TrainCard routeColor, String routeId, String srcCity, String destCity, int length) {
         this.routeColor = routeColor;
@@ -76,5 +78,21 @@ public class Route {
 
     public void setColorOfDuplicate(TrainCard colorOfDuplicate) {
         this.colorOfDuplicate = colorOfDuplicate;
+    }
+
+    public boolean isClaimed() {
+        return claimed;
+    }
+
+    public Color getClaimedColor() {
+        return claimedColor;
+    }
+
+    public void setClaimed(boolean claimed) {
+        this.claimed = claimed;
+    }
+
+    public void setClaimedColor(Color color) {
+        this.claimedColor = color;
     }
 }

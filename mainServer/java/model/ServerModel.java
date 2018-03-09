@@ -55,6 +55,7 @@ public class ServerModel {
     //Queue of commands to be executed by
     private Map<String, List<Command>> sessionCommandQueue;
 
+
     /**
      * Constructor of ServerModel Main function is to initialize server data collections
      * and to schedule the ExpireAuthTask function to run every hour.

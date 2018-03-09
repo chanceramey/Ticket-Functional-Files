@@ -106,6 +106,11 @@ public class ClientProxy implements IClient {
     }
 
     @Override
+    public void claimedRoute(Integer player, String routeID) {
+        this.command = createCommand("claimedRoute", player, routeID);
+    }
+
+    @Override
     public void promptRenewSession() {
         createCommand("promptRenewSession");
     }

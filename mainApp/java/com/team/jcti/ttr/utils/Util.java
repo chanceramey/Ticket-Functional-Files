@@ -13,6 +13,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import model.Color;
 import model.TrainCard;
 
 /**
@@ -30,7 +31,7 @@ public class Util {
                 color = 0xFFFF8888;
                 break;
             case BLACK:
-                color = 0xFF000000;
+                color = 0xFF222222;
                 break;
             case BLUE:
                 color = 0xFF2288FF;
@@ -56,6 +57,23 @@ public class Util {
         }
 
         return color;
+    }
+
+    public static int getPlayerColorCode(Color c) {
+        switch(c) {
+            case BLUE:
+                return 0xFF0000FF;
+            case GREEN:
+                return 0xFF00FF00;
+            case BLACK:
+                return 0xFF000000;
+            case YELLOW:
+                return 0xFFFFEEAA;
+            case RED:
+                return 0xFFFF0000;
+            default:
+                return 0x00000000;
+        }
     }
 
     public static int getImage(int length) {

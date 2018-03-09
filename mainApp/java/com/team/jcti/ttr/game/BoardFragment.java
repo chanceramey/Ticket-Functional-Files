@@ -19,8 +19,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.RoundCap;
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.utils.Util;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,17 +32,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import model.Color;
 import model.Route;
 import model.TrainCard;
 
 public class BoardFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Bundle args;
     private View mView;
+    private Map<String, Route> routeIdtoRoutes = new HashMap<>();
     private Map<Polyline, Route> polylines = new HashMap<>();
     private Map<String, LatLng> cities = new HashMap<>();
-    private List<Route> routes = new ArrayList<>();
     private String JSONRoutes;
     private JSONArray routesArray;
     private Map<Polyline, Marker> railLines = new HashMap<>();
@@ -105,6 +105,19 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
         if(mMap != null){
             mMap.clear();
         }
+
+        createRoutes();
+        drawRailLines();
+        enableClaiming(0xff0000ff);
+    }
+
+    private String getRouteID(JSONObject object) throws JSONException{
+        StringBuilder sb = new StringBuilder();
+        sb.append("from ");
+        sb.append(object.getString("from"));
+        sb.append(" to ");
+        sb.append(object.getString("to"));
+        return sb.toString();
     }
 
     public void createRoutes() {
@@ -115,12 +128,13 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
             for (int i = 0; i < routesArray.length(); i++) {
                 JSONObject thisObject = (JSONObject) routesArray.get(i);
 
-
+                Route route;
                 if (thisObject.has("double_color")) {
-                    routes.add(new Route(TrainCard.valueOf(thisObject.getString("color")), String.valueOf((i)), thisObject.getString("from"), thisObject.getString("to"), thisObject.getInt("cost"), TrainCard.valueOf(thisObject.getString("double_color"))));
+                    route = new Route(TrainCard.valueOf(thisObject.getString("color")), getRouteID(thisObject), thisObject.getString("from"), thisObject.getString("to"), thisObject.getInt("cost"), TrainCard.valueOf(thisObject.getString("double_color")));
                 } else {
-                    routes.add(new Route(TrainCard.valueOf(thisObject.getString("color")), String.valueOf((i)), thisObject.getString("from"), thisObject.getString("to"), thisObject.getInt("cost")));
+                    route = new Route(TrainCard.valueOf(thisObject.getString("color")), getRouteID(thisObject), thisObject.getString("from"), thisObject.getString("to"), thisObject.getInt("cost"));
                 }
+                routeIdtoRoutes.put(route.getRouteId(), route);
             }
             createDuplicateRailLines();
             drawRailLines();
@@ -141,8 +155,8 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
             mMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
                 @Override
                 public void onPolylineClick(Polyline polyline) {
-                    ((GameActivity)getActivity()).getGamePresenter().claimRoute(polylines[polyline]);
-                    polyline.setColor(COLOR);
+                    ((GameActivity)getActivity()).getGamePresenter().claimRoute(polylines.get(polyline).getRouteId());
+                    //polyline.setColor(COLOR);
                 }
             });
 
@@ -152,8 +166,8 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
 
 
     public void createDuplicateRailLines() {
-        for (int i = 0; i < routes.size(); i++) {
-            Route route = routes.get(i);
+        List<Route> routesToAdd = new ArrayList<>();
+        for (Route route : routeIdtoRoutes.values()) {
             String id1 = UUID.randomUUID().toString();
             String id2 = UUID.randomUUID().toString();
             if (route.getColorOfDuplicate() != null) {
@@ -162,20 +176,24 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
                 cities.put(route.getDestCity()+id1, parallelCoords[1]);
                 cities.put(route.getSrcCity()+id2, parallelCoords[2]);
                 cities.put(route.getDestCity()+id2, parallelCoords[3]);
-                routes.add(new Route(route.getColorOfDuplicate(), route.getRouteId().concat(".a"), route.getSrcCity()+id2, route.getDestCity()+id2, route.getLength()));
+                routesToAdd.add(new Route(route.getColorOfDuplicate(), route.getRouteId().concat(" (alt)"), route.getSrcCity()+id2, route.getDestCity()+id2, route.getLength()));
                 route.setSrcCity(route.getSrcCity()+id1);
                 route.setDestCity(route.getDestCity()+id1);
             }
+        }
+        for (Route route : routesToAdd) {
+            this.routeIdtoRoutes.put(route.getRouteId(), route);
         }
     }
 
     public void drawRailLines(){
 
-        for (Route route : routes) {
+        for (Route route : routeIdtoRoutes.values()) {
 
                 int image = Util.getImage(route.getLength());
 
                 int color = Util.getColorCode(route.getRouteColor());
+                if(route.isClaimed()) color = Util.getPlayerColorCode(route.getClaimedColor());
 
                 double midLat = (cities.get(route.getSrcCity()).latitude + cities.get(route.getDestCity()).latitude) / 2 - .05;
                 double midLong = (cities.get(route.getSrcCity()).longitude + cities.get(route.getDestCity()).longitude) / 2;
@@ -184,8 +202,7 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
                         .add(cities.get(route.getSrcCity()), cities.get(route.getDestCity()))
                         .clickable(true)
                         .color(color)
-                        .width(WIDTH)
-                        .endCap(new RoundCap()));
+                        .width(WIDTH));
                 railLines.put(thisLine,
                         mMap.addMarker(new MarkerOptions()
                                 .position(midpoint)
@@ -194,7 +211,6 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
         }
 
     }
-
 
 
 
@@ -220,8 +236,8 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_board, container, false);
-        args = getArguments();
 
+        ((GameActivity)getActivity()).getGamePresenter().setBoardFragment(this);
 
         SupportMapFragment supportMapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -277,5 +293,12 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+    }
+
+    public void claimRoute(String routeID, Color color) {
+        Route route = routeIdtoRoutes.get(routeID);
+        route.setClaimed(true);
+        route.setClaimedColor(color);
+        drawRailLines();
     }
 }

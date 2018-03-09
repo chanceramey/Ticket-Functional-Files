@@ -1,20 +1,17 @@
 package com.team.jcti.ttr.game;
 
-import com.google.gson.JsonParser;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
-import com.team.jcti.ttr.login.LoginActivity;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
+import com.team.jcti.ttr.utils.Util;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.List;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
+import model.Color;
+import model.DestinationCard;
 import model.Game;
+import model.TrainCard;
 
 /**
  * Created by Chance on 3/7/18.
@@ -24,11 +21,13 @@ public class GamePresenter implements IPresenter{
 
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
-    private ClientGameModel mClientGameModel = ClientGameModel.getInstance();
+    private ClientGameModel mActiveGame = ClientGameModel.getInstance();
     private GameActivity mGameActivity;
+    private PlayersHandFragment mPlayersHandFragment;
+    private BoardFragment mBoardFragment;
 
     public GamePresenter(GameActivity gameActivity){
-        mClientModel.setActivePresenter(this);
+        mActiveGame.setActivePresenter(this);
         this.mGameActivity = gameActivity;
     }
 
@@ -49,5 +48,25 @@ public class GamePresenter implements IPresenter{
     @Override
     public void update() {
 
+    }
+
+    public void setPlayersHandFragment(PlayersHandFragment frag) {
+        mPlayersHandFragment = frag;
+    }
+
+    public void setBoardFragment(BoardFragment frag) { mBoardFragment = frag; }
+
+
+    public List<TrainCard> getPlayerTrainCards() {
+        return mActiveGame.getPlayersTrainCards();
+    }
+
+    public List<DestinationCard> getPlayerDestCards() {
+        return mActiveGame.getPlayersDestCards();
+    }
+
+    public void onClaimRoute(Integer player, String routeID) {
+        Color color = mActiveGame.getPlayers().get(player).getColor();
+        mBoardFragment.claimRoute(routeID, color);
     }
 }

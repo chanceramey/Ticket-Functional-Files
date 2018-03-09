@@ -21,6 +21,8 @@ public interface IClient {
 
     public void displayError(String message);
 
+    void claimedRoute(Integer player, String routeID);
+
     public void promptRenewSession();
 
     public void onCreateGame(Game game);

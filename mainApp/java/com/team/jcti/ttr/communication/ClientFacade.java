@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.communication;
 
 import com.team.jcti.ttr.IPresenter;
+import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.gamelist.GameListPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.login.LoginPresenter;
@@ -48,6 +49,23 @@ public class ClientFacade implements IClient {
     public void displayError(String message) {
        IPresenter activePresenter = mClientModel.getActivePresenter();
        activePresenter.displayError(message);
+    }
+
+    @Override
+    public void claimedRoute(Integer player, String routeID) {
+        IPresenter activePresenter = mGameModel.getActivePresenter();
+        Player p = mGameModel.getPlayers().get(player);
+        p.addRoute(routeID);
+        String user = p.getUser();
+        String message = String.format("***%s claimed a route %s***", user, routeID);
+        GameHistory gameHistory = new GameHistory(user, message);
+        mGameModel.addGameHistoryObj(gameHistory);
+        if(activePresenter.getClass() == GamePresenter.class) {
+            GamePresenter gamePresenter = (GamePresenter) activePresenter;
+            gamePresenter.onClaimRoute(player, routeID);
+
+        }
+        activePresenter.update();
     }
 
     @Override
@@ -125,13 +143,14 @@ public class ClientFacade implements IClient {
     }
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        //MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
+        IPresenter presenter = mGameModel.getActivePresenter();
         Player p = mGameModel.getPlayers().get(player);
         p.addTrainCards(cards);
         String user = p.getUser();
         String message = String.format("***%s drew %d Train cards***", user, numCards);
         GameHistory drewCards = new GameHistory(user, message);
-       // presenter.updateGameHistory(drewCards);
+        mGameModel.addGameHistoryObj(drewCards);
+        presenter.update();
 
     }
 
