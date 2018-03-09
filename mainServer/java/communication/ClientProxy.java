@@ -1,5 +1,6 @@
 package communication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import command.Command;
@@ -8,7 +9,6 @@ import model.Color;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
-import model.Player;
 import model.TrainCard;
 
 /**
@@ -49,7 +49,7 @@ public class ClientProxy implements IClient {
 
     @Override
     public void onLeaveGame() {
-        this.command = createCommand("onJoinGame");
+        this.command = createCommand("onLeaveGame");
     }
 
     @Override
@@ -57,8 +57,9 @@ public class ClientProxy implements IClient {
 
     @Override
     public void onGetServerGameList(Game[] games) {
-        this.command = createCommand("onGetServerGameList", games);
-    }
+        String[] paramTypes = {games.getClass().getName()};
+        Object[] params = {games};
+        this.command = new Command(CLIENT_TARGET, "onGetServerGameList", paramTypes, params);    }
 
     @Override
     public void addGametoList(Game game) {
@@ -79,7 +80,6 @@ public class ClientProxy implements IClient {
     public void receiveMessage(GameHistory gameHistory) {
         this.command = createCommand("receiveMessage", gameHistory);
     }
-
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
         this.command = createCommand("drawTrainCards", player, numCards, cards);
@@ -124,5 +124,7 @@ public class ClientProxy implements IClient {
     public Command getCommand() {
         return this.command;
     }
+
+    private String CLIENT_TARGET = "com.team.jcti.ttr.communication.ClientFacade";
 
 }

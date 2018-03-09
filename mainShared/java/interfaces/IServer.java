@@ -1,8 +1,5 @@
 package interfaces;
 
-import java.util.List;
-
-import model.DestinationCard;
 import model.GameHistory;
 
 /**
