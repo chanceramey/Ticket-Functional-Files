@@ -11,6 +11,7 @@ public class Route {
     private String srcCity;
     private String destCity;
     private int length;
+    private TrainCard colorOfDuplicate;
 
     public Route(TrainCard routeColor, String routeId, String srcCity, String destCity, int length) {
         this.routeColor = routeColor;
@@ -18,6 +19,19 @@ public class Route {
         this.srcCity = srcCity;
         this.destCity = destCity;
         this.length = length;
+    }
+
+    public Route(TrainCard routeColor, String routeId, String srcCity, String destCity, int length, TrainCard colorOfDuplicate) {
+        this.routeColor = routeColor;
+        this.routeId = routeId;
+        this.srcCity = srcCity;
+        this.destCity = destCity;
+        this.length = length;
+        this.colorOfDuplicate = colorOfDuplicate;
+    }
+
+    public TrainCard getColorOfDuplicate() {
+        return colorOfDuplicate;
     }
 
     public TrainCard getRouteColor() {
@@ -38,5 +52,29 @@ public class Route {
 
     public int getLength() {
         return length;
+    }
+
+    public void setRouteColor(TrainCard routeColor) {
+        this.routeColor = routeColor;
+    }
+
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
+    }
+
+    public void setSrcCity(String srcCity) {
+        this.srcCity = srcCity;
+    }
+
+    public void setDestCity(String destCity) {
+        this.destCity = destCity;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public void setColorOfDuplicate(TrainCard colorOfDuplicate) {
+        this.colorOfDuplicate = colorOfDuplicate;
     }
 }

@@ -100,6 +100,11 @@ public class ServerProxy implements IServer {
         return null;
     }
 
+    public Object claimRoute(String auth, String gameId, String routeId) {
+        Object[] params = {auth, gameId, routeId};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), routeId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "sendMessage", paramTypes, params);
+    }
 
     @Override
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
@@ -110,9 +115,7 @@ public class ServerProxy implements IServer {
         return null;
     }
 
-
     private final String SERVER_TARGET = "server.ServerFacade";
-
 
 }
 
