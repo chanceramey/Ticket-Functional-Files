@@ -55,20 +55,26 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         mGamePresenter = new GamePresenter(this);
-      
+
         Fragment playerCardFragment = fm.findFragmentById(R.id.players_card_fragment);
         if(playerCardFragment == null) {
             playerCardFragment = new PlayersHandFragment();
             fm.beginTransaction().add(R.id.players_card_fragment, playerCardFragment).commit();
         }
-      
+
         Fragment mapFragment = fm.findFragmentById(R.id.map_fragment);
         if(mapFragment == null) {
             mapFragment = new BoardFragment();
             fm.beginTransaction().add(R.id.map_fragment, mapFragment).commit();
         }
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void displayErrorMessages(ArrayList<String> errorMessages) {

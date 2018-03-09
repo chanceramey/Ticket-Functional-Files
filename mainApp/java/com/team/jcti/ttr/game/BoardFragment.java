@@ -1,9 +1,7 @@
 package com.team.jcti.ttr.game;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +18,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.utils.Util;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +33,7 @@ import model.Color;
 import model.Route;
 import model.TrainCard;
 
-public class BoardFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
+public class BoardFragment extends android.support.v4.app.Fragment {
 
     private GoogleMap mMap;
     private View mView;
@@ -46,9 +43,11 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
     private String JSONRoutes;
     private JSONArray routesArray;
     private Map<Polyline, Marker> railLines = new HashMap<>();
+    private Map<Marker, Polyline> midPointsToRailLines = new HashMap<>();
     private final double ZOOM_PREFERENCE = 4.5;
-    private final int WIDTH = 25;
+    private final int WIDTH = 15;
     private final double DISTANCE = 0.5;
+    SupportMapFragment supportMapFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,13 +101,6 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
     public void onResume() {
         super.onResume();
 
-        if(mMap != null){
-            mMap.clear();
-        }
-
-        createRoutes();
-        drawRailLines();
-        enableClaiming(0xff0000ff);
     }
 
     private String getRouteID(JSONObject object) throws JSONException{
@@ -146,9 +138,7 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
 
     }
 
-    public void enableClaiming(int playerColor) {
-
-        final int COLOR = playerColor;
+    public void enableClaiming(final Color playerColor) {
 
         for (Map.Entry<Polyline, Marker> entry : railLines.entrySet()) {
 
@@ -156,7 +146,17 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
                 @Override
                 public void onPolylineClick(Polyline polyline) {
                     ((GameActivity)getActivity()).getGamePresenter().claimRoute(polylines.get(polyline).getRouteId());
-                    //polyline.setColor(COLOR);
+                }
+            });
+
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    if (railLines.containsValue(marker)) {
+                        Polyline polyline = midPointsToRailLines.get(marker);
+                        claimRoute(polylines.get(polyline).getRouteId(), playerColor);
+                    }
+                    return false;
                 }
             });
 
@@ -203,10 +203,11 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
                         .clickable(true)
                         .color(color)
                         .width(WIDTH));
-                railLines.put(thisLine,
-                        mMap.addMarker(new MarkerOptions()
-                                .position(midpoint)
-                                .icon(BitmapDescriptorFactory.fromResource(image))));
+                Marker thisMidPoint = mMap.addMarker(new MarkerOptions()
+                        .position(midpoint)
+                        .icon(BitmapDescriptorFactory.fromResource(image)));
+                railLines.put(thisLine, thisMidPoint);
+                midPointsToRailLines.put(thisMidPoint, thisLine);
                 polylines.put(thisLine, route);
         }
 
@@ -239,41 +240,20 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
 
         ((GameActivity)getActivity()).getGamePresenter().setBoardFragment(this);
 
-        SupportMapFragment supportMapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
+        supportMapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
 
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mMap = googleMap;
-                LatLng centerOfUSA = new LatLng(40.0902, -95.7129);
-                LatLngBounds.Builder boundBuilder = new LatLngBounds.Builder();
-                boundBuilder.include(centerOfUSA);
-                LatLngBounds bounds = boundBuilder.build();
-                mMap.setLatLngBoundsForCameraTarget(bounds);
-                mMap.setMaxZoomPreference((float)ZOOM_PREFERENCE);
-                mMap.setMinZoomPreference((float)ZOOM_PREFERENCE);
-                mMap.getUiSettings().setAllGesturesEnabled(false);
-                mMap.getUiSettings().setMapToolbarEnabled(false);
-                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-
-                createCities();
-                drawCities();
-                createRoutes();
-                drawRailLines();
-                enableClaiming(0xff0000ff);
-
-            }
-        });
+        supportMapFragment.getMapAsync(new MapReady());
 
         return mView;
     }
+
+
 
     public void drawCities() {
         for(Map.Entry<String, LatLng> city : cities.entrySet()){
             LatLng adjustedDown = new LatLng(city.getValue().latitude - DISTANCE, city.getValue().longitude);
             mMap.addMarker(new MarkerOptions()
                     .position(adjustedDown)
-                    //.title(city.getKey())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.cityiconbig)));
         }
     }
@@ -287,13 +267,34 @@ public class BoardFragment extends android.support.v4.app.Fragment implements On
 
     }
 
+    class MapReady implements OnMapReadyCallback {
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            mMap = googleMap;
+            LatLng centerOfUSA = new LatLng(40.0902, -95.7129);
+            LatLngBounds.Builder boundBuilder = new LatLngBounds.Builder();
+            boundBuilder.include(centerOfUSA);
+            LatLngBounds bounds = boundBuilder.build();
+            mMap.setLatLngBoundsForCameraTarget(bounds);
+            mMap.setMaxZoomPreference((float)ZOOM_PREFERENCE);
+            mMap.setMinZoomPreference((float)ZOOM_PREFERENCE);
+            mMap.getUiSettings().setAllGesturesEnabled(false);
+            mMap.getUiSettings().setMapToolbarEnabled(false);
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+            createCities();
+            drawCities();
+            createRoutes();
+            drawRailLines();
+            enableClaiming(Color.BLUE);
+
+        }
 
     }
+
+
+
 
     public void claimRoute(String routeID, Color color) {
         Route route = routeIdtoRoutes.get(routeID);

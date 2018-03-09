@@ -30,7 +30,7 @@ esac
 
 
 #set directory of the project
-PROJECT_DIR=~/AndroidStudioProjects/ttr
+PROJECT_DIR=~/Desktop/TicketToRide
 
 if [ $proj == "true" ]
 then
