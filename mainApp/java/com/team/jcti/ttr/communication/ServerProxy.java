@@ -100,11 +100,6 @@ public class ServerProxy implements IServer {
         return null;
     }
 
-    public Object claimRoute(String auth, String gameId, String routeId) {
-        Object[] params = {auth, gameId, routeId};
-        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), routeId.getClass().getName()};
-        Command command = new Command(SERVER_TARGET, "sendMessage", paramTypes, params);
-    }
 
     @Override
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
@@ -115,7 +110,27 @@ public class ServerProxy implements IServer {
         return null;
     }
 
+    @Override
+    public Object drawDestinationCards(String auth, String gameId) { //ikes
+        Object[] params = {auth, gameId};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "drawDestinationCards", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+    @Override
+    public Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions) {
+        Object[] params = {auth, gameId, rejectedCardPositions};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), rejectedCardPositions.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "returnDestinationCards", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+
     private final String SERVER_TARGET = "server.ServerFacade";
+
 
 }
 

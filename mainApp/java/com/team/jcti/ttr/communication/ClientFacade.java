@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.communication;
 
 import com.team.jcti.ttr.IPresenter;
+import com.team.jcti.ttr.drawdestinationcard.IDrawDestinationCardPresenter;
 import com.team.jcti.ttr.gamelist.GameListPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.login.LoginPresenter;
@@ -17,7 +18,6 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
-import model.Player;
 import model.TrainCard;
 
 /**
@@ -85,11 +85,11 @@ public class ClientFacade implements IClient {
 
     @Override
     public void onGetServerGameList(Game[] games) {
-        List<Game> gamesList = new ArrayList<>();
-        for (Game game : games) {
-            gamesList.add(game);
+        List<Game> myGames = new ArrayList<>();
+        for (Game thisGame: games) {
+            myGames.add(thisGame);
         }
-        mClientModel.setWaitingGames(gamesList);
+        mClientModel.setWaitingGames(myGames);
         mClientModel.getActivePresenter().update();
     }
 
@@ -113,7 +113,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void updateGame(Game game) {
-        IPresenter presenter = mClientModel.getActivePresenter();
+       IPresenter presenter = mClientModel.getActivePresenter();
        presenter.updateGame(game);
     }
 
@@ -125,13 +125,11 @@ public class ClientFacade implements IClient {
     }
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        //MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
-        Player p = mGameModel.getPlayers().get(player);
-        p.addTrainCards(cards);
-        String user = p.getUser();
+        MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
+        String user = mGameModel.getPlayers().get(player).getUser();
         String message = String.format("***%s drew %d Train cards***", user, numCards);
         GameHistory drewCards = new GameHistory(user, message);
-       // presenter.updateGameHistory(drewCards);
+        presenter.updateGameHistory(drewCards);
 
     }
 
@@ -142,7 +140,8 @@ public class ClientFacade implements IClient {
 
     @Override
     public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
-
+        IDrawDestinationCardPresenter presenter = (IDrawDestinationCardPresenter) mClientModel.getActivePresenter();
+        presenter.updateCards(player, numCards, cards);
     }
 
     @Override

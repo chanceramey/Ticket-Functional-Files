@@ -1,21 +1,9 @@
 package com.team.jcti.ttr.models;
 
-import android.content.Context;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.team.jcti.ttr.IPresenter;
-import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.communication.Poller;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,7 +13,6 @@ import java.util.Observable;
 import java.util.Timer;
 
 import model.Game;
-import model.Route;
 import model.User;
 
 /**
@@ -48,8 +35,6 @@ public class ClientModel extends Observable {
     private List<Game> waitingGames;
     private IPresenter activePresenter;
     private Map<String, String> properForms;
-    Map<String, LatLng> cities = new HashMap<>();
-    List<Route> routes = new ArrayList<>();
 
     private ClientModel() {
         this.authToken = null;

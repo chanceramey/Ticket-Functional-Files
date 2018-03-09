@@ -77,7 +77,7 @@ public class ClientCommunicator {
                 InputStream respBody = connection.getInputStream();
                 ResultTransferObject transferObject = (ResultTransferObject)
                         gson.fromJson(new InputStreamReader(respBody), ResultTransferObject.class);
-                result = transferObject;
+                result = transferObject.getResult();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -11,7 +11,6 @@ public class ResultTransferObject {
 
     private String typeName;
     private String jsonString;
-    private int gameHistoryPos;
 
     public ResultTransferObject(String typeName, Object object) {
         this.typeName = typeName;
@@ -29,13 +28,5 @@ public class ResultTransferObject {
         Object result = gson.fromJson(this.jsonString, klass);
 
         return result;
-    }
-
-    public void setGameHistoryPos(int gameHistoryPos) {
-        this.gameHistoryPos = gameHistoryPos;
-    }
-
-    public int getGameHistoryPos() {
-        return this.gameHistoryPos;
     }
 }

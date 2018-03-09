@@ -11,7 +11,6 @@ import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.game.GameActivity;
 import com.team.jcti.ttr.gamelist.GameListActivity;
 import com.team.jcti.ttr.message.MessageActivity;
-import com.team.jcti.ttr.playerInfo.PlayerInfoActivity;
 
 
 /**
@@ -57,7 +56,7 @@ public class GameLobbyActivity extends AppCompatActivity {
     }
 
     public void enterGameActivity() {
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, MessageActivity.class);
         startActivity(intent);
     }
 

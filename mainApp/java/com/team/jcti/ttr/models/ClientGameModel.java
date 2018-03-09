@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Observable;
 
 import model.Color;
-import model.DestinationCard;
 import model.GameHistory;
 
 import model.Game;
 import model.Player;
-import model.TrainCard;
 
 /**
  * Created by Jeff on 2/2/2018.
@@ -89,11 +87,15 @@ public class ClientGameModel extends Observable {
         gameHistoryPosition += numCommands;
     }
 
-    public List<TrainCard> getPlayersTrainCards() {
-        return players.get(userPlayer).getTrainCards();
-    }
+    //ikes
 
-    public List<DestinationCard> getPlayersDestCards() {
-        return players.get(userPlayer).getDestCards();
+    public Player getPlayerById(int id){ //checkback
+        for(Player player : players){
+            if(player.getId() == id){
+
+                return player;
+            }
+        }
+        return null;
     }
 }
