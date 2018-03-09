@@ -19,8 +19,8 @@ public class MessageService {
 
     public Command[] sendMessage(String auth, String gameId, GameHistory historyObj) {
         try {
-            String user = mServerModel.getUserFromAuth(auth);
-            historyObj.setUser(user);
+            String userName = mServerModel.getUserFromAuth(auth);
+            historyObj.setUser(userName);
         } catch (ServerModel.AuthTokenNotFoundException e) {
             clientProxy.promptRenewSession();
             Command[] commands = {clientProxy.getCommand()};
@@ -28,14 +28,9 @@ public class MessageService {
         }
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameId); // implement this method in ServerGameModel
-            Game game = mServerModel.getGame(gameId);
 
-            gameModel.addGameHistory(historyObj);
-            game.addGameHistory(historyObj);
-            clientProxy.updateGame(game);
-            // add command to list of commands in ServerGameModel
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
+            gameModel.sendMessage(historyObj);
+            return new Command[]{};
 
         } catch (ServerModel.GameNotFoundException e) {
             clientProxy.promptRenewSession();

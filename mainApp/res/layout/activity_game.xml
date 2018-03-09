@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_game"
-    android:layout_width="match_parent"
+<LinearLayout
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.team.jcti.ttr.game.GameActivity">
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
-        android:id="@+id/boardFrame"
+        android:layout_width="0dp"
+        android:layout_weight=".1"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"/>
+        android:id="@+id/deck_fragment">
 
+    </FrameLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight=".9"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".9"
+                android:id="@+id/map_fragment">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".1"
+                android:id="@+id/players_card_fragment">
+            </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

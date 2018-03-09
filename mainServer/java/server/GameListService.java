@@ -1,5 +1,7 @@
 package server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import command.Command;
@@ -26,13 +28,13 @@ public class GameListService {
         }
         mServerModel.addGameListClient(auth);
         Map<String, Game> gameMap = ServerModel.getInstance().getWaitingGames();
-        Game[] gameArray = new Game[gameMap.size()];
+        Game[] games = new Game[gameMap.size()];
         int index = 0;
         for (Game g : gameMap.values()) {
-            gameArray[index] = g;
+            games[index] = g;
             index++;
         }
-        clientProxy.onGetServerGameList(gameArray);
+        clientProxy.onGetServerGameList(games);
         Command[] commands = {clientProxy.getCommand()};
         return commands;
     }

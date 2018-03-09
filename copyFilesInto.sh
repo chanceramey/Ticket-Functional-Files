@@ -12,6 +12,7 @@ ERROR="ERROR: must specify where to copy files.
 if [ $# -lt 1 ]
 then
 	echo "$ERROR"
+	exit 1
 fi
 
 case $1 in
@@ -57,3 +58,5 @@ else
 	rm -rf mainShared/*
 	cp -r $PROJECT_DIR/shared/src/main/* mainShared/
 fi
+
+exit 0

@@ -2,6 +2,7 @@ package com.team.jcti.ttr.message;
 
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
     private ServerProxy mServerProxy = ServerProxy.getInstance();
     private IMessageActivity mActivity;
     private MessageFragment mFragment;
-    private Game mGame;
+    private ClientGameModel mActiveGame = ClientGameModel.getInstance();
+
     public MessagePresenter(IMessageActivity activity) {
         this.mActivity = activity;
-        mClientModel.setActivePresenter(this);
-        mGame = mClientModel.getGame();
+        mActiveGame.setActivePresenter(this);
     }
 
     @Override
@@ -34,25 +35,34 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
 
     @Override
     public void updateGame(Game game) {
-        mClientModel.setGame(game);
-        mGame = game;
+//        mClientModel.setGame(game);
+//        mGame = game;
     }
+
     @Override
     public void update() {
-        mFragment.setHistory(mGame.getGameHistory());
+        mFragment.setHistory(mActiveGame.getGameHistory());
     }
 
     @Override
     public void update(Observable o, Object arg) {update();}
 
+    @Override
     public void sendMessage(String message) {
         GameHistory historyObj = new GameHistory(null, message);
         String auth = mClientModel.getAuthToken();
-        String gameId = mClientModel.getGame().getID();
+        String gameId = mActiveGame.getGameId();
         mServerProxy.sendMessage(auth, gameId, historyObj);
     }
 
     public void setFragment(MessageFragment frag) {
         mFragment = frag;
     }
+
+    @Override
+    public void updateGameHistory(GameHistory gameHistory) {
+        mActiveGame.addGameHistoryObj(gameHistory);
+        mFragment.setHistory(mActiveGame.getGameHistory());
+    }
+
 }

@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Color;
@@ -37,6 +38,8 @@ public interface IClient {
     public void removeGameFromList(String gameID);
 
     public void updateGame(Game game);
+
+    public void receiveMessage(GameHistory gameHistory);
 
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards);
 

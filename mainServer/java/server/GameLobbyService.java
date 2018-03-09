@@ -19,7 +19,7 @@ public class GameLobbyService {
     private ClientProxy clientProxy = new ClientProxy();
 
     public Command[] createGame(int numPlayers, String gameName, String authToken) {
-        String username = null;
+        String username;
         try {
             username = mServerModel.getUserFromAuth(authToken);
         } catch (ServerModel.AuthTokenNotFoundException e) {
@@ -90,8 +90,7 @@ public class GameLobbyService {
             mServerModel.deleteGame(game.getID());
         } catch (ServerModel.GameNotFoundException e) {
             clientProxy.displayError("Error: Could not find game.");
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
+            return new Command[] {clientProxy.getCommand()};
         }
 
         clientProxy.removeGameFromList(game.getID());
@@ -104,15 +103,14 @@ public class GameLobbyService {
             if(auth.equals(authtoken)) continue;
             mServerModel.addCommand(auth, clientProxy.getCommand());
         }
-        Command[] commands = {clientProxy.getCommand()};
-        return commands;
+        return new Command[] {clientProxy.getCommand()};
 
     }
 
     public Command[] startGame(String auth, String gameId) {
-        String username;
+
         try {
-            username = mServerModel.getUserFromAuth(auth);
+            mServerModel.getUserFromAuth(auth);
         } catch (ServerModel.AuthTokenNotFoundException e) {
             clientProxy.promptRenewSession();
             return new Command[] {clientProxy.getCommand()};
@@ -126,7 +124,7 @@ public class GameLobbyService {
             return new Command[] {clientProxy.getCommand()};
         }
 
-        ServerGameModel gameModel = mServerModel.startGame(gameId);
+        mServerModel.startGame(gameId);
 
         clientProxy.removeGameFromList(gameId);
         for (String client : mServerModel.getGameListClients()) {

@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.message;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.List;
@@ -22,25 +24,21 @@ import model.GameHistory;
 public class MessageFragment extends Fragment {
    private RecyclerView mHistoryRecycler;
    private Adapter mAdapter;
-   private ClientModel mClientModel = ClientModel.getInstance();
+   private ClientGameModel mClientGameModel = ClientGameModel.getInstance();
    private MessagePresenter mPresenter;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.mPresenter = (MessagePresenter) mClientModel.getActivePresenter();
-        mPresenter.setFragment(this);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_message, container, false);
-
+        this.mPresenter = (MessagePresenter) mClientGameModel.getActivePresenter();
+        mPresenter.setFragment(this);
         mHistoryRecycler = (RecyclerView) v.findViewById(R.id.recycler_view_chat);
-        mHistoryRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        LinearLayoutManager layout = new LinearLayoutManager(this.getActivity());
+        layout.setStackFromEnd(true);
+        mHistoryRecycler.setLayoutManager(layout);
+        mPresenter.update();
 
         return v;
     }
@@ -86,7 +84,6 @@ public class MessageFragment extends Fragment {
 
         private TextView playerName;
         private TextView message;
-        private GameHistory item;
 
 
         public Holder(View view) {
@@ -100,9 +97,17 @@ public class MessageFragment extends Fragment {
         }
 
         void bind(GameHistory item) {
-            this.item = item;
-            playerName.setText(item.getPlayerName());
-            message.setText(item.toString());
+            if (item.isChat()) {
+                playerName.setTextColor(Color.BLACK);
+                message.setTextColor(Color.DKGRAY);
+                playerName.setText(item.getPlayerName());
+                message.setText(item.toString());
+            } else {
+                playerName.setText("");
+                message.setTextColor(Color.RED);
+                message.setText(item.toString());
+            }
+
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.communication;
 
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.TimerTask;
@@ -10,6 +11,7 @@ import java.util.TimerTask;
 
 public class Poller extends TimerTask{
     private ClientModel mClientModel;
+    private ClientGameModel mGameModel = ClientGameModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
 
     public Poller(ClientModel cm) {
@@ -19,6 +21,7 @@ public class Poller extends TimerTask{
     @Override
     public void run() {
         if (mClientModel.getAuthToken() == null) return;
-        mServerProxy.getCommands(mClientModel.getAuthToken());
+        if(!mGameModel.isActive()) mServerProxy.getCommands(mClientModel.getAuthToken());
+        else mServerProxy.getGameCommands(mClientModel.getAuthToken(), mGameModel.getGameID(), mGameModel.getGameHistoryPosition());
     }
 }

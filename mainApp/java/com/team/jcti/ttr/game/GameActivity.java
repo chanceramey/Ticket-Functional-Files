@@ -5,12 +5,13 @@ import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -18,7 +19,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.team.jcti.ttr.R;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,31 +35,34 @@ import java.util.Map;
 
 public class GameActivity extends AppCompatActivity implements IGameActivity {
 
+
     public GamePresenter getGamePresenter() {
         return mGamePresenter;
     }
 
     GamePresenter mGamePresenter = new GamePresenter(this);
+    GamePresenter mGamePresenter;
 
+
+    private FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        FragmentManager fm = this.getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        Fragment currentFragment = this.getSupportFragmentManager().findFragmentById(R.id.boardFrame);
-        if (currentFragment != null) {
-            transaction.remove(currentFragment);
+      
+        Fragment playerCardFragment = fm.findFragmentById(R.id.players_card_fragment);
+        if(playerCardFragment == null) {
+            playerCardFragment = new PlayersHandFragment();
+            fm.beginTransaction().add(R.id.players_card_fragment, playerCardFragment).commit();
         }
-        currentFragment = new BoardFragment();
-        Bundle args = new Bundle();
-        currentFragment.setArguments(args);
-        transaction.add(R.id.boardFrame, currentFragment);
-        transaction.commit();
-
-
+      
+        Fragment mapFragment = fm.findFragmentById(R.id.map_fragment);
+        if(mapFragment == null) {
+            mapFragment = new BoardFragment();
+            fm.beginTransaction().add(R.id.map_fragment, mapFragment).commit();
+        }
     }
 
 
@@ -79,4 +82,5 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
     public void toast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
 }

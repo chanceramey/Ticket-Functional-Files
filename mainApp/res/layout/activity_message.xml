@@ -3,28 +3,35 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_margin="15dp"
+    android:layout_margin="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container_message"
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
+        android:layout_height="0dp"
+        android:layout_weight=".85"
+        android:background="#FFFFFF"/>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight=".15"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         >
             <EditText
                 android:id="@+id/chat_message"
-                android:layout_width="550dp"
+                android:layout_width="match_parent"
+                android:layout_weight=".8"
                 android:layout_height="wrap_content"
                 android:hint="Chat"/>
             <Button
                 android:id="@+id/send_message_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#FFFF"
+                android:background="@color/colorPrimary"
+                android:layout_weight=".2"
                 android:text="Send"
                 />
     </LinearLayout>

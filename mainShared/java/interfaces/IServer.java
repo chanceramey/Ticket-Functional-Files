@@ -25,4 +25,6 @@ public interface IServer {
     public Object startGame(String auth, String gameId);
 
     public Object sendMessage(String auth, String gameId, GameHistory historyObj); // sends message from the chat activity
+
+    public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition);
 }

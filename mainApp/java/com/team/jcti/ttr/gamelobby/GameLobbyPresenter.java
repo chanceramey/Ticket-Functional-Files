@@ -73,7 +73,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     }
 
     boolean isHost() {
-        if (game.getHost().equals(mClientModel.getUsername())) return true;
+        if (game.getHost().equals(mClientModel.getAuthToken())) return true;
         else return false;
     }
 
@@ -97,7 +97,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     }
 
     public void onGameStarted() {
-        ClientGameModel.getInstance().startGame(game.getPlayers());
+        ClientGameModel.getInstance().startGame(game);
         mGameLobbyActivity.enterGameActivity();
     }
 
