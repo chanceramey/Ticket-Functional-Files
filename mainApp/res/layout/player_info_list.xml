@@ -8,28 +8,42 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="15dp"
+        android:textSize="20dp"
         />
     <TextView
         android:id="@+id/player_points"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="15dp"
+        android:textSize="20dp"
         />
     <TextView
         android:id="@+id/player_num_trains"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="15dp"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:id="@+id/player_num_train_cards"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:id="@+id/player_num_dest_cards"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20dp"
         />
     <TextView
         android:id="@+id/player_turn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="15dp"
+        android:layout_weight=".5"
+        android:textSize="20dp"
         />
 
 </LinearLayout>
