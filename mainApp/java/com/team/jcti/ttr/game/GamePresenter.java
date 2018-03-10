@@ -71,6 +71,6 @@ public class GamePresenter implements IPresenter{
     }
 
     public boolean verifyTurn() {
-        return (mClientModel.getGame().isMyTurn());
+        return (mActiveGame.isMyTurn());
     }
 }

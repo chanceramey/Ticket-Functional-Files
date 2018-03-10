@@ -22,7 +22,7 @@ public class PlayerInfoPresenter implements IPresenter, Observer {
 
     @Override
     public void displayError(String message) {
-
+        mActivity.toast(message);
     }
 
     @Override

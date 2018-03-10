@@ -36,6 +36,7 @@ public class ClientGameModel extends Observable {
     private int gameHistoryPosition;
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
     private IPresenter activePresenter;
+    private int turnPosition = 0; // keeps track of who's turn it is by their position in the array
 
     public boolean isMyTurn() {
         return myTurn;
@@ -115,6 +116,23 @@ public class ClientGameModel extends Observable {
             }
         }
         return null;
+    }
+
+    public void moveTurnPosition() {
+        turnPosition++;
+        if (turnPosition == players.size()) {
+            turnPosition = 0;
+        }
+        checkTurn();
+    }
+
+    public void checkTurn() {
+        if (turnPosition == userPlayer) {
+            myTurn = true;
+            activePresenter.displayError("It's your turn");
+        } else {
+            myTurn = false;
+        }
     }
 
 }

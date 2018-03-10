@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.models.ClientGameModel;
 
 import org.w3c.dom.Text;
 
@@ -22,6 +24,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
     private PlayerInfoPresenter mPresenter;
     private RecyclerView mRecycler;
     private Adapter adapter;
+    private ClientGameModel mClientGameModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +33,17 @@ public class PlayerInfoActivity extends AppCompatActivity {
         mPresenter = new PlayerInfoPresenter(this);
         mRecycler = (RecyclerView) findViewById(R.id.recycler_view_player_info);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mClientGameModel = ClientGameModel.getInstance();
         mPresenter.update();
     }
 
     public void setPlayerInfo(List<Player> players) {
         adapter = new Adapter(this, players);
         mRecycler.setAdapter(adapter);
+    }
+
+    public void toast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     class Adapter extends RecyclerView.Adapter<Holder> {
@@ -66,6 +74,8 @@ public class PlayerInfoActivity extends AppCompatActivity {
         public int getItemCount() {
             return players.size();
         }
+
+
 
     }
 
@@ -101,9 +111,10 @@ public class PlayerInfoActivity extends AppCompatActivity {
             trains.setText(Integer.toString(p.getNumTrains()));
             numTrainCards.setText(Integer.toString(p.getNumTrainCards()));
             numDestCards.setText(Integer.toString(p.getNumDestCards()));
-            if (p.isTurn()) {
+            if (mClientGameModel.isMyTurn()) {
                 turn.setText("***");
             }
         }
     }
+
 }

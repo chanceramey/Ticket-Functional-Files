@@ -105,4 +105,5 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     public void update(Observable o, Object arg) {
         update();
     }
+
 }

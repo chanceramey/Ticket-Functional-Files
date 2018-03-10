@@ -69,7 +69,7 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
 
     @Override
     public void toast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
 

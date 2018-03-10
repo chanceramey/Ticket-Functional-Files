@@ -65,6 +65,7 @@ public class ClientFacade implements IClient {
             gamePresenter.onClaimRoute(player, routeID);
 
         }
+        mGameModel.moveTurnPosition();
         activePresenter.update();
     }
 
@@ -150,6 +151,7 @@ public class ClientFacade implements IClient {
         String message = String.format("***%s drew %d Train cards***", user, numCards);
         GameHistory drewCards = new GameHistory(user, message);
         mGameModel.addGameHistoryObj(drewCards);
+        mGameModel.moveTurnPosition();
         presenter.update();
 
     }

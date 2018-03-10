@@ -29,7 +29,8 @@
         <activity
             android:name=".gamelist.GameListActivity"
             android:label="Waiting Games List"/>
-        <activity android:name=".game.GameActivity"/>
+        <activity android:name=".game.GameActivity"
+                  android:screenOrientation="landscape"/>
         <activity
             android:name=".message.MessageActivity"
             android:label="Chat"
