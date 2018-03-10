@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.playerInfo;
 
+import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientGameModel;
 
@@ -12,7 +13,7 @@ import model.Game;
  * Created by Jeff on 3/7/2018.
  */
 
-public class PlayerInfoPresenter implements IPresenter, Observer {
+public class PlayerInfoPresenter implements IGamePresenter, Observer {
     PlayerInfoActivity mActivity;
     ClientGameModel gameModel = ClientGameModel.getInstance();
     public PlayerInfoPresenter(PlayerInfoActivity activity) {
@@ -26,13 +27,13 @@ public class PlayerInfoPresenter implements IPresenter, Observer {
     }
 
     @Override
-    public void updateGame(Game game) {
-
+    public void update() {
+        mActivity.setPlayerInfo(gameModel.getPlayers());
     }
 
     @Override
-    public void update() {
-        mActivity.setPlayerInfo(gameModel.getPlayers());
+    public void drawDestCards() {
+        //do nothing
     }
 
 

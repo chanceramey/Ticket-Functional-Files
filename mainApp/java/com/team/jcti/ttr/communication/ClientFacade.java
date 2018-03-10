@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.communication;
 
+import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.drawdestinationcard.IDrawDestinationCardPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
@@ -54,7 +55,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void claimedRoute(Integer player, String routeID) {
-        IPresenter activePresenter = mGameModel.getActivePresenter();
+        IGamePresenter activePresenter = mGameModel.getActivePresenter();
         Player p = mGameModel.getPlayers().get(player);
         p.addRoute(routeID);
         String user = p.getUser();
@@ -145,7 +146,7 @@ public class ClientFacade implements IClient {
     }
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        IPresenter presenter = mGameModel.getActivePresenter();
+        IGamePresenter presenter = mGameModel.getActivePresenter();
         Player p = mGameModel.getPlayers().get(player);
         p.addTrainCards(cards);
         String user = p.getUser();
@@ -164,14 +165,12 @@ public class ClientFacade implements IClient {
 
     @Override
     public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
-
-        IDrawDestinationCardPresenter presenter = (IDrawDestinationCardPresenter) mClientModel.getActivePresenter();
-        presenter.updateCards(player, numCards, cards);
+        mGameModel.drawDestCards(player, numCards, cards);
     }
 
     @Override
     public void discardDestCards(Integer player, Integer numCards, int[] pos) {
-        IPresenter presenter = mGameModel.getActivePresenter();
+        IGamePresenter presenter = mGameModel.getActivePresenter();
         Player p = mGameModel.getPlayers().get(player);
         if(p.isFirstDestPick()){
             p.setFirstDestPick(); //to false

@@ -19,7 +19,7 @@ import model.DestinationCard;
 
 public class DrawDestinationCardActivity extends AppCompatActivity implements IDrawDestinationCardActivity{
 
-    private IDrawDestinationCardPresenter drawDestinationCardPresenter = new DrawDestinationCardPresenter(this);
+    private IDrawDestinationCardPresenter drawDestinationCardPresenter;
     private Button submitButton;
     private List<Integer> chosenCards;
     private List<ImageView> cardImages;
@@ -30,6 +30,8 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw_destination_card);
+
+        drawDestinationCardPresenter = new DrawDestinationCardPresenter(this);
 
         chosenCards = new ArrayList<>();
         cardImages = new ArrayList<>();
@@ -45,10 +47,9 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
         cardTexts.add((TextView) findViewById(R.id.destination_text_three));
         setTextViews();
 
-        submitButton = findViewById(R.id.submit_button);
+        submitButton = (Button) findViewById(R.id.submit_button);
         submitButton.setEnabled(false);
 
-        //image click listeners
         cardImages.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +78,9 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
                 enterGameActivity();
             }
         });
+
+        setTextViews();
+        setImageViews();
 
     }
 
@@ -149,5 +153,10 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
                 cardImages.get(i).setImageResource(android.R.color.transparent);
             }
         }
+    }
+
+    public void update() {
+        setImageViews();
+        setTextViews();
     }
 }

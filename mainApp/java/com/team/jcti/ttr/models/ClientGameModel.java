@@ -1,6 +1,8 @@
 package com.team.jcti.ttr.models;
 
+import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
+import com.team.jcti.ttr.game.GamePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class ClientGameModel extends Observable {
     private int userPlayer;
     private int gameHistoryPosition;
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
-    private IPresenter activePresenter;
+    private IGamePresenter activePresenter;
     private int turnPosition = 0; // keeps track of who's turn it is by their position in the array
     private TrainCard[] faceUpCards;
 
@@ -64,10 +66,7 @@ public class ClientGameModel extends Observable {
         gameHistoryPosition = 0;
     }
 
-    public void setActivePresenter(IPresenter presenter) {
-        activePresenter = presenter;
-    }
-    public IPresenter getActivePresenter() {
+    public IGamePresenter getActivePresenter() {
         return activePresenter;
     }
 
@@ -151,5 +150,29 @@ public class ClientGameModel extends Observable {
     public TrainCard[] getFaceUpCards() {
 
         return faceUpCards;
+    }
+
+    public void drawDestCards(Integer playerIndex, Integer numCards, DestinationCard[] cards) {
+        Player player = players.get(playerIndex);
+        if (playerIndex == userPlayer) {
+            player.addDestCards(cards);
+            activePresenter.drawDestCards();
+        }
+        else {
+            player.addDestCards(numCards);
+        }
+        activePresenter.update();
+    }
+
+    public void setActivePresenter(IGamePresenter gamePresenter) {
+        this.activePresenter = gamePresenter;
+    }
+
+    public List<DestinationCard> getUsersDestCard() {
+       return players.get(userPlayer).getDestCards();
+    }
+
+    public Player getUserPlayer() {
+       return players.get(userPlayer);
     }
 }

@@ -54,10 +54,10 @@ public class DecksAndCardsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_decks_and_cards, container, false);
 
 
-        trainCardDeck = v.findViewById(R.id.train_deck);
-        destinationCardDeck = v.findViewById(R.id.destination_deck);
-        destDeckCount = v.findViewById(R.id.dest_deck_count);
-        trainDeckCount = v.findViewById(R.id.train_deck_count);
+        trainCardDeck = (ImageView) v.findViewById(R.id.train_deck);
+        destinationCardDeck = (ImageView) v.findViewById(R.id.destination_deck);
+        destDeckCount = (TextView) v.findViewById(R.id.dest_deck_count);
+        trainDeckCount = (TextView) v.findViewById(R.id.train_deck_count);
 
         faceUpCards = new ArrayList<>();
         faceUpCards.add((ImageView) v.findViewById(R.id.face_up_train_one));

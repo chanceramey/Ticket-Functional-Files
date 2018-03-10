@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.drawdestinationcard.DrawDestinationCardActivity;
 import com.team.jcti.ttr.game.GameActivity;
 import com.team.jcti.ttr.gamelist.GameListActivity;
 import com.team.jcti.ttr.message.MessageActivity;

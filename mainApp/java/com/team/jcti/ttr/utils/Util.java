@@ -105,6 +105,31 @@ public class Util {
         return image;
     }
 
+    public static int getTrainCardDrawable(TrainCard card) {
+        switch (card) {
+            case RED:
+                return R.drawable.redtrain;
+            case WHITE:
+                return R.drawable.whitetrain;
+            case ORANGE:
+                return R.drawable.orangetrain;
+            case GREEN:
+                return R.drawable.greentrain;
+            case BLUE:
+                return R.drawable.bluetrain;
+            case BLACK:
+                return R.drawable.blacktrain;
+            case YELLOW:
+                return R.drawable.yellowtrain;
+            case PURPLE:
+                return R.drawable.purpletrain;
+            case WILD:
+                return R.drawable.rainbowtrain;
+            default:
+                return 0;
+        }
+    }
+
     public static String getStringFromResourceFile(Context context, int resourceCode) throws IOException {
         InputStream is = context.getResources().openRawResource(resourceCode);
         Writer writer = new StringWriter();

@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.drawdestinationcard;
 
+import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.ClientGameModel;
@@ -20,7 +21,7 @@ import model.User;
  * Created by Isaak on 3/4/2018.
  */
 
-public class DrawDestinationCardPresenter implements Observer, IDrawDestinationCardPresenter, IPresenter{
+public class DrawDestinationCardPresenter implements Observer, IDrawDestinationCardPresenter, IGamePresenter {
 
     private IDrawDestinationCardActivity drawDestinationCardActivity;
     private List<DestinationCard> choosableCards;
@@ -34,14 +35,16 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
         drawDestinationCardActivity = activity;
         mClientModel = ClientModel.getInstance();
         mClientGameModel = ClientGameModel.getInstance();
+        mClientGameModel.setActivePresenter(this);
         mServerProxy = ServerProxy.getInstance();
+        player = mClientGameModel.getUserPlayer();
         choosableCards = new ArrayList<>();
 
     }
 
     @Override
     public List<DestinationCard> getCards(){
-        return choosableCards;
+        return mClientGameModel.getUsersDestCard();
     }
 
     @Override
@@ -63,9 +66,10 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
         int[] rejectedCardPositions = new int[rejectedCardsPos.size()];
         int count = 0;
         for(Integer pos : rejectedCardsPos){
-            rejectedCardPositions[count] = pos+player.getNumDestCards()+1; //checkback
+            rejectedCardPositions[count] = pos+player.getNumDestCards()-3; //checkback
             count++;
         }
+        mClientGameModel.getUserPlayer().removeDestCards(rejectedCardPositions);
 
         mServerProxy.returnDestinationCards(mClientModel.getAuthToken(), mClientModel.getGame().getID(), rejectedCardPositions);
     }
@@ -74,11 +78,14 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
     public void displayError(String message) {
     }
 
-    @Override
-    public void updateGame(Game game) {}
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void drawDestCards() {
 
     }
 
@@ -88,6 +95,7 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
         for(int i = 0; i < numCards; i++){
             choosableCards.add(cards[i]);
         }
+        drawDestinationCardActivity.update();
     }
 
 }

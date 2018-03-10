@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.ClientGameModel;
+import com.team.jcti.ttr.utils.Util;
 
 import java.util.List;
 
@@ -122,7 +123,8 @@ public class PlayersHandFragment extends Fragment {
 
 
         void bind(TrainCard card) {
-            mImageView.setImageResource(R.drawable.tempdestcard);
+            int drawable = Util.getTrainCardDrawable(card);
+            mImageView.setImageResource(drawable);
         }
 
 
@@ -140,7 +142,7 @@ public class PlayersHandFragment extends Fragment {
 
         @Override
         public DestCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = inflater.inflate(R.layout.game_history_list, parent, false);
+            View view = inflater.inflate(R.layout.card_list_item, parent, false);
             DestCardHolder viewholder = new DestCardHolder(view);
             return viewholder;
         }

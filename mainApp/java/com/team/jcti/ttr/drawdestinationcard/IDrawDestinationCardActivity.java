@@ -11,4 +11,5 @@ import model.DestinationCard;
 public interface IDrawDestinationCardActivity {
 
 
+    void update();
 }

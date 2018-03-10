@@ -82,10 +82,6 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
             fm.beginTransaction().add(R.id.map_fragment, mapFragment).commit();
         }
 
-        if(mGamePresenter.isFirstTurn()){ //checkback might not need if a different fix will send to draw dest activity
-            enterDrawDestinationActivity();
-        }
-
     }
 
     @Override

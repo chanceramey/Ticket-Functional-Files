@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.message;
 
+import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.ClientGameModel;
@@ -16,7 +17,7 @@ import model.GameHistory;
  * Created by Jeff on 2/27/2018.
  */
 
-public class MessagePresenter implements IMessagePresenter, IPresenter, Observer {
+public class MessagePresenter implements IMessagePresenter, IGamePresenter, Observer {
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
     private IMessageActivity mActivity;
@@ -33,15 +34,15 @@ public class MessagePresenter implements IMessagePresenter, IPresenter, Observer
         mActivity.toast(message);
     }
 
-    @Override
-    public void updateGame(Game game) {
-//        mClientModel.setGame(game);
-//        mGame = game;
-    }
 
     @Override
     public void update() {
         mFragment.setHistory(mActiveGame.getGameHistory());
+    }
+
+    @Override
+    public void drawDestCards() {
+        //do nothing
     }
 
     @Override

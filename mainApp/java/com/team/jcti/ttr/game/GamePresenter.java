@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.game;
 
+import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.ClientGameModel;
@@ -17,7 +18,7 @@ import model.TrainCard;
  * Created by Chance on 3/7/18.
  */
 
-public class GamePresenter implements IPresenter{
+public class GamePresenter implements IGamePresenter {
 
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
@@ -40,14 +41,15 @@ public class GamePresenter implements IPresenter{
         mGameActivity.toast(message);
     }
 
-    @Override
-    public void updateGame(Game game) {
-
-    }
 
     @Override
     public void update() {
 
+    }
+
+    @Override
+    public void drawDestCards() {
+        mGameActivity.enterDrawDestinationActivity();
     }
 
     public void setPlayersHandFragment(PlayersHandFragment frag) {
