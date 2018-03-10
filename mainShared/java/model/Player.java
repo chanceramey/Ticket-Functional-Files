@@ -21,6 +21,8 @@ public class Player {
     private int numTrains;
     private boolean turn = false; // if it is this player's turn or not
 
+    private boolean firstDestPick;
+
     private int points;
 
     private List<String> claimedRouteIds;
@@ -39,6 +41,7 @@ public class Player {
         this.destCards = new ArrayList<>();
         this.claimedRouteIds = new ArrayList<>();
         this.numTrains = 45;
+        firstDestPick = true;
     }
 
     public int getId() {
@@ -128,5 +131,13 @@ public class Player {
 
     public void addRoute(String routeID) {
         this.claimedRouteIds.add(routeID);
+    }
+
+    public boolean isFirstDestPick() {
+        return firstDestPick;
+    }
+
+    public void setFirstDestPick() {
+        this.firstDestPick = false;
     }
 }

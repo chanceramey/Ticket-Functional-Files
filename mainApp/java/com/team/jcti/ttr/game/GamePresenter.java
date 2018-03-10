@@ -65,6 +65,10 @@ public class GamePresenter implements IPresenter{
         return mActiveGame.getPlayersDestCards();
     }
 
+    public boolean isFirstTurn(){
+        return mActiveGame.isFirstTurn();
+    }
+
     public void onClaimRoute(Integer player, String routeID) {
         Color color = mActiveGame.getPlayers().get(player).getColor();
         mBoardFragment.claimRoute(routeID, color);
@@ -72,5 +76,39 @@ public class GamePresenter implements IPresenter{
 
     public boolean verifyTurn() {
         return (mActiveGame.isMyTurn());
+    }
+
+    //ike
+
+    public TrainCard[] getFaceUpCards(){
+
+        return mActiveGame.getFaceUpCards();
+    }
+
+    public void updateFaceUpCards(int[] pos, TrainCard[] faceUpCards){
+
+        mActiveGame.updateFaceUpCards(pos, faceUpCards);
+    }
+
+    public int getDestDeckSize() {
+
+        return 30; //checkback not sure best way to implement
+    }
+
+    public int getTrainDeckSize() {
+
+        return 560; //checkback not sure best way to implement, thought Tanner might've had an idea
+    }
+
+    public void onDestDeckClick() {
+
+        mGameActivity.enterDrawDestinationActivity();
+    }
+
+    public void onTrainDeckClick() {
+
+    }
+
+    public void onFaceUpClick(int i) {
     }
 }

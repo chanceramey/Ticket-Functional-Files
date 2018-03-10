@@ -41,6 +41,11 @@
             android:label="Player Info"
             android:screenOrientation="landscape">
         </activity>
+        <activity
+            android:name=".drawdestinationcard.DrawDestinationCardActivity"
+            android:label="Draw Destination Cards"
+            android:screenOrientation="landscape">
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

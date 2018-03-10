@@ -49,10 +49,7 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
     }
 
     public boolean isGameStart(Player player){
-        if(player.getNumDestCards() == 0){
-            return true;
-        }
-        return false;
+        return player.isFirstDestPick();
     }
 
     @Override
