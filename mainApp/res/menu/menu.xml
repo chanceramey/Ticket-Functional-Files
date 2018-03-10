@@ -13,4 +13,9 @@
         android:title="Score"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/temp_actions"
+        android:title="Test"
+        app:showAsAction="ifRoom"/>
+
 </menu>

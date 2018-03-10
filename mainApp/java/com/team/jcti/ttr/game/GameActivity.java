@@ -41,10 +41,15 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
             case R.id.action_scoreboard:
                 startActivity(new Intent(this, PlayerInfoActivity.class));
                 return true;
+            case R.id.temp_actions:
+                mGamePresenter.testRun(item);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
 
     public GamePresenter getGamePresenter() {

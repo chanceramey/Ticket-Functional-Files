@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.ClientGameModel;
+import com.team.jcti.ttr.utils.Util;
 
 import org.w3c.dom.Text;
 
@@ -25,6 +26,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
     private RecyclerView mRecycler;
     private Adapter adapter;
     private ClientGameModel mClientGameModel;
+    public int COUNTER = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private TextView playerNumber;
         private TextView playerName;
         private TextView points;
         private TextView trains;
@@ -92,6 +95,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
 
         public Holder(View view) {
             super(view);
+            playerNumber = (TextView) view.findViewById(R.id.player_num);
             playerName = (TextView) view.findViewById(R.id.player_name);
             points = (TextView) view.findViewById(R.id.player_points);
             trains = (TextView) view.findViewById(R.id.player_num_trains);
@@ -106,14 +110,31 @@ public class PlayerInfoActivity extends AppCompatActivity {
 
         void bind(Player p) {
             this.player = p;
+            COUNTER++;
+            playerNumber.setText(Integer.toString(COUNTER));
             playerName.setText(p.getUser());
             points.setText(Integer.toString(p.getPoints()));
             trains.setText(Integer.toString(p.getNumTrains()));
             numTrainCards.setText(Integer.toString(p.getNumTrainCards()));
             numDestCards.setText(Integer.toString(p.getNumDestCards()));
+            setColor();
+
             if (mClientGameModel.isMyTurn()) {
-                turn.setText("***");
+                turn.setText("Yes");
+            } else  {
+                turn.setText("No");
+
             }
+        }
+
+        void setColor() {
+            playerNumber.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
+            playerName.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
+            points.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
+            trains.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
+            numTrainCards.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
+            numDestCards.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
+            turn.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
         }
     }
 

@@ -1,5 +1,7 @@
 package com.team.jcti.ttr.game;
 
+import android.view.MenuItem;
+
 import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
@@ -7,6 +9,7 @@ import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 import com.team.jcti.ttr.utils.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Color;
@@ -26,10 +29,30 @@ public class GamePresenter implements IGamePresenter {
     private GameActivity mGameActivity;
     private PlayersHandFragment mPlayersHandFragment;
     private BoardFragment mBoardFragment;
+    private ArrayList<String> testCommands = new ArrayList<>();
+    private int testNumber = 0;
+    private boolean testing = false;
+
 
     public GamePresenter(GameActivity gameActivity){
         mActiveGame.setActivePresenter(this);
         this.mGameActivity = gameActivity;
+        createTestCases();
+
+    }
+
+    public void createTestCases(){
+        testCommands.add("Update player points");
+        testCommands.add("Add/remove train cards for this player");
+        testCommands.add("Add/remove player destination cards for this player");
+        testCommands.add("Update number of train cards for other players");
+        testCommands.add("Update the number of train cars for other players");
+        testCommands.add("Update number of destination cards for other players");
+        testCommands.add("Update visible cards and number of invisible cards in train card deck");
+        testCommands.add("Update number of cards in destination card deck");
+        testCommands.add("Add claimed route (for any player)");
+        testCommands.add("Add chat message from any player");
+        testCommands.add("Add game history entries");
     }
 
     public void claimRoute(String routeId) {
@@ -112,5 +135,28 @@ public class GamePresenter implements IGamePresenter {
     }
 
     public void onFaceUpClick(int i) {
+    }
+
+    public void testRun(MenuItem item) {
+        if (!testing && testNumber == 0) {
+            testing = true;
+            item.setTitle(testCommands.get(testNumber));
+
+        } else {
+            item.setTitle(testCommands.get(testNumber));
+            doCommand(testCommands.get(testNumber));
+            if (testNumber < testCommands.size()) {
+                testNumber++;
+            } else {
+                testNumber = 0;
+                item.setTitle("Test");
+                testing = false;
+            }
+        }
+
+    }
+
+    public void doCommand(String command) {
+
     }
 }
