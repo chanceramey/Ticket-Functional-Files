@@ -69,4 +69,8 @@ public class GamePresenter implements IPresenter{
         Color color = mActiveGame.getPlayers().get(player).getColor();
         mBoardFragment.claimRoute(routeID, color);
     }
+
+    public boolean verifyTurn() {
+        return (mClientModel.getGame().isMyTurn());
+    }
 }

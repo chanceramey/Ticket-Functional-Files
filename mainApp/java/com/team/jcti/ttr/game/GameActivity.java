@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.game;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,11 @@ import com.team.jcti.ttr.playerInfo.PlayerInfoActivity;
 
 import java.util.ArrayList;
 
-public class GameActivity extends AppCompatActivity implements IGameActivity {
+public class GameActivity extends AppCompatActivity implements IGameActivity, DecksAndCardsFragment.OnFragmentInteractionListener {
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,6 +64,12 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
         if(playerCardFragment == null) {
             playerCardFragment = new PlayersHandFragment();
             fm.beginTransaction().add(R.id.players_card_fragment, playerCardFragment).commit();
+        }
+
+        Fragment decksAndCardFragment = fm.findFragmentById(R.id.deck_fragment);
+        if(decksAndCardFragment == null) {
+            decksAndCardFragment = new DecksAndCardsFragment();
+            fm.beginTransaction().add(R.id.deck_fragment, decksAndCardFragment).commit();
         }
 
         Fragment mapFragment = fm.findFragmentById(R.id.map_fragment);

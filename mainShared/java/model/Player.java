@@ -108,6 +108,10 @@ public class Player {
         return discarded;
     }
 
+    public void setNumTrains(int numTrains) {
+        this.numTrains = numTrains;
+    }
+
     public void removeDestCards(int num) { this.numDestCards -= num; }
 
     public int getPoints() {

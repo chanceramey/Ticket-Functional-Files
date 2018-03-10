@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.game;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -48,11 +49,16 @@ public class BoardFragment extends android.support.v4.app.Fragment {
     private final int WIDTH = 15;
     private final double DISTANCE = 0.5;
     SupportMapFragment supportMapFragment;
+    private GameActivity mGameActivity;
+    private GamePresenter mGamePresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
+
+        mGameActivity = (GameActivity) getActivity();
+        mGamePresenter = mGameActivity.getGamePresenter();
     }
 
     public void createCities() {
@@ -93,6 +99,13 @@ public class BoardFragment extends android.support.v4.app.Fragment {
         cities.put("el_paso", new LatLng(31.761878, -106.485022));
         cities.put("little_rock", new LatLng(34.7465, -92.2896));
 
+    }
+
+    public boolean verifyTurn() {
+        if (mGamePresenter.verifyTurn()) {
+
+        }
+        return false;
     }
 
 

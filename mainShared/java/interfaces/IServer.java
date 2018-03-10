@@ -29,4 +29,8 @@ public interface IServer {
     public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition);
 
     public Object claimRoute(String auth, String gameID, String routeID);
+
+    Object drawDestinationCards(String auth, String gameId);
+
+    Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions);
 }

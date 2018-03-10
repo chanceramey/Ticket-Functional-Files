@@ -138,4 +138,8 @@ public class ServerGameModel {
         clientProxy.claimedRoute(userPlayer.getId(), routeID);
         gameHistoryCommands.add(clientProxy.getCommand());
     }
+
+    public DestCardDeck getDestCardDeck(){
+        return destCardDeck;
+    }
 }

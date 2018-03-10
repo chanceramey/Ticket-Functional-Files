@@ -37,6 +37,16 @@ public class ClientGameModel extends Observable {
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
     private IPresenter activePresenter;
 
+    public boolean isMyTurn() {
+        return myTurn;
+    }
+
+    public void setMyTurn(boolean myTurn) {
+        this.myTurn = myTurn;
+    }
+
+    private boolean myTurn;
+
     public void startGame(Game game) {
         this.gameId = game.getID();
         List<String> playerStrings = game.getPlayers();
@@ -96,4 +106,15 @@ public class ClientGameModel extends Observable {
     public List<DestinationCard> getPlayersDestCards() {
         return players.get(userPlayer).getDestCards();
     }
+
+    public Player getPlayerById(int id){ //checkback
+        for(Player player : players){
+            if(player.getId() == id){
+
+                return player;
+            }
+        }
+        return null;
+    }
+
 }
