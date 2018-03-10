@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.drawdestinationcard.DrawDestinationCardActivity;
 import com.team.jcti.ttr.message.MessageActivity;
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.playerInfo.PlayerInfoActivity;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
     }
 
     GamePresenter mGamePresenter;
+    ClientGameModel mClientGameModel;
 
 
     private FragmentManager fm = getSupportFragmentManager();
@@ -59,6 +62,7 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         mGamePresenter = new GamePresenter(this);
+        mClientGameModel = ClientGameModel.getInstance();
 
         Fragment playerCardFragment = fm.findFragmentById(R.id.players_card_fragment);
         if(playerCardFragment == null) {
@@ -76,6 +80,10 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
         if(mapFragment == null) {
             mapFragment = new BoardFragment();
             fm.beginTransaction().add(R.id.map_fragment, mapFragment).commit();
+        }
+
+        if(mGamePresenter.isFirstTurn()){ //checkback might not need if a different fix will send to draw dest activity
+            enterDrawDestinationActivity();
         }
 
     }
@@ -97,6 +105,12 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
 
         toast(sbr.toString());
 
+    }
+
+    @Override
+    public void enterDrawDestinationActivity() {
+        Intent intent = new Intent(this, DrawDestinationCardActivity.class);
+        startActivity(intent);
     }
 
     public void toast(String message) {

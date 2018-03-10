@@ -8,4 +8,6 @@ import java.util.ArrayList;
 
 public interface IGameActivity {
     void displayErrorMessages(ArrayList<String> errorMessages);
+
+    void enterDrawDestinationActivity();
 }

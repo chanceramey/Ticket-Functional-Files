@@ -37,6 +37,7 @@ public class ClientGameModel extends Observable {
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
     private IPresenter activePresenter;
     private int turnPosition = 0; // keeps track of who's turn it is by their position in the array
+    private TrainCard[] faceUpCards;
 
     public boolean isMyTurn() {
         return myTurn;
@@ -52,6 +53,7 @@ public class ClientGameModel extends Observable {
         this.gameId = game.getID();
         List<String> playerStrings = game.getPlayers();
         this.players = new ArrayList<>();
+        faceUpCards = new TrainCard[5];
         Color[] colors = Color.values();
         for (int i = 0; i < playerStrings.size(); i++) {
             if (playerStrings.get(i).equals(ClientModel.getInstance().getUsername())) userPlayer = i;
@@ -108,7 +110,11 @@ public class ClientGameModel extends Observable {
         return players.get(userPlayer).getDestCards();
     }
 
-    public Player getPlayerById(int id){ //checkback
+    public boolean isFirstTurn(){
+        return players.get(userPlayer).isFirstDestPick();
+    }
+
+    public Player getPlayerById(int id){
         for(Player player : players){
             if(player.getId() == id){
 
@@ -135,4 +141,15 @@ public class ClientGameModel extends Observable {
         }
     }
 
+    public void updateFaceUpCards(int[] pos, TrainCard[] newCards) {
+
+        for(int position : pos){
+            faceUpCards[position] = newCards[position];
+        }
+    }
+
+    public TrainCard[] getFaceUpCards() {
+
+        return faceUpCards;
+    }
 }

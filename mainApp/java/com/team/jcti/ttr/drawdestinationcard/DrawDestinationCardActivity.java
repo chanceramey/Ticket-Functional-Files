@@ -82,7 +82,7 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
 
     public void enterGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent); //checkback
+        startActivity(intent);
     }
 
     private List<Integer> getRejectedDestCards() {
@@ -143,7 +143,7 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
         for(int i = 0; i < 3; i++){
 
             if(drawDestinationCardPresenter.getCards().size() > i){
-                //I ain't got pictures yet boo
+                cardImages.get(i).setImageResource(R.drawable.tempdestcard);
             }
             else{
                 cardImages.get(i).setImageResource(android.R.color.transparent);

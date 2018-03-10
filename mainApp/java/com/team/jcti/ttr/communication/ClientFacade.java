@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.communication;
 
 import com.team.jcti.ttr.IPresenter;
+import com.team.jcti.ttr.drawdestinationcard.IDrawDestinationCardPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.gamelist.GameListPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
@@ -164,15 +165,24 @@ public class ClientFacade implements IClient {
     @Override
     public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
 
+        IDrawDestinationCardPresenter presenter = (IDrawDestinationCardPresenter) mClientModel.getActivePresenter();
+        presenter.updateCards(player, numCards, cards);
     }
 
     @Override
     public void discardDestCards(Integer player, Integer numCards, int[] pos) {
-
+        IPresenter presenter = mGameModel.getActivePresenter();
+        Player p = mGameModel.getPlayers().get(player);
+        if(p.isFirstDestPick()){
+            p.setFirstDestPick(); //to false
+        }
+        //mGameModel.moveTurnPosition();
     }
 
     @Override
     public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
 
+        GamePresenter presenter = (GamePresenter) mClientModel.getActivePresenter();
+        presenter.updateFaceUpCards(pos, cards);
     }
 }
