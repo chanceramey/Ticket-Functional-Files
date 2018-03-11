@@ -76,6 +76,10 @@ public class Player {
         Collections.addAll(trainCards, cards);
         this.numTrainCards = trainCards.size();
     }
+    public void addTrainCard(TrainCard card) {
+        trainCards.add(card);
+        this.numTrainCards = trainCards.size();
+    }
 
     public void addTrainCards(int num) {
         numTrainCards += num;
@@ -88,6 +92,10 @@ public class Player {
         }
         this.numTrainCards = trainCards.size();
         return discarded;
+    }
+
+    public void setTurn(boolean b) {
+        turn = b;
     }
 
     public void removeTrainCards(int num) {

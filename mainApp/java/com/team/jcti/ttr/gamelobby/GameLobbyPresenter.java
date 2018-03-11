@@ -22,6 +22,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
     private Game game;
+    private Boolean addCP1 = false;
 
     public GameLobbyPresenter(GameLobbyActivity activity) {
         mClientModel.setActivePresenter(this);
@@ -49,6 +50,7 @@ public class GameLobbyPresenter implements IPresenter, Serializable, Observer {
         }
         String auth = mClientModel.getAuthToken();
         mServerProxy.createGame(numPlayers, gameName, auth);
+
     }
 
     public void onCreateGame() {

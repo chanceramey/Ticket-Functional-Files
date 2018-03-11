@@ -25,6 +25,7 @@ public class CreateGameFragment extends Fragment {
     private RadioButton numPlayersButton;
     private RadioGroup numPlayersGroup;
     private Button createGameButton;
+    private Button addComputerPlayerButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class CreateGameFragment extends Fragment {
         numPlayersGroup = (RadioGroup) v.findViewById(R.id.num_players_group);
 
         createGameButton = (Button) v.findViewById(R.id.create_game_button);
+
         createGameButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -19,11 +19,7 @@ import com.team.jcti.ttr.playerInfo.PlayerInfoActivity;
 
 import java.util.ArrayList;
 
-public class GameActivity extends AppCompatActivity implements IGameActivity, DecksAndCardsFragment.OnFragmentInteractionListener {
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
+public class GameActivity extends AppCompatActivity implements IGameActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,8 +46,6 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
     }
 
 
-
-
     public GamePresenter getGamePresenter() {
         return mGamePresenter;
     }
@@ -68,6 +62,7 @@ public class GameActivity extends AppCompatActivity implements IGameActivity, De
         setContentView(R.layout.activity_game);
         mGamePresenter = new GamePresenter(this);
         mClientGameModel = ClientGameModel.getInstance();
+        mClientGameModel.setActivePresenter(mGamePresenter);
 
         Fragment playerCardFragment = fm.findFragmentById(R.id.players_card_fragment);
         if(playerCardFragment == null) {

@@ -142,4 +142,8 @@ public class ServerGameModel {
     public DestCardDeck getDestCardDeck(){
         return destCardDeck;
     }
+    public TrainCardDeck getTrainCardDeck(){
+        return trainCardDeck;
+    }
+
 }

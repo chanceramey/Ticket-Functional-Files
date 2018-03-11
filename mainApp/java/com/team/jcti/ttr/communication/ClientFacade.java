@@ -145,6 +145,20 @@ public class ClientFacade implements IClient {
         presenter.updateGameHistory(gameHistory);
     }
     @Override
+    public void drawTrainCard(Integer player, TrainCard card) {
+        IGamePresenter presenter = mGameModel.getActivePresenter();
+        Player p = mGameModel.getPlayers().get(player);
+        p.addTrainCard(card);
+        String user = p.getUser();
+        String message = String.format("***%s drew a Train card***", user);
+        GameHistory drewCard = new GameHistory(user, message);
+        mGameModel.addGameHistoryObj(drewCard);
+        mGameModel.moveTurnPosition();
+        presenter.update();
+
+    }
+
+    @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
         IGamePresenter presenter = mGameModel.getActivePresenter();
         Player p = mGameModel.getPlayers().get(player);
@@ -175,7 +189,6 @@ public class ClientFacade implements IClient {
         if(p.isFirstDestPick()){
             p.setFirstDestPick(); //to false
         }
-        //mGameModel.moveTurnPosition();
     }
 
     @Override

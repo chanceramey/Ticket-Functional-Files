@@ -103,9 +103,10 @@ public class BoardFragment extends android.support.v4.app.Fragment {
 
     public boolean verifyTurn() {
         if (mGamePresenter.verifyTurn()) {
-
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
 

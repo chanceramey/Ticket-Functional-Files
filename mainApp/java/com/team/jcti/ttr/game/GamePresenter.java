@@ -21,7 +21,7 @@ import model.TrainCard;
  * Created by Chance on 3/7/18.
  */
 
-public class GamePresenter implements IGamePresenter {
+public class GamePresenter implements IGamePresenter{
 
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
@@ -36,6 +36,7 @@ public class GamePresenter implements IGamePresenter {
 
     public GamePresenter(GameActivity gameActivity){
         mActiveGame.setActivePresenter(this);
+        mClientModel.setActivePresenter(this);
         this.mGameActivity = gameActivity;
         createTestCases();
 
@@ -62,6 +63,11 @@ public class GamePresenter implements IGamePresenter {
     @Override
     public void displayError(String message) {
         mGameActivity.toast(message);
+    }
+
+    @Override
+    public void updateGame(Game game) {
+
     }
 
 
@@ -131,6 +137,7 @@ public class GamePresenter implements IGamePresenter {
     }
 
     public void onTrainDeckClick() {
+        mServerProxy.drawTrainCard(mClientModel.getAuthToken(), mClientModel.getGame().getID());
 
     }
 
@@ -144,8 +151,9 @@ public class GamePresenter implements IGamePresenter {
 
         } else {
             item.setTitle(testCommands.get(testNumber));
+            mGameActivity.toast("Doing: " + testCommands.get(testNumber));
             doCommand(testCommands.get(testNumber));
-            if (testNumber < testCommands.size()) {
+            if (testNumber < testCommands.size() - 1 ) {
                 testNumber++;
             } else {
                 testNumber = 0;

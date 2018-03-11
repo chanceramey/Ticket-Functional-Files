@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.game.GameActivity;
@@ -140,6 +141,11 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
                 cardTexts.get(i).setText(destDeck.get(i).getSrcCity() + " to " + destDeck.get(i).getDestCity());
             }
         }
+    }
+
+    @Override
+    public void toast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void setImageViews() {

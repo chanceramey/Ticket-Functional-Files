@@ -118,6 +118,15 @@ public class ServerProxy implements IServer {
     }
 
     @Override
+    public Object drawTrainCard(String auth, String gameId) { //ikes
+        Object[] params = {auth, gameId};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "drawTrainCard", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+    @Override
     public Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions) {
         Object[] params = {auth, gameId, rejectedCardPositions};
         String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), rejectedCardPositions.getClass().getName()};

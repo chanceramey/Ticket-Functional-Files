@@ -10,6 +10,6 @@ import model.DestinationCard;
 
 public interface IDrawDestinationCardActivity {
 
-
+    void toast(String message);
     void update();
 }

@@ -27,6 +27,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
     private Adapter adapter;
     private ClientGameModel mClientGameModel;
     public int COUNTER = 0;
+    public List<Player> players;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
         mRecycler = (RecyclerView) findViewById(R.id.recycler_view_player_info);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mClientGameModel = ClientGameModel.getInstance();
-        mPresenter.update();
-    }
-
-    public void setPlayerInfo(List<Player> players) {
+        players = mClientGameModel.getPlayers();
         adapter = new Adapter(this, players);
         mRecycler.setAdapter(adapter);
     }
@@ -61,9 +59,8 @@ public class PlayerInfoActivity extends AppCompatActivity {
         @Override
         public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = inflater.inflate(R.layout.player_info_list, parent, false);
-            Holder viewholder = new Holder(view);
-            view.setOnClickListener(viewholder);
-            return viewholder;
+            Holder viewHolder = new Holder(view);
+            return viewHolder;
         }
 
         @Override
@@ -119,7 +116,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
             numDestCards.setText(Integer.toString(p.getNumDestCards()));
             setColor();
 
-            if (mClientGameModel.isMyTurn()) {
+            if (p.isTurn()) {
                 turn.setText("Yes");
             } else  {
                 turn.setText("No");

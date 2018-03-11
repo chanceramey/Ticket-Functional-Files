@@ -24,6 +24,10 @@ public class MessagePresenter implements IMessagePresenter, IGamePresenter, Obse
     private MessageFragment mFragment;
     private ClientGameModel mActiveGame = ClientGameModel.getInstance();
 
+    /**
+     *
+     * @param activity
+     */
     public MessagePresenter(IMessageActivity activity) {
         this.mActivity = activity;
         mActiveGame.setActivePresenter(this);
@@ -32,6 +36,11 @@ public class MessagePresenter implements IMessagePresenter, IGamePresenter, Obse
     @Override
     public void displayError(String message) {
         mActivity.toast(message);
+    }
+
+    @Override
+    public void updateGame(Game game) {
+
     }
 
 

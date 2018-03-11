@@ -68,6 +68,7 @@ public class ServerModel {
         this.waitingGames = new HashMap<>();
         this.activeGames = new HashMap<>();
         this.sessionCommandQueue = new HashMap<>();
+        addComputerPlayer();
 
         Timer timer = new Timer();
         int HOUR = 3600000; //3,600,000 milliseconds in one hour
@@ -80,6 +81,12 @@ public class ServerModel {
      */
     public void addUser(User user) {
         users.put(user.getUsername(), user);
+    }
+
+
+    public void addComputerPlayer(){
+        users.put("CP1", new User("CP1", "pass", "computer", "player"));
+        authTokens.put("ComputerPlayer1", new AuthToken("CP1", "ComputerPlayer1"));
     }
 
     /**

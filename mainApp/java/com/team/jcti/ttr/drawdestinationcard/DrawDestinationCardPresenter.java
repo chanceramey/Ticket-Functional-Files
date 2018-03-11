@@ -71,13 +71,25 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
         }
         mClientGameModel.getUserPlayer().removeDestCards(rejectedCardPositions);
 
+        if (mClientGameModel.getUserPlayer().isFirstDestPick()) {
+            mClientGameModel.turnToast();
+        } else {
+            mClientGameModel.moveTurnPosition();
+        }
+
         mServerProxy.returnDestinationCards(mClientModel.getAuthToken(), mClientModel.getGame().getID(), rejectedCardPositions);
     }
 
     @Override
     public void displayError(String message) {
+        drawDestinationCardActivity.toast(message);
+
     }
 
+    @Override
+    public void updateGame(Game game) {
+
+    }
 
     @Override
     public void update() {

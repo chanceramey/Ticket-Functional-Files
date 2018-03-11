@@ -40,22 +40,25 @@ public class ClientGameModel extends Observable {
     private IGamePresenter activePresenter;
     private int turnPosition = 0; // keeps track of who's turn it is by their position in the array
     private TrainCard[] faceUpCards;
+    private Player currentPlayer;
 
     public boolean isMyTurn() {
-        return myTurn;
+        return currentPlayer.isTurn();
     }
 
     public void setMyTurn(boolean myTurn) {
-        this.myTurn = myTurn;
+        currentPlayer.setTurn(myTurn);
     }
 
-    private boolean myTurn;
 
     public void startGame(Game game) {
         this.gameId = game.getID();
         List<String> playerStrings = game.getPlayers();
         this.players = new ArrayList<>();
         faceUpCards = new TrainCard[5];
+        for (int i = 0; i < faceUpCards.length; i++){
+            faceUpCards[i] = TrainCard.WILD;
+        }
         Color[] colors = Color.values();
         for (int i = 0; i < playerStrings.size(); i++) {
             if (playerStrings.get(i).equals(ClientModel.getInstance().getUsername())) userPlayer = i;
@@ -64,6 +67,8 @@ public class ClientGameModel extends Observable {
         }
         this.active = true;
         gameHistoryPosition = 0;
+        currentPlayer = players.get(userPlayer);
+        players.get(0).setTurn(true);
     }
 
     public IGamePresenter getActivePresenter() {
@@ -124,19 +129,18 @@ public class ClientGameModel extends Observable {
     }
 
     public void moveTurnPosition() {
+        players.get(turnPosition).setTurn(false);
         turnPosition++;
         if (turnPosition == players.size()) {
             turnPosition = 0;
         }
-        checkTurn();
+        players.get(turnPosition).setTurn(true);
+        turnToast();
     }
 
-    public void checkTurn() {
+    public void turnToast() {
         if (turnPosition == userPlayer) {
-            myTurn = true;
             activePresenter.displayError("It's your turn");
-        } else {
-            myTurn = false;
         }
     }
 

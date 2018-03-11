@@ -1,9 +1,5 @@
 package com.team.jcti.ttr.game;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,33 +9,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.drawdestinationcard.DrawDestinationCardActivity;
-import com.team.jcti.ttr.gamelist.GameListActivity;
 import com.team.jcti.ttr.models.ClientModel;
-
-import org.w3c.dom.Text;
+import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import model.TrainCard;
 
-import static model.TrainCard.*;
-
 
 public class DecksAndCardsFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-    private List<ImageView> faceUpCards;
+    private List<ImageView> faceUpCardIVs;
     private ImageView destinationCardDeck;
     private ImageView trainCardDeck;
     private TextView destDeckCount;
     private TextView trainDeckCount;
-
+    private GamePresenter mGamePresenter;
+    private ClientModel mGameModel;
 
 
     public DecksAndCardsFragment() {
-
+        mGameModel = ClientModel.getInstance();
     }
 
     @Override
@@ -51,31 +42,27 @@ public class DecksAndCardsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View v = inflater.inflate(R.layout.fragment_decks_and_cards, container, false);
+        this.mGamePresenter = ((GameActivity)getActivity()).getGamePresenter();
+        setUpView(v);
 
+        return v;
+    }
 
-        trainCardDeck = (ImageView) v.findViewById(R.id.train_deck);
-        destinationCardDeck = (ImageView) v.findViewById(R.id.destination_deck);
-        destDeckCount = (TextView) v.findViewById(R.id.dest_deck_count);
-        trainDeckCount = (TextView) v.findViewById(R.id.train_deck_count);
+    public void setUpView(View v) {
 
-        faceUpCards = new ArrayList<>();
-        faceUpCards.add((ImageView) v.findViewById(R.id.face_up_train_one));
-        faceUpCards.add((ImageView) v.findViewById(R.id.face_up_train_two));
-        faceUpCards.add((ImageView) v.findViewById(R.id.face_up_train_three));
-        faceUpCards.add((ImageView) v.findViewById(R.id.face_up_train_four));
-        faceUpCards.add((ImageView) v.findViewById(R.id.face_up_train_five));
-        setFaceUpCards(((GameActivity)getActivity()).getGamePresenter().getFaceUpCards());
-
-        destDeckCount.setText(Integer.toString(((GameActivity)getActivity()).getGamePresenter().getDestDeckSize()));
-        trainDeckCount.setText(Integer.toString(((GameActivity)getActivity()).getGamePresenter().getTrainDeckSize()));
-
+        // initialize deck views
+        trainCardDeck = v.findViewById(R.id.train_deck);
+        destinationCardDeck = v.findViewById(R.id.destination_deck);
+        destDeckCount = v.findViewById(R.id.dest_deck_count);
+        trainDeckCount = v.findViewById(R.id.train_deck_count);
         destinationCardDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(((GameActivity)getActivity()).getGamePresenter().verifyTurn()){
-                    ((GameActivity)getActivity()).getGamePresenter().onDestDeckClick();
+                if(mGamePresenter.verifyTurn()){
+                    mGamePresenter.onDestDeckClick();
                 }
             }
         });
@@ -84,109 +71,51 @@ public class DecksAndCardsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(((GameActivity)getActivity()).getGamePresenter().verifyTurn()){
-                    ((GameActivity)getActivity()).getGamePresenter().onTrainDeckClick();
+                if(mGamePresenter.verifyTurn()){
+                    mGamePresenter.onTrainDeckClick();
                 }
             }
         });
 
-        faceUpCards.get(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        initializeFaceCardViews(v);
 
-                if(((GameActivity)getActivity()).getGamePresenter().verifyTurn()){
+        //set deck counts
+        destDeckCount.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
+        trainDeckCount.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
 
-                }
-                ((GameActivity)getActivity()).getGamePresenter().onFaceUpClick(0);
-            }
-        });
 
-        faceUpCards.get(1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(((GameActivity)getActivity()).getGamePresenter().verifyTurn()){
-                    ((GameActivity)getActivity()).getGamePresenter().onFaceUpClick(1);
-                }
-            }
-        });
-
-        faceUpCards.get(2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(((GameActivity)getActivity()).getGamePresenter().verifyTurn()){
-                    ((GameActivity)getActivity()).getGamePresenter().onFaceUpClick(2);
-                }
-            }
-        });
-
-        faceUpCards.get(3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(((GameActivity)getActivity()).getGamePresenter().verifyTurn()){
-                    ((GameActivity)getActivity()).getGamePresenter().onFaceUpClick(3);
-                }
-            }
-        });
-
-        faceUpCards.get(4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(((GameActivity)getActivity()).getGamePresenter().verifyTurn()){
-                    ((GameActivity)getActivity()).getGamePresenter().onFaceUpClick(4);
-                }
-            }
-        });
-
-        return v;
     }
 
-    public void setFaceUpCards(TrainCard[] cards){
+    public void initializeFaceCardViews(View v) {
+        // initialize faceUpCard View
+        faceUpCardIVs = new ArrayList<>();
+        faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_one));
+        faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_two));
+        faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_three));
+        faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_four));
+        faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_five));
+        setFaceCardImages(mGamePresenter.getFaceUpCards());
 
-        for(int i = 0; i < 5; i++) {
-            if(cards[i] != null) { //checkback too tired to think if this will work in the future lol
-                switch (cards[i])
-                {
-                    case RED:
-                        faceUpCards.get(i).setImageResource(R.drawable.redtrain);
-                        break;
-                    case BLUE:
-                        faceUpCards.get(i).setImageResource(R.drawable.bluetrain);
-                        break;
-                    case GREEN:
-                        faceUpCards.get(i).setImageResource(R.drawable.greentrain);
-                        break;
-                    case BLACK:
-                        faceUpCards.get(i).setImageResource(R.drawable.blacktrain);
-                        break;
-                    case ORANGE:
-                        faceUpCards.get(i).setImageResource(R.drawable.orangetrain);
-                        break;
-                    case YELLOW:
-                        faceUpCards.get(i).setImageResource(R.drawable.yellowtrain);
-                        break;
-                    case WHITE:
-                        faceUpCards.get(i).setImageResource(R.drawable.whitetrain);
-                        break;
-                    case PURPLE:
-                        faceUpCards.get(i).setImageResource(R.drawable.purpletrain);
-                        break;
-                    case WILD:
-                        faceUpCards.get(i).setImageResource(R.drawable.rainbowtrain);
-                        break;
-                    default:
-                        throw new RuntimeException("ruh roh");
+        for (int i = 0; i < faceUpCardIVs.size(); i++) {
+            ImageView faceUpCard = faceUpCardIVs.get(i);
+            final int INDEX = i;
+            faceUpCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(mGamePresenter.verifyTurn()){
+                        mGamePresenter.onFaceUpClick(INDEX);
+                    }
                 }
-            }
-            else {
-                faceUpCards.get(i).setImageResource(android.R.color.transparent);
-            }
+            });
         }
     }
 
+    public void setFaceCardImages(TrainCard[] cards){
 
-    public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(Uri uri);
+        for(int i = 0; i < cards.length; i++) {
+            faceUpCardIVs.get(i).setImageResource(Util.getTrainCardDrawable(cards[i]));
+        }
     }
+
 }

@@ -8,27 +8,29 @@ import model.GameHistory;
 
 public interface IServer {
 
-    public Object login(String username, String password);
+    Object login(String username, String password);
 
-    public Object register(String username, String password, String firstName, String lastName);
+    Object register(String username, String password, String firstName, String lastName);
 
-    public Object createGame(int numPlayers, String gameName, String authToken);
+    Object createGame(int numPlayers, String gameName, String authToken);
 
-    public Object joinGame(String authtoken, String gameId);
+    Object joinGame(String authtoken, String gameId);
 
-    public Object leaveGame(String authToken, String gameId);
+    Object leaveGame(String authToken, String gameId);
 
-    public Object getServerGames(String auth);
+    Object getServerGames(String auth);
 
-    public Object getCommands(String auth);
+    Object getCommands(String auth);
 
-    public Object startGame(String auth, String gameId);
+    Object startGame(String auth, String gameId);
 
-    public Object sendMessage(String auth, String gameId, GameHistory historyObj); // sends message from the chat activity
+    Object sendMessage(String auth, String gameId, GameHistory historyObj); // sends message from the chat activity
 
-    public Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition);
+    Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition);
 
-    public Object claimRoute(String auth, String gameID, String routeID);
+    Object claimRoute(String auth, String gameID, String routeID);
+
+    Object drawTrainCard(String auth, String gameId);
 
     Object drawDestinationCards(String auth, String gameId);
 
