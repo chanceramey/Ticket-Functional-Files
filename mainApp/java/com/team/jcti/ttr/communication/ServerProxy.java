@@ -118,10 +118,10 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Object drawTrainCard(String auth, String gameId) { //ikes
-        Object[] params = {auth, gameId};
-        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
-        Command command = new Command(SERVER_TARGET, "drawTrainCard", paramTypes, params);
+    public Object drawTrainCards(String auth, Integer numberCards, String gameId) { //ikes
+        Object[] params = {auth, numberCards, gameId};
+        String[] paramTypes = {auth.getClass().getName(), numberCards.getClass().getName(), gameId.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "drawTrainCards", paramTypes, params);
         new SendCommandTask().execute(command);
         return null;
     }
@@ -146,5 +146,13 @@ public class ServerProxy implements IServer {
 
     private final String SERVER_TARGET = "server.ServerFacade";
 
+    @Override
+    public Object drawFaceUp(String auth, String gameID, Integer i) {
+        Object[] params = {auth, gameID, i};
+        String[] paramTypes = {auth.getClass().getName(), gameID.getClass().getName(), i.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "drawFaceUp", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
 }
 

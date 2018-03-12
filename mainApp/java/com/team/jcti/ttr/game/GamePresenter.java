@@ -133,15 +133,16 @@ public class GamePresenter implements IGamePresenter{
 
     public void onDestDeckClick() {
 
-        mGameActivity.enterDrawDestinationActivity();
+       mServerProxy.drawDestinationCards(mClientModel.getAuthToken(), mActiveGame.getGameID());
     }
 
     public void onTrainDeckClick() {
-        mServerProxy.drawTrainCard(mClientModel.getAuthToken(), mClientModel.getGame().getID());
+        mServerProxy.drawTrainCards(mClientModel.getAuthToken(), 1, mClientModel.getGame().getID());
 
     }
 
     public void onFaceUpClick(int i) {
+        mServerProxy.drawFaceUp(mClientModel.getAuthToken(), mActiveGame.getGameID(), i);
     }
 
     public void testRun(MenuItem item) {

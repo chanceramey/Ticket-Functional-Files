@@ -140,35 +140,12 @@ public class ClientFacade implements IClient {
 
     @Override
     public void receiveMessage(GameHistory gameHistory) {
-        gameHistory.setChat(true);
-        MessagePresenter presenter = (MessagePresenter) mGameModel.getActivePresenter();
-        presenter.updateGameHistory(gameHistory);
-    }
-    @Override
-    public void drawTrainCard(Integer player, TrainCard card) {
-        IGamePresenter presenter = mGameModel.getActivePresenter();
-        Player p = mGameModel.getPlayers().get(player);
-        p.addTrainCard(card);
-        String user = p.getUser();
-        String message = String.format("***%s drew a Train card***", user);
-        GameHistory drewCard = new GameHistory(user, message);
-        mGameModel.addGameHistoryObj(drewCard);
-        mGameModel.moveTurnPosition();
-        presenter.update();
-
+        mGameModel.receiveMessage(gameHistory);
     }
 
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        IGamePresenter presenter = mGameModel.getActivePresenter();
-        Player p = mGameModel.getPlayers().get(player);
-        p.addTrainCards(cards);
-        String user = p.getUser();
-        String message = String.format("***%s drew %d Train cards***", user, numCards);
-        GameHistory drewCards = new GameHistory(user, message);
-        mGameModel.addGameHistoryObj(drewCards);
-        mGameModel.moveTurnPosition();
-        presenter.update();
+        mGameModel.drawTrainCards(player, numCards, cards);
 
     }
 
@@ -184,11 +161,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void discardDestCards(Integer player, Integer numCards, int[] pos) {
-        IGamePresenter presenter = mGameModel.getActivePresenter();
-        Player p = mGameModel.getPlayers().get(player);
-        if(p.isFirstDestPick()){
-            p.setFirstDestPick(); //to false
-        }
+        mGameModel.discardDestCards(player, numCards, pos);
     }
 
     @Override

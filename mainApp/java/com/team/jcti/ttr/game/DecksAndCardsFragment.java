@@ -26,11 +26,10 @@ public class DecksAndCardsFragment extends Fragment {
     private TextView destDeckCount;
     private TextView trainDeckCount;
     private GamePresenter mGamePresenter;
-    private ClientModel mGameModel;
 
 
     public DecksAndCardsFragment() {
-        mGameModel = ClientModel.getInstance();
+
     }
 
     @Override
@@ -53,10 +52,10 @@ public class DecksAndCardsFragment extends Fragment {
     public void setUpView(View v) {
 
         // initialize deck views
-        trainCardDeck = v.findViewById(R.id.train_deck);
-        destinationCardDeck = v.findViewById(R.id.destination_deck);
-        destDeckCount = v.findViewById(R.id.dest_deck_count);
-        trainDeckCount = v.findViewById(R.id.train_deck_count);
+        trainCardDeck = (ImageView) v.findViewById(R.id.train_deck);
+        destinationCardDeck = (ImageView) v.findViewById(R.id.destination_deck);
+        destDeckCount = (TextView) v.findViewById(R.id.dest_deck_count);
+        trainDeckCount = (TextView) v.findViewById(R.id.train_deck_count);
         destinationCardDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
