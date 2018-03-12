@@ -40,7 +40,6 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     public GamePresenter(GameActivity gameActivity){
         mActiveGame.setActivePresenter(this);
-        mClientModel.setActivePresenter(this);
         this.mGameActivity = gameActivity;
         createTestCases();
 
@@ -70,14 +69,9 @@ public class GamePresenter implements IGamePresenter, Observer{
     }
 
     @Override
-    public void updateGame(Game game) {
-
-    }
-
-
-    @Override
     public void update() {
-
+        mPlayersHandFragment.updateCardList();
+        mDecksAndCardsFragment.setFaceCardImages(mActiveGame.getFaceUpCards());
     }
 
     @Override
@@ -186,37 +180,37 @@ public class GamePresenter implements IGamePresenter, Observer{
                 break;
             case 1:
                 displayError("Add train cards for this player");
-                addTrainCards(5); // add
+                addTrainCards(); // add
                 mActiveGame.incrementTestIndex();
                 break;
             case 2:
                 displayError("Remove train cards for this player");
-                addTrainCards(-2); // remove
+                removeTrainCards(); // remove
                 mActiveGame.incrementTestIndex();
                 break;
             case 3:
                 displayError("Add dest cards for this player");
-                addDestCards(2); //add
+                addDestCards(); //add
                 mActiveGame.incrementTestIndex();
                 break;
             case 4:
                 displayError("Remove dest cards for this player");
-                addDestCards(-1); // remove
+                removeDestCards(); // remove
                 mActiveGame.incrementTestIndex();
                 break;
             case 5:
                 displayError("Add train cards for other players");
-                addTrainCardsOtherPlayer(17);
+                addTrainCardsOtherPlayer();
                 mActiveGame.incrementTestIndex();
                 break;
-            case 6:
+            /*case 6:
                 displayError("Update trains for other players");
-                removeTrainsOtherPlayer(-10);
+                //removeTrainsOtherPlayer(-10);
                 mActiveGame.incrementTestIndex();
                 break;
             case 7:
                 displayError("Update dest cards for other players");
-                addDestCardsOtherPlayer(4);
+                //addDestCardsOtherPlayer(4);
                 mActiveGame.incrementTestIndex();
                 break;
             case 8:
@@ -228,40 +222,68 @@ public class GamePresenter implements IGamePresenter, Observer{
                 displayError("update dest card deck");
                 updateDestCardDeck();
                 mActiveGame.incrementTestIndex();
-                break;
+                break;*/
             default:
                 break;
         }
     }
 
     private void updatePlayerPoints() {
-
+        mActiveGame.getUserPlayer().setPoints(10);
+    }
+    private void addTrainCards() {
+        TrainCard[] trainCards = { TrainCard.WILD, TrainCard.BLUE };
+        int thisPlayer = mActiveGame.getUserPlayerInt();
+        mActiveGame.drawTrainCards(thisPlayer, 2, trainCards);
     }
 
-    private void addTrainCards(int i) {
-
+    private void addDestCards() {
+        DestinationCard[] destinationCards = {new DestinationCard("Dallas", "New York City", 11), new DestinationCard("Los Angeles", "Miami", 20)};
+        int thisPlayer = mActiveGame.getUserPlayerInt();
+        mActiveGame.drawDestCards(thisPlayer, 2, destinationCards);
     }
 
-    private void addDestCards(int i) {
-
+    private void removeTrainCards() {
+        mActiveGame.discardTrainCards(mActiveGame.getUserPlayerInt(), 2, new int[] {0,1});
     }
 
-    private void addTrainCardsOtherPlayer(int i ) {
-
+    private void removeDestCards() {
+        int thisPlayer = mActiveGame.getUserPlayerInt();
+        int[] cards = { 0, 1 };
+        mActiveGame.discardDestCards(thisPlayer, 2, cards);
     }
 
-    private void removeTrainsOtherPlayer(int i ) {
-        Player p = mActiveGame.getPlayerById(1);
-        p.removeTrains(i);
+    private void addTrainCardsOtherPlayer() {
+        TrainCard[] trainCards = { TrainCard.WILD, TrainCard.BLUE };
+        int thisPlayer = mActiveGame.getUserPlayerInt();
+        if (thisPlayer > 1) {
+            if (mActiveGame.getUserPlayerInt() == 0) {
+
+                mActiveGame.drawTrainCards(1, 2, trainCards);
+            } else {
+                mActiveGame.drawTrainCards(thisPlayer - 1, 2, trainCards);
+
+            }
+
+        }
     }
 
-    private void addDestCardsOtherPlayer(int i) {
-        Player p = mActiveGame.getPlayerById(1);
-        p.addDestCards(i);
+    private void addDestCardsOtherPlayer() {
+        DestinationCard[] cards = {new DestinationCard("Dallas", "New York City", 11), new DestinationCard("Los Angeles", "Miami", 20)};
+        int thisPlayer = mActiveGame.getUserPlayerInt();
+        if (thisPlayer > 1) {
+            if (mActiveGame.getUserPlayerInt() == 0) {
+
+                mActiveGame.drawDestCards(1, 2, cards);
+            } else {
+                mActiveGame.drawDestCards(thisPlayer - 1, 2, cards);
+
+            }
+        }
     }
 
     private void updateFaceUpFaceDownCards() {
-
+        mActiveGame.swapFaceUpCards(new int[] {2,3}, new TrainCard[] {TrainCard.BLACK, TrainCard.BLUE});
     }
 
     private void updateDestCardDeck() {

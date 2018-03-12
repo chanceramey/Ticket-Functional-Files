@@ -15,7 +15,7 @@
         android:layout_gravity="center"/>
 
     <ImageView
-        android:id="@+id/train_deck"
+        android:id="@+id/destination_deck"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_weight="1"
@@ -29,7 +29,7 @@
         android:text="train deck count" />
 
     <ImageView
-        android:id="@+id/destination_deck"
+        android:id="@+id/train_deck"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_weight="1"
