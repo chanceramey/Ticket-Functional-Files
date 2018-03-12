@@ -44,6 +44,7 @@ public class DecksAndCardsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_decks_and_cards, container, false);
         this.mGamePresenter = ((GameActivity)getActivity()).getGamePresenter();
+        mGamePresenter.setDecksAndCardsFragment(this);
         setUpView(v);
 
         return v;
