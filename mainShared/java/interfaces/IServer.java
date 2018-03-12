@@ -30,9 +30,11 @@ public interface IServer {
 
     Object claimRoute(String auth, String gameID, String routeID);
 
-    Object drawTrainCard(String auth, String gameId);
+    Object drawTrainCards(String auth, Integer numberToDraw, String gameId);
 
     Object drawDestinationCards(String auth, String gameId);
 
     Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions);
+
+    Object drawFaceUp(String auth, String gameID, Integer i);
 }
