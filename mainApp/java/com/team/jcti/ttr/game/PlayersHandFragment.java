@@ -33,6 +33,7 @@ public class PlayersHandFragment extends Fragment {
 
     private TextView numCardsText;
     private Button switchCardsButton;
+    private Button testButton;
 
 
     private boolean trainCards;
@@ -44,6 +45,7 @@ public class PlayersHandFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_players_hand, container, false);
         this.mPresenter = (GamePresenter) mClientGameModel.getActivePresenter();
         mPresenter.setPlayersHandFragment(this);
+
 
         cardRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_players_hand);
         cardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -58,6 +60,14 @@ public class PlayersHandFragment extends Fragment {
                 updateCardList();
             }
         });
+        testButton = (Button) v.findViewById(R.id.test_button);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.testButtonClick();
+            }
+        });
+
 
         trainCards = true;
         updateCardList();

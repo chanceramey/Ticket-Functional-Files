@@ -13,6 +13,11 @@
         android:id="@+id/recycler_view_players_hand">
 
     </android.support.v7.widget.RecyclerView>
+    <Button
+        android:id="@+id/test_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test"/>
 
     <LinearLayout
         android:layout_width="0dp"

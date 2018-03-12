@@ -159,7 +159,7 @@ public class BoardFragment extends android.support.v4.app.Fragment {
             mMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
                 @Override
                 public void onPolylineClick(Polyline polyline) {
-                    ((GameActivity)getActivity()).getGamePresenter().claimRoute(polylines.get(polyline).getRouteId());
+                    ((GameActivity)getActivity()).getGamePresenter().claimRoute(polylines.get(polyline).getRouteId()); // do we need this???
                 }
             });
 
@@ -169,6 +169,7 @@ public class BoardFragment extends android.support.v4.app.Fragment {
                     if (railLines.containsValue(marker)) {
                         Polyline polyline = midPointsToRailLines.get(marker);
                         claimRoute(polylines.get(polyline).getRouteId(), playerColor);
+                        ((GameActivity)getActivity()).getGamePresenter().claimRoute(polylines.get(polyline).getRouteId()); // added this
                     }
                     return false;
                 }

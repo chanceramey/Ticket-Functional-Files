@@ -167,4 +167,51 @@ public class GamePresenter implements IGamePresenter{
     public void doCommand(String command) {
 
     }
+
+    public void testButtonClick() {
+        switch (mActiveGame.getTestIndex()) {
+            case 0:
+                displayError("Update player points");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 1:
+                displayError("Add train cards for this player");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 2:
+                displayError("Remove train cards for this player");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 3:
+                displayError("Add dest cards for this player");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 4:
+                displayError("Remove dest cards for this player");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 5:
+                displayError("Add train cards for other players");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 6:
+                displayError("Update trains for other players");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 7:
+                displayError("Update dest cards for other players");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 8:
+                displayError("update face up and face down cards");
+                mActiveGame.incrementTestIndex();
+                break;
+            case 9:
+                displayError("update dest card deck");
+                mActiveGame.incrementTestIndex();
+                break;
+            default:
+                break;
+        }
+    }
 }
