@@ -42,6 +42,7 @@ public class ClientGameModel extends Observable {
     private int turnPosition = 0; // keeps track of who's turn it is by their position in the array
     private TrainCard[] faceUpCards;
     private Player currentPlayer;
+    private int testIndex = 0;
 
     public boolean isMyTurn() {
         return currentPlayer.isTurn();
@@ -182,6 +183,12 @@ public class ClientGameModel extends Observable {
        return players.get(userPlayer);
     }
 
+    public int getTestIndex() {
+        return testIndex;
+    }
+
+    public void incrementTestIndex() {
+        testIndex++;
     public void receiveMessage(GameHistory gameHistory) {
         gameHistory.setChat(true);
         gameHistoryArr.add(gameHistory);
