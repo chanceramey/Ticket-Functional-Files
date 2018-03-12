@@ -3,6 +3,7 @@ package com.team.jcti.ttr.models;
 import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
+import com.team.jcti.ttr.message.MessagePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class ClientGameModel extends Observable {
     private TrainCard[] faceUpCards;
     private Player currentPlayer;
     private int testIndex = 0;
+    private int destDeckSize = 30;
 
     public boolean isMyTurn() {
         return currentPlayer.isTurn();
@@ -88,9 +90,6 @@ public class ClientGameModel extends Observable {
         return players;
     }
 
-    public String getGameId() {
-        return gameId;
-    }
     public boolean isActive() {
         return active;
     }
@@ -166,6 +165,10 @@ public class ClientGameModel extends Observable {
         else {
             player.addDestCards(numCards);
         }
+
+        String user = player.getUser();
+        String message = String.format("***%s drew %d destination cards", user, numCards);
+        gameHistoryArr.add(new GameHistory(user, message));
         activePresenter.update();
     }
 
@@ -187,5 +190,57 @@ public class ClientGameModel extends Observable {
 
     public void incrementTestIndex() {
         testIndex++;
+    }
+    public void receiveMessage(GameHistory gameHistory) {
+        gameHistory.setChat(true);
+        gameHistoryArr.add(gameHistory);
+        if(activePresenter.getClass() == MessagePresenter.class) {
+            activePresenter.update();
+        }
+        else activePresenter.displayError(gameHistory.getUser() + " sent a message!");
+    }
+
+    public void drawTrainCards(Integer player, Integer numberCards, TrainCard[] cards) {
+        Player p = players.get(player);
+        p.addTrainCards(cards);
+        String user = p.getUser();
+
+        String message = String.format("***%s drew %d Train card***", user, numberCards);
+        GameHistory drewCard = new GameHistory(user, message);
+        addGameHistoryObj(drewCard);
+        moveTurnPosition();
+
+        activePresenter.update();
+    }
+
+    public void discardDestCards(Integer player, Integer numCards, int[] pos) {
+        if(numCards == 0) return; //don't do anything if they didnt' discard any cards
+
+        Player p = players.get(player);
+        if (player == userPlayer) {
+            p.removeDestCards(pos);
+        }
+        else {
+            p.removeDestCards(numCards);
+        }
+
+        if(p.isFirstDestPick()){
+            p.setFirstDestPick(); //to false
+        }
+
+        String user = p.getUser();
+        String message = String.format("***%s discarded %d Destination Cards***", user, numCards);
+        gameHistoryArr.add(new GameHistory(user, message));
+
+        activePresenter.update();
+
+    }
+
+    public int getDestDeckSize() {
+        return destDeckSize;
+    }
+
+    public void removeDestCardsFromDeck(int i) {
+        destDeckSize += i;
     }
 }

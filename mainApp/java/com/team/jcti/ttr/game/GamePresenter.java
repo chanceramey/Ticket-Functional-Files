@@ -11,17 +11,20 @@ import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import model.Color;
 import model.DestinationCard;
 import model.Game;
+import model.Player;
 import model.TrainCard;
 
 /**
  * Created by Chance on 3/7/18.
  */
 
-public class GamePresenter implements IGamePresenter{
+public class GamePresenter implements IGamePresenter, Observer{
 
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
@@ -29,6 +32,7 @@ public class GamePresenter implements IGamePresenter{
     private GameActivity mGameActivity;
     private PlayersHandFragment mPlayersHandFragment;
     private BoardFragment mBoardFragment;
+    private DecksAndCardsFragment mDecksAndCardsFragment;
     private ArrayList<String> testCommands = new ArrayList<>();
     private int testNumber = 0;
     private boolean testing = false;
@@ -85,6 +89,10 @@ public class GamePresenter implements IGamePresenter{
         mPlayersHandFragment = frag;
     }
 
+    public void setDecksAndCardsFragment(DecksAndCardsFragment frag) {
+        mDecksAndCardsFragment = frag;
+    }
+
     public void setBoardFragment(BoardFragment frag) { mBoardFragment = frag; }
 
 
@@ -123,7 +131,7 @@ public class GamePresenter implements IGamePresenter{
 
     public int getDestDeckSize() {
 
-        return 30; //checkback not sure best way to implement
+        return mActiveGame.getDestDeckSize(); //checkback not sure best way to implement
     }
 
     public int getTrainDeckSize() {
@@ -133,15 +141,16 @@ public class GamePresenter implements IGamePresenter{
 
     public void onDestDeckClick() {
 
-        mGameActivity.enterDrawDestinationActivity();
+       mServerProxy.drawDestinationCards(mClientModel.getAuthToken(), mActiveGame.getGameID());
     }
 
     public void onTrainDeckClick() {
-        mServerProxy.drawTrainCard(mClientModel.getAuthToken(), mClientModel.getGame().getID());
+        mServerProxy.drawTrainCards(mClientModel.getAuthToken(), 1, mClientModel.getGame().getID());
 
     }
 
     public void onFaceUpClick(int i) {
+        mServerProxy.drawFaceUp(mClientModel.getAuthToken(), mActiveGame.getGameID(), i);
     }
 
     public void testRun(MenuItem item) {
@@ -172,46 +181,95 @@ public class GamePresenter implements IGamePresenter{
         switch (mActiveGame.getTestIndex()) {
             case 0:
                 displayError("Update player points");
+                updatePlayerPoints();
                 mActiveGame.incrementTestIndex();
                 break;
             case 1:
                 displayError("Add train cards for this player");
+                addTrainCards(5); // add
                 mActiveGame.incrementTestIndex();
                 break;
             case 2:
                 displayError("Remove train cards for this player");
+                addTrainCards(-2); // remove
                 mActiveGame.incrementTestIndex();
                 break;
             case 3:
                 displayError("Add dest cards for this player");
+                addDestCards(2); //add
                 mActiveGame.incrementTestIndex();
                 break;
             case 4:
                 displayError("Remove dest cards for this player");
+                addDestCards(-1); // remove
                 mActiveGame.incrementTestIndex();
                 break;
             case 5:
                 displayError("Add train cards for other players");
+                addTrainCardsOtherPlayer(17);
                 mActiveGame.incrementTestIndex();
                 break;
             case 6:
                 displayError("Update trains for other players");
+                removeTrainsOtherPlayer(-10);
                 mActiveGame.incrementTestIndex();
                 break;
             case 7:
                 displayError("Update dest cards for other players");
+                addDestCardsOtherPlayer(4);
                 mActiveGame.incrementTestIndex();
                 break;
             case 8:
                 displayError("update face up and face down cards");
+                updateFaceUpFaceDownCards();
                 mActiveGame.incrementTestIndex();
                 break;
             case 9:
                 displayError("update dest card deck");
+                updateDestCardDeck();
                 mActiveGame.incrementTestIndex();
                 break;
             default:
                 break;
         }
+    }
+
+    private void updatePlayerPoints() {
+
+    }
+
+    private void addTrainCards(int i) {
+
+    }
+
+    private void addDestCards(int i) {
+
+    }
+
+    private void addTrainCardsOtherPlayer(int i ) {
+
+    }
+
+    private void removeTrainsOtherPlayer(int i ) {
+        Player p = mActiveGame.getPlayerById(1);
+        p.removeTrains(i);
+    }
+
+    private void addDestCardsOtherPlayer(int i) {
+        Player p = mActiveGame.getPlayerById(1);
+        p.addDestCards(i);
+    }
+
+    private void updateFaceUpFaceDownCards() {
+
+    }
+
+    private void updateDestCardDeck() {
+        mActiveGame.removeDestCardsFromDeck(5);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        update();
     }
 }

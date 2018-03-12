@@ -65,4 +65,8 @@ public class DestCardDeck {
             deck.add(discarded[i]);
         }
     }
+
+    public int size() {
+        return deck.size();
+    }
 }

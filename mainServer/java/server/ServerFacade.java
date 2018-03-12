@@ -84,19 +84,25 @@ public class ServerFacade implements IServer {
 
     @Override
     public Object drawDestinationCards(String auth, String gameId) {
-        DrawDestCardsService service = new DrawDestCardsService();
+        CardService service = new CardService();
         return service.drawDestinationCards(auth, gameId);
     }
 
     @Override
-    public Object drawTrainCard(String auth, String gameId) {
-        DrawTrainCardService service = new DrawTrainCardService();
-        return service.drawTrainCard(auth, gameId);
+    public Object drawTrainCards(String auth, Integer numberCards, String gameId) {
+        CardService service = new CardService();
+        return service.drawTrainCard(auth, numberCards, gameId);
     }
 
     @Override
     public Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions) {
-        ReturnDestCardsService service = new ReturnDestCardsService();
+        CardService service = new CardService();
         return service.returnDestinationCards(auth, gameId, rejectedCardPositions);
+    }
+
+    @Override
+    public Object drawFaceUp(String auth, String gameID, Integer i) {
+       CardService service = new CardService();
+        return service.drawFaceUp(auth, gameID, i);
     }
 }

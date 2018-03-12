@@ -33,7 +33,6 @@ public class PlayersHandFragment extends Fragment {
 
     private TextView numCardsText;
     private Button switchCardsButton;
-    private Button testButton;
 
 
     private boolean trainCards;
@@ -60,13 +59,7 @@ public class PlayersHandFragment extends Fragment {
                 updateCardList();
             }
         });
-        testButton = (Button) v.findViewById(R.id.test_button);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.testButtonClick();
-            }
-        });
+
 
 
         trainCards = true;

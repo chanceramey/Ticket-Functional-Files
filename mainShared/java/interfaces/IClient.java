@@ -21,8 +21,6 @@ public interface IClient {
 
     public void displayError(String message);
 
-    public void drawTrainCard(Integer player, TrainCard card);
-
     void claimedRoute(Integer player, String routeID);
 
     public void promptRenewSession();
