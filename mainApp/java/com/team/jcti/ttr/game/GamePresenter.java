@@ -11,17 +11,20 @@ import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import model.Color;
 import model.DestinationCard;
 import model.Game;
+import model.Player;
 import model.TrainCard;
 
 /**
  * Created by Chance on 3/7/18.
  */
 
-public class GamePresenter implements IGamePresenter{
+public class GamePresenter implements IGamePresenter, Observer{
 
     private ClientModel mClientModel = ClientModel.getInstance();
     private ServerProxy mServerProxy = ServerProxy.getInstance();
@@ -29,6 +32,7 @@ public class GamePresenter implements IGamePresenter{
     private GameActivity mGameActivity;
     private PlayersHandFragment mPlayersHandFragment;
     private BoardFragment mBoardFragment;
+    private DecksAndCardsFragment mDecksAndCardsFragment;
     private ArrayList<String> testCommands = new ArrayList<>();
     private int testNumber = 0;
     private boolean testing = false;
@@ -85,6 +89,10 @@ public class GamePresenter implements IGamePresenter{
         mPlayersHandFragment = frag;
     }
 
+    public void setDecksAndCardsFragment(DecksAndCardsFragment frag) {
+        mDecksAndCardsFragment = frag;
+    }
+
     public void setBoardFragment(BoardFragment frag) { mBoardFragment = frag; }
 
 
@@ -123,7 +131,7 @@ public class GamePresenter implements IGamePresenter{
 
     public int getDestDeckSize() {
 
-        return 30; //checkback not sure best way to implement
+        return mActiveGame.getDestDeckSize(); //checkback not sure best way to implement
     }
 
     public int getTrainDeckSize() {
@@ -203,7 +211,7 @@ public class GamePresenter implements IGamePresenter{
                 break;
             case 6:
                 displayError("Update trains for other players");
-                removeTrainsOtherPlayer(10);
+                removeTrainsOtherPlayer(-10);
                 mActiveGame.incrementTestIndex();
                 break;
             case 7:
@@ -243,11 +251,13 @@ public class GamePresenter implements IGamePresenter{
     }
 
     private void removeTrainsOtherPlayer(int i ) {
-
+        Player p = mActiveGame.getPlayerById(1);
+        p.removeTrains(i);
     }
 
     private void addDestCardsOtherPlayer(int i) {
-
+        Player p = mActiveGame.getPlayerById(1);
+        p.addDestCards(i);
     }
 
     private void updateFaceUpFaceDownCards() {
@@ -255,6 +265,11 @@ public class GamePresenter implements IGamePresenter{
     }
 
     private void updateDestCardDeck() {
+        mActiveGame.removeDestCardsFromDeck(5);
+    }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        update();
     }
 }

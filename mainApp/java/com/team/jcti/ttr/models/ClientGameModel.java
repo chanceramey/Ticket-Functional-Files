@@ -43,6 +43,7 @@ public class ClientGameModel extends Observable {
     private TrainCard[] faceUpCards;
     private Player currentPlayer;
     private int testIndex = 0;
+    private int destDeckSize = 30;
 
     public boolean isMyTurn() {
         return currentPlayer.isTurn();
@@ -233,5 +234,13 @@ public class ClientGameModel extends Observable {
 
         activePresenter.update();
 
+    }
+
+    public int getDestDeckSize() {
+        return destDeckSize;
+    }
+
+    public void removeDestCardsFromDeck(int i) {
+        destDeckSize += i;
     }
 }
