@@ -189,6 +189,7 @@ public class ClientGameModel extends Observable {
 
     public void incrementTestIndex() {
         testIndex++;
+    }
     public void receiveMessage(GameHistory gameHistory) {
         gameHistory.setChat(true);
         gameHistoryArr.add(gameHistory);

@@ -173,46 +173,88 @@ public class GamePresenter implements IGamePresenter{
         switch (mActiveGame.getTestIndex()) {
             case 0:
                 displayError("Update player points");
+                updatePlayerPoints();
                 mActiveGame.incrementTestIndex();
                 break;
             case 1:
                 displayError("Add train cards for this player");
+                addTrainCards(5); // add
                 mActiveGame.incrementTestIndex();
                 break;
             case 2:
                 displayError("Remove train cards for this player");
+                addTrainCards(-2); // remove
                 mActiveGame.incrementTestIndex();
                 break;
             case 3:
                 displayError("Add dest cards for this player");
+                addDestCards(2); //add
                 mActiveGame.incrementTestIndex();
                 break;
             case 4:
                 displayError("Remove dest cards for this player");
+                addDestCards(-1); // remove
                 mActiveGame.incrementTestIndex();
                 break;
             case 5:
                 displayError("Add train cards for other players");
+                addTrainCardsOtherPlayer(17);
                 mActiveGame.incrementTestIndex();
                 break;
             case 6:
                 displayError("Update trains for other players");
+                removeTrainsOtherPlayer(10);
                 mActiveGame.incrementTestIndex();
                 break;
             case 7:
                 displayError("Update dest cards for other players");
+                addDestCardsOtherPlayer(4);
                 mActiveGame.incrementTestIndex();
                 break;
             case 8:
                 displayError("update face up and face down cards");
+                updateFaceUpFaceDownCards();
                 mActiveGame.incrementTestIndex();
                 break;
             case 9:
                 displayError("update dest card deck");
+                updateDestCardDeck();
                 mActiveGame.incrementTestIndex();
                 break;
             default:
                 break;
         }
+    }
+
+    private void updatePlayerPoints() {
+
+    }
+
+    private void addTrainCards(int i) {
+
+    }
+
+    private void addDestCards(int i) {
+
+    }
+
+    private void addTrainCardsOtherPlayer(int i ) {
+
+    }
+
+    private void removeTrainsOtherPlayer(int i ) {
+
+    }
+
+    private void addDestCardsOtherPlayer(int i) {
+
+    }
+
+    private void updateFaceUpFaceDownCards() {
+
+    }
+
+    private void updateDestCardDeck() {
+
     }
 }
