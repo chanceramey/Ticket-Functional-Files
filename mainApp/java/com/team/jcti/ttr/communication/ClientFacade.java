@@ -146,6 +146,7 @@ public class ClientFacade implements IClient {
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
         mGameModel.drawTrainCards(player, numCards, cards);
+        mGameModel.moveTurnPosition();
 
     }
 
