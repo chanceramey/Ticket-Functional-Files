@@ -67,8 +67,7 @@ public class ClientCommunicator {
     private static void writeString(String str, OutputStream os) throws IOException {
         OutputStreamWriter sw = new OutputStreamWriter(os);
         sw.write(str);
-        sw.flush();
-    }
+        sw.flush();    }
 
     private Object getResult(HttpURLConnection connection) {
         Object result = null;
@@ -104,7 +103,7 @@ public class ClientCommunicator {
         return new Command(CLIENT_TARGET, "displayError", paramTypes, params);
     }
 
-    private static final String SERVER_HOST = "10.24.223.60";//"10.0.2.2";
+    private static final String SERVER_HOST = "192.168.254.242";//"10.0.2.2";
     private static final int SERVER_PORT = 8080;
     private static final String URL_PREFIX = "http://" + SERVER_HOST + ":" + SERVER_PORT;
 }

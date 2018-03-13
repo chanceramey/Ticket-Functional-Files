@@ -241,6 +241,8 @@ public class ClientGameModel extends Observable {
     }
 
     public void removeDestCardsFromDeck(int i) {
-        destDeckSize += i;
+        destDeckSize -= i;
+        activePresenter.update();
+
     }
 }
