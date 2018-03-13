@@ -180,7 +180,9 @@ public class GamePresenter implements IGamePresenter, Observer{
     public void testButtonClick() {
         switch (mActiveGame.getTestIndex()) {
             case 0:
-
+                displayError("Update player points");
+                updatePlayerPoints();
+                mActiveGame.incrementTestIndex();
                 break;
             case 1:
                 displayError("Add train cards for this player");
