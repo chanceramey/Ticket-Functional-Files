@@ -53,6 +53,21 @@ public class ClientGameModel extends Observable {
         currentPlayer.setTurn(myTurn);
     }
 
+    public void claimARoute(Integer player, String routeID) {
+        Player p = players.get(player);
+        p.addRoute(routeID);
+        String user = p.getUser();
+        String message = String.format("***%s claimed a route %s***", user, routeID);
+        GameHistory gameHistory = new GameHistory(user, message);
+        addGameHistoryObj(gameHistory);
+        if(activePresenter.getClass() == GamePresenter.class) {
+            GamePresenter gamePresenter = (GamePresenter) activePresenter;
+            gamePresenter.onClaimRoute(player, routeID);
+
+        }
+        moveTurnPosition();
+        activePresenter.update();
+    }
 
     public void startGame(Game game) {
         this.gameId = game.getID();

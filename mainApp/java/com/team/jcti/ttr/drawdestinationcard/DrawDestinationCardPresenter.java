@@ -69,6 +69,9 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
             rejectedCardPositions[count] = pos+player.getNumDestCards()-3; //checkback
             count++;
         }
+      
+       //mClientGameModel.getUserPlayer().removeDestCards(rejectedCardPositions);
+
 
         if (mClientGameModel.getUserPlayer().isFirstDestPick()) {
             mClientGameModel.turnToast();

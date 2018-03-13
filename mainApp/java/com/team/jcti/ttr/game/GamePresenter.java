@@ -17,6 +17,7 @@ import java.util.Observer;
 import model.Color;
 import model.DestinationCard;
 import model.Game;
+import model.GameHistory;
 import model.Player;
 import model.TrainCard;
 
@@ -227,9 +228,40 @@ public class GamePresenter implements IGamePresenter, Observer{
                 updateDestCardDeck();
                 mActiveGame.incrementTestIndex();
                 break;
+            case 10:
+                displayError("Add Claimed Route");
+                addClaimedRoute();
+                mActiveGame.incrementTestIndex();
+                break;
+            case 11:
+                displayError("Add Chat message");
+                addChatMessage();
+                mActiveGame.incrementTestIndex();
+                break;
+            case 12:
+                displayError("Add Game History Entries");
+                addGameHistoryEntries();
+                mActiveGame.incrementTestIndex();
+                break;
             default:
                 break;
         }}
+
+
+
+    private void addClaimedRoute(){
+        mActiveGame.claimARoute(mActiveGame.getUserPlayerInt(), "from los_angeles to san_francisco");
+    }
+
+    private void addChatMessage(){
+        mActiveGame.receiveMessage(new GameHistory(mClientModel.getUsername(), "This is my test message!"));
+    }
+
+    private void addGameHistoryEntries(){
+        mActiveGame.addGameHistoryObj(new GameHistory(mClientModel.getUsername(), "***here is a game history test item***"));
+        mActiveGame.addGameHistoryObj(new GameHistory(mClientModel.getUsername(), "***here is ANOTHER game history test item***"));
+
+    }
 
     private void updatePlayerPoints() {
         mActiveGame.getUserPlayer().setPoints(10);
@@ -286,8 +318,19 @@ public class GamePresenter implements IGamePresenter, Observer{
     }
 
     private void removeTrainsOtherPlayer(int i) {
-        Player p = mActiveGame.getPlayerById(1);
-        p.removeTrains(i);
+
+        int thisPlayer = mActiveGame.getUserPlayerInt();
+
+        if (mActiveGame.getPlayers().size() > 1) {
+            if (mActiveGame.getUserPlayerInt() == 0) {
+                Player p = mActiveGame.getPlayerById(1);
+                p.removeTrains(i);
+            } else {
+                Player p = mActiveGame.getPlayerById(thisPlayer-1);
+                p.removeTrains(i);
+            }
+        }
+
     }
 
     private void updateFaceUpFaceDownCards() {
