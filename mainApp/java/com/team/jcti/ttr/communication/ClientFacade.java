@@ -55,20 +55,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void claimedRoute(Integer player, String routeID) {
-        IGamePresenter activePresenter = mGameModel.getActivePresenter();
-        Player p = mGameModel.getPlayers().get(player);
-        p.addRoute(routeID);
-        String user = p.getUser();
-        String message = String.format("***%s claimed a route %s***", user, routeID);
-        GameHistory gameHistory = new GameHistory(user, message);
-        mGameModel.addGameHistoryObj(gameHistory);
-        if(activePresenter.getClass() == GamePresenter.class) {
-            GamePresenter gamePresenter = (GamePresenter) activePresenter;
-            gamePresenter.onClaimRoute(player, routeID);
-
-        }
-        mGameModel.moveTurnPosition();
-        activePresenter.update();
+        mGameModel.claimARoute(player, routeID);
     }
 
     @Override
