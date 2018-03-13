@@ -70,6 +70,7 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     @Override
     public void update() {
+        mDecksAndCardsFragment.updateView();
         mPlayersHandFragment.updateCardList();
         mDecksAndCardsFragment.setFaceCardImages(mActiveGame.getFaceUpCards());
     }
@@ -174,9 +175,7 @@ public class GamePresenter implements IGamePresenter, Observer{
     public void testButtonClick() {
         switch (mActiveGame.getTestIndex()) {
             case 0:
-                displayError("Update player points");
-                updatePlayerPoints();
-                mActiveGame.incrementTestIndex();
+
                 break;
             case 1:
                 displayError("Add train cards for this player");
@@ -225,8 +224,7 @@ public class GamePresenter implements IGamePresenter, Observer{
                 break;*/
             default:
                 break;
-        }
-    }
+        }}
 
     private void updatePlayerPoints() {
         mActiveGame.getUserPlayer().setPoints(10);
@@ -287,7 +285,7 @@ public class GamePresenter implements IGamePresenter, Observer{
     }
 
     private void updateDestCardDeck() {
-        mActiveGame.removeDestCardsFromDeck(5);
+        mActiveGame.removeDestCardsFromDeck(3);
     }
 
     @Override

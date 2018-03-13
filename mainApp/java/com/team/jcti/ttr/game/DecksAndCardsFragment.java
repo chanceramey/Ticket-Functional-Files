@@ -87,6 +87,11 @@ public class DecksAndCardsFragment extends Fragment {
 
     }
 
+    public void updateView() {
+        destDeckCount.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
+        trainDeckCount.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
+    }
+
     public void initializeFaceCardViews(View v) {
         // initialize faceUpCard View
         faceUpCardIVs = new ArrayList<>();
