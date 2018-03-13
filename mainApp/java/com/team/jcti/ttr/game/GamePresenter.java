@@ -45,6 +45,9 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     }
 
+    public void makeActivePresenter() {
+        mActiveGame.setActivePresenter(this);
+    }
     public void createTestCases(){
         testCommands.add("Update player points");
         testCommands.add("Add/remove train cards for this player");
@@ -204,14 +207,14 @@ public class GamePresenter implements IGamePresenter, Observer{
                 addTrainCardsOtherPlayer();
                 mActiveGame.incrementTestIndex();
                 break;
-            /*case 6:
+            case 6:
                 displayError("Update trains for other players");
-                //removeTrainsOtherPlayer(-10);
+                removeTrainsOtherPlayer(5);
                 mActiveGame.incrementTestIndex();
                 break;
             case 7:
                 displayError("Update dest cards for other players");
-                //addDestCardsOtherPlayer(4);
+                addDestCardsOtherPlayer();
                 mActiveGame.incrementTestIndex();
                 break;
             case 8:
@@ -223,7 +226,7 @@ public class GamePresenter implements IGamePresenter, Observer{
                 displayError("update dest card deck");
                 updateDestCardDeck();
                 mActiveGame.incrementTestIndex();
-                break;*/
+                break;
             default:
                 break;
         }}
@@ -256,7 +259,7 @@ public class GamePresenter implements IGamePresenter, Observer{
     private void addTrainCardsOtherPlayer() {
         TrainCard[] trainCards = { TrainCard.WILD, TrainCard.BLUE };
         int thisPlayer = mActiveGame.getUserPlayerInt();
-        if (thisPlayer > 1) {
+        if (mActiveGame.getPlayers().size() > 1) {
             if (mActiveGame.getUserPlayerInt() == 0) {
 
                 mActiveGame.drawTrainCards(1, 2, trainCards);
@@ -271,7 +274,7 @@ public class GamePresenter implements IGamePresenter, Observer{
     private void addDestCardsOtherPlayer() {
         DestinationCard[] cards = {new DestinationCard("Dallas", "New York City", 11), new DestinationCard("Los Angeles", "Miami", 20)};
         int thisPlayer = mActiveGame.getUserPlayerInt();
-        if (thisPlayer > 1) {
+        if (mActiveGame.getPlayers().size() > 1) {
             if (mActiveGame.getUserPlayerInt() == 0) {
 
                 mActiveGame.drawDestCards(1, 2, cards);
@@ -280,6 +283,11 @@ public class GamePresenter implements IGamePresenter, Observer{
 
             }
         }
+    }
+
+    private void removeTrainsOtherPlayer(int i) {
+        Player p = mActiveGame.getPlayerById(1);
+        p.removeTrains(i);
     }
 
     private void updateFaceUpFaceDownCards() {

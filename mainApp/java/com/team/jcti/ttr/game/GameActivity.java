@@ -88,7 +88,7 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        mGamePresenter.makeActivePresenter();
     }
 
     @Override
