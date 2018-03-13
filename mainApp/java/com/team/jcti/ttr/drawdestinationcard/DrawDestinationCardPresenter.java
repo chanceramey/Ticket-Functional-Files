@@ -86,10 +86,6 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
 
     }
 
-    @Override
-    public void updateGame(Game game) {
-
-    }
 
     @Override
     public void update() {

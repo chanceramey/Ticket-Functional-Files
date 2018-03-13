@@ -208,10 +208,24 @@ public class ClientGameModel extends Observable {
         String message = String.format("***%s drew %d Train card***", user, numberCards);
         GameHistory drewCard = new GameHistory(user, message);
         addGameHistoryObj(drewCard);
-        moveTurnPosition();
+        //moveTurnPosition();
 
         activePresenter.update();
     }
+
+    public void discardTrainCards(Integer player, Integer numberCards, int[] pos) {
+        Player p = players.get(player);
+        p.removeTrainCards(pos);
+        String user = p.getUser();
+
+        String message = String.format("***%s discarded %d Train Cards***", user, numberCards);
+        GameHistory discarded = new GameHistory(user, message);
+        addGameHistoryObj(discarded);
+
+        activePresenter.update();
+
+    }
+
 
     public void discardDestCards(Integer player, Integer numCards, int[] pos) {
         if(numCards == 0) return; //don't do anything if they didnt' discard any cards
@@ -244,5 +258,20 @@ public class ClientGameModel extends Observable {
         destDeckSize -= i;
         activePresenter.update();
 
+    }
+
+    public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
+        int i = 0;
+        for (int index : pos) {
+            faceUpCards[index] = cards[i];
+            i++;
+        }
+
+        activePresenter.update();
+
+    }
+
+    public int getUserPlayerInt() {
+        return userPlayer;
     }
 }

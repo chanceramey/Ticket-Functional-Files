@@ -166,8 +166,6 @@ public class ClientFacade implements IClient {
 
     @Override
     public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
-
-        GamePresenter presenter = (GamePresenter) mClientModel.getActivePresenter();
-        presenter.updateFaceUpCards(pos, cards);
+        mGameModel.swapFaceUpCards(pos, cards);
     }
 }

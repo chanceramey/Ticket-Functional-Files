@@ -150,4 +150,8 @@ public class Player {
     public void setFirstDestPick() {
         this.firstDestPick = false;
     }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
 }

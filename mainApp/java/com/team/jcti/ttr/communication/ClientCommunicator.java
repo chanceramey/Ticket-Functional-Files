@@ -91,7 +91,7 @@ public class ClientCommunicator {
         Object result = getResult(connection);
         if(result == null) {
             Command[] commands = {createErrorCommand("Could not connect with Server")};
-            result = commands;
+            result = new ResultTransferObject(commands.getClass().getName(), commands);
         }
         return result;
     }
@@ -103,7 +103,8 @@ public class ClientCommunicator {
         return new Command(CLIENT_TARGET, "displayError", paramTypes, params);
     }
 
-    private static final String SERVER_HOST = "192.168.254.242";//"10.0.2.2";
+
+    private static final String SERVER_HOST = "10.0.2.2";
     private static final int SERVER_PORT = 8080;
     private static final String URL_PREFIX = "http://" + SERVER_HOST + ":" + SERVER_PORT;
 }

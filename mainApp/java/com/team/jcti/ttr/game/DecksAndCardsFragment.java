@@ -53,8 +53,9 @@ public class DecksAndCardsFragment extends Fragment {
     public void setUpView(View v) {
 
         // initialize deck views
-        trainCardDeck = (ImageView) v.findViewById(R.id.train_deck);
+
         destinationCardDeck = (ImageView) v.findViewById(R.id.destination_deck);
+        trainCardDeck = (ImageView) v.findViewById(R.id.train_deck);
         destDeckCount = (TextView) v.findViewById(R.id.dest_deck_count);
         trainDeckCount = (TextView) v.findViewById(R.id.train_deck_count);
         destinationCardDeck.setOnClickListener(new View.OnClickListener() {

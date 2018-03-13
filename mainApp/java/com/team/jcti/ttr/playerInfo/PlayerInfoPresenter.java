@@ -27,11 +27,6 @@ public class PlayerInfoPresenter implements IGamePresenter, Observer {
     }
 
     @Override
-    public void updateGame(Game game) {
-
-    }
-
-    @Override
     public void update() {
     }
 

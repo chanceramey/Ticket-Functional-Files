@@ -38,11 +38,6 @@ public class MessagePresenter implements IMessagePresenter, IGamePresenter, Obse
         mActivity.toast(message);
     }
 
-    @Override
-    public void updateGame(Game game) {
-
-    }
-
 
     @Override
     public void update() {
