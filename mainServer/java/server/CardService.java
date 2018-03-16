@@ -17,7 +17,7 @@ import model.TrainCardDeck;
  * Created by Isaak on 3/7/2018.
  */
 
-public class CardService {
+public class CardService extends AbstractService{
 
     private ServerModel mServerModel = ServerModel.getInstance();
     private ClientProxy clientProxy = new ClientProxy();
@@ -30,50 +30,32 @@ public class CardService {
             username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameId);
 
-            boolean success = game.drawDestCards(username);
-
-            if(!success){
-                clientProxy.displayError("No destination cards left.");
-                return new Command[] {clientProxy.getCommand()};
+            if(game.drawDestCards(username)) {
+                return new Command[] {};
+            } else {
+                return displayError("No destination cards left in deck");
             }
 
-            return new Command[] {};
-
-
         } catch (ServerModel.AuthTokenNotFoundException | ServerModel.GameNotFoundException e) {
-            clientProxy.promptRenewSession();
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
+            return promptRenewSession();
         }
     }
 
     public Command[] drawTrainCard(String auth, Integer numberCards, String gameId){
 
-        String username;
         try {
-            username = mServerModel.getUserFromAuth(auth);
+            String username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameId);
 
-            TrainCardDeck trainCardDeck = game.getTrainCardDeck();
-            Player player = game.getPlayerFromUsername(username); //active player? checkback
-
-            TrainCard[] drawnTrainCards = trainCardDeck.drawCards(numberCards);
-
-            if(drawnTrainCards == null){
-                clientProxy.displayError("No train cards left.");
-                Command[] commands = {clientProxy.getCommand()};
-                return commands;
+            if (game.drawTrainCards(username, numberCards)) {
+                return new Command[] {};
+            }
+            else {
+                return displayError("No cards left in deck");
             }
 
-            player.addTrainCards(drawnTrainCards);
-
-            clientProxy.drawTrainCards(player.getId(), drawnTrainCards.length, drawnTrainCards);
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
-
-
         } catch (ServerModel.AuthTokenNotFoundException | ServerModel.GameNotFoundException e) {
-            clientProxy.promptRenewSession();
+            clientProxy.displayError("501 SERVER ERROR");
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
@@ -88,15 +70,10 @@ public class CardService {
             ServerGameModel game = mServerModel.getActiveGame(gameId);
             game.returnDestinationCards(username, rejectedCardPositions);
 
-            DestCardDeck destCardDeck = game.getDestCardDeck();
-            Player player = game.getPlayerFromUsername(username);
-
             return new Command[] {};
 
         } catch (ServerModel.AuthTokenNotFoundException | ServerModel.GameNotFoundException e) {
-            clientProxy.promptRenewSession();
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
+            return promptRenewSession();
         }
 
 
@@ -108,20 +85,13 @@ public class CardService {
         try {
             username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameID);
-            boolean success = game.drawFaceUp(username, i);
-
-            if(!success){
-                clientProxy.displayError("No Train Card in this position");
-                return new Command[] {clientProxy.getCommand()};
-
+            if (game.drawFaceUp(username, i)) {
+                return new Command[] {};
+            } else {
+                return displayError("No Train Card in this position");
             }
-            return new Command[] {};
-
-
         } catch (ServerModel.AuthTokenNotFoundException | ServerModel.GameNotFoundException e) {
-            clientProxy.promptRenewSession();
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
+            return promptRenewSession();
         }
 
     }

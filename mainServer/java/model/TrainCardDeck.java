@@ -70,4 +70,7 @@ public class TrainCardDeck {
     }
 
 
+    public int size() {
+        return deck.size();
+    }
 }

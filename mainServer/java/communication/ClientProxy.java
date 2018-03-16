@@ -1,11 +1,7 @@
 package communication;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import command.Command;
 import interfaces.IClient;
-import model.Color;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
@@ -81,28 +77,28 @@ public class ClientProxy implements IClient {
         this.command = createCommand("receiveMessage", gameHistory);
     }
     @Override
-    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        this.command = createCommand("drawTrainCards", player, numCards, cards);
+    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards, Integer size) {
+        this.command = createCommand("drawTrainCards", player, numCards, cards, size);
     }
 
     @Override
-    public void discardTrainCards(Integer player, Integer numCards, int[] pos) {
-        this.command = createCommand("discardTrainCards", player, numCards, pos);
+    public void discardTrainCards(Integer player, Integer numCards, int[] pos, Integer size) {
+        this.command = createCommand("discardTrainCards", player, numCards, pos, size);
     }
 
     @Override
-    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
-        this.command = createCommand("drawDestCards", player, numCards, cards);
+    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards, Integer size) {
+        this.command = createCommand("drawDestCards", player, numCards, cards, size);
     }
 
     @Override
-    public void discardDestCards(Integer player, Integer numCards, int[] pos) {
-        this.command = createCommand("discardDestCards", player, numCards, pos);
+    public void discardDestCards(Integer player, Integer numCards, int[] pos, Integer size) {
+        this.command = createCommand("discardDestCards", player, numCards, pos, size);
     }
 
     @Override
-    public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
-        this.command = createCommand("swapFaceUpCards", pos, cards);
+    public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer size) {
+        this.command = createCommand("swapFaceUpCards", pos, cards, size);
     }
 
     @Override

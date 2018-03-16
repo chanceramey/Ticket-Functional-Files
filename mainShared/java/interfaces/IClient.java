@@ -43,13 +43,13 @@ public interface IClient {
 
     public void receiveMessage(GameHistory gameHistory);
 
-    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards);
+    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards, Integer deckSize);
 
-    public void discardTrainCards(Integer player, Integer numCards, int[] pos);
+    public void discardTrainCards(Integer player, Integer numCards, int[] pos, Integer deckSize);
 
-    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards);
+    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards, Integer deckSize);
 
-    public void discardDestCards(Integer player, Integer numCards, int[] pos);
+    public void discardDestCards(Integer player, Integer numCards, int[] pos, Integer deckSize);
 
-    public void swapFaceUpCards(int[] pos, TrainCard[] cards);
+    public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer deckSize);
 }

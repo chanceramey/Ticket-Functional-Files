@@ -44,8 +44,8 @@ public class ClientGameModel extends Observable {
     private int turnPosition = 0; // keeps track of who's turn it is by their position in the array
     private TrainCard[] faceUpCards;
     private Player currentPlayer;
-    private int testIndex = 0;
-    private int destDeckSize = 30;
+    private int destDeckSize;
+    private int trainDeckSize;
 
     public boolean isMyTurn() {
         return currentPlayer.isTurn();
@@ -73,6 +73,9 @@ public class ClientGameModel extends Observable {
         gameHistoryPosition = 0;
         currentPlayer = players.get(userPlayer);
         players.get(0).setTurn(true);
+
+        trainDeckSize = 240;
+        destDeckSize = 30;
     }
 
     public IGamePresenter getActivePresenter() {
@@ -145,19 +148,11 @@ public class ClientGameModel extends Observable {
         }
     }
 
-    public void updateFaceUpCards(int[] pos, TrainCard[] newCards) {
-
-        for(int position : pos){
-            faceUpCards[position] = newCards[position];
-        }
-    }
-
     public TrainCard[] getFaceUpCards() {
-
         return faceUpCards;
     }
 
-    public void drawDestCards(Integer playerIndex, Integer numCards, DestinationCard[] cards) {
+    public void drawDestCards(Integer playerIndex, Integer numCards, DestinationCard[] cards, Integer deckSize) {
         Player player = players.get(playerIndex);
         if (playerIndex == userPlayer) {
             player.addDestCards(cards);
@@ -170,6 +165,8 @@ public class ClientGameModel extends Observable {
         String user = player.getUser();
         String message = String.format("***%s drew %d destination cards", user, numCards);
         gameHistoryArr.add(new GameHistory(user, message));
+
+        destDeckSize = deckSize;
         activePresenter.update();
     }
 
@@ -185,13 +182,6 @@ public class ClientGameModel extends Observable {
        return players.get(userPlayer);
     }
 
-    public int getTestIndex() {
-        return testIndex;
-    }
-
-    public void incrementTestIndex() {
-        testIndex++;
-    }
     public void receiveMessage(GameHistory gameHistory) {
         gameHistory.setChat(true);
         gameHistoryArr.add(gameHistory);
@@ -201,7 +191,7 @@ public class ClientGameModel extends Observable {
         else activePresenter.displayError(gameHistory.getUser() + " sent a message!");
     }
 
-    public void drawTrainCards(Integer player, Integer numberCards, TrainCard[] cards) {
+    public void drawTrainCards(Integer player, Integer numberCards, TrainCard[] cards, Integer deckSize) {
         Player p = players.get(player);
         p.addTrainCards(cards);
         String user = p.getUser();
@@ -210,11 +200,12 @@ public class ClientGameModel extends Observable {
         GameHistory drewCard = new GameHistory(user, message);
         addGameHistoryObj(drewCard);
         //moveTurnPosition();
+        trainDeckSize = deckSize;
 
         activePresenter.update();
     }
 
-    public void discardTrainCards(Integer player, Integer numberCards, int[] pos) {
+    public void discardTrainCards(Integer player, Integer numberCards, int[] pos, Integer deckSize) {
         Player p = players.get(player);
         p.removeTrainCards(pos);
         String user = p.getUser();
@@ -223,12 +214,13 @@ public class ClientGameModel extends Observable {
         GameHistory discarded = new GameHistory(user, message);
         addGameHistoryObj(discarded);
 
-        activePresenter.update();
+        trainDeckSize = deckSize;
 
+        activePresenter.update();
     }
 
 
-    public void discardDestCards(Integer player, Integer numCards, int[] pos) {
+    public void discardDestCards(Integer player, Integer numCards, int[] pos, Integer deckSize) {
         if(numCards == 0) return; //don't do anything if they didnt' discard any cards
 
         Player p = players.get(player);
@@ -247,32 +239,33 @@ public class ClientGameModel extends Observable {
         String message = String.format("***%s discarded %d Destination Cards***", user, numCards);
         gameHistoryArr.add(new GameHistory(user, message));
 
-        activePresenter.update();
+        this.destDeckSize = deckSize;
 
+        activePresenter.update();
     }
 
     public int getDestDeckSize() {
         return destDeckSize;
     }
 
+    public int getTrainDeckSize() { return trainDeckSize; }
+
     public void removeDestCardsFromDeck(int i) {
         destDeckSize -= i;
         activePresenter.update();
     }
 
-    public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
+    public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer deckSize) {
         int i = 0;
         for (int index : pos) {
             faceUpCards[index] = cards[i];
             i++;
         }
 
+        this.trainDeckSize = deckSize;
+
         activePresenter.update();
 
-    }
-
-    public int getUserPlayerInt() {
-        return userPlayer;
     }
 
     public Board getBoard() {

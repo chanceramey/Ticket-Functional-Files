@@ -59,7 +59,7 @@ public class ServerGameModel {
             p.addTrainCards(drawnTrainCards);
 
             //Create command for player drawing 4 train cards and add to game history
-            clientProxy.drawTrainCards(p.getId(), 4, drawnTrainCards);
+            clientProxy.drawTrainCards(p.getId(), 4, drawnTrainCards, trainCardDeck.size());
             gameHistoryCommands.add(clientProxy.getCommand());
 
             //Draw 3 destination cards from deck
@@ -67,7 +67,7 @@ public class ServerGameModel {
             p.addDestCards(drawnDestCards);
 
             //Create command for player drawing 3 train cards and add to game history
-            clientProxy.drawDestCards(p.getId(), 3, drawnDestCards);
+            clientProxy.drawDestCards(p.getId(), 3, drawnDestCards, destCardDeck.size());
             gameHistoryCommands.add(clientProxy.getCommand());
         }
 
@@ -80,7 +80,7 @@ public class ServerGameModel {
         }
 
         //add the swappingFaceUpTrainCards to the gameHistroyCommand list
-        clientProxy.swapFaceUpCards(pos, faceUpTrainCards);
+        clientProxy.swapFaceUpCards(pos, faceUpTrainCards, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
     }
 
@@ -152,12 +152,12 @@ public class ServerGameModel {
         Player p = getPlayerFromUsername(username);
         p.addTrainCard(faceUpTrainCards[i]);
 
-        clientProxy.drawTrainCards(p.getId(), 1, new TrainCard[] {faceUpTrainCards[1]});
+        clientProxy.drawTrainCards(p.getId(), 1, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
         faceUpTrainCards[i] = trainCardDeck.drawCard();
 
-        clientProxy.swapFaceUpCards(new int[] {i}, new TrainCard[] {faceUpTrainCards[i]});
+        clientProxy.swapFaceUpCards(new int[] {i}, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
         return true;
@@ -169,7 +169,7 @@ public class ServerGameModel {
         Player p = getPlayerFromUsername(username);
         destCardDeck.discard(p.removeDestCards(rejectedCardPositions));
 
-        clientProxy.discardDestCards(p.getId(), rejectedCardPositions.length, rejectedCardPositions);
+        clientProxy.discardDestCards(p.getId(), rejectedCardPositions.length, rejectedCardPositions, destCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
     }
 
@@ -182,7 +182,22 @@ public class ServerGameModel {
 
         p.addDestCards(drawnCards);
 
-        clientProxy.drawDestCards(p.getId(), drawnCards.length, drawnCards);
+        clientProxy.drawDestCards(p.getId(), drawnCards.length, drawnCards, destCardDeck.size());
+        gameHistoryCommands.add(clientProxy.getCommand());
+
+        return true;
+    }
+
+    public boolean drawTrainCards(String username, Integer numberCards) {
+
+        if(trainCardDeck.size() == 0) return false;
+
+        Player p = getPlayerFromUsername(username);
+        TrainCard[] drawnTrainCards = trainCardDeck.drawCards(1);
+
+        p.addTrainCards(drawnTrainCards);
+
+        clientProxy.drawTrainCards(p.getId(), drawnTrainCards.length, drawnTrainCards, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
         return true;

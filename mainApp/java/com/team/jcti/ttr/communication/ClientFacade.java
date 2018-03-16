@@ -1,26 +1,19 @@
 package com.team.jcti.ttr.communication;
 
-import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
-import com.team.jcti.ttr.drawdestinationcard.IDrawDestinationCardPresenter;
-import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.gamelist.GameListPresenter;
 import com.team.jcti.ttr.gamelobby.GameLobbyPresenter;
 import com.team.jcti.ttr.login.LoginPresenter;
-import com.team.jcti.ttr.message.IMessagePresenter;
-import com.team.jcti.ttr.message.MessagePresenter;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
-import model.Player;
 import model.TrainCard;
 
 /**
@@ -131,29 +124,29 @@ public class ClientFacade implements IClient {
     }
 
     @Override
-    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards) {
-        mGameModel.drawTrainCards(player, numCards, cards);
+    public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards, Integer deckSize) {
+        mGameModel.drawTrainCards(player, numCards, cards, deckSize);
         mGameModel.moveTurnPosition();
 
     }
 
     @Override
-    public void discardTrainCards(Integer player, Integer numCards, int[] pos) {
+    public void discardTrainCards(Integer player, Integer numCards, int[] pos, Integer deckSize) {
 
     }
 
     @Override
-    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards) {
-        mGameModel.drawDestCards(player, numCards, cards);
+    public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards, Integer deckSize) {
+        mGameModel.drawDestCards(player, numCards, cards, deckSize);
     }
 
     @Override
-    public void discardDestCards(Integer player, Integer numCards, int[] pos) {
-        mGameModel.discardDestCards(player, numCards, pos);
+    public void discardDestCards(Integer player, Integer numCards, int[] pos, Integer deckSize) {
+        mGameModel.discardDestCards(player, numCards, pos, deckSize);
     }
 
     @Override
-    public void swapFaceUpCards(int[] pos, TrainCard[] cards) {
-        mGameModel.swapFaceUpCards(pos, cards);
+    public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer deckSize) {
+        mGameModel.swapFaceUpCards(pos, cards, deckSize);
     }
 }

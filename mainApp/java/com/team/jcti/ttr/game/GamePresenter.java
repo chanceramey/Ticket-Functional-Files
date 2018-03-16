@@ -112,7 +112,7 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     public int getTrainDeckSize() {
 
-        return 560; //checkback not sure best way to implement, thought Tanner might've had an idea
+        return mActiveGame.getTrainDeckSize(); //checkback not sure best way to implement, thought Tanner might've had an idea
     }
 
     public void onDestDeckClick() {
