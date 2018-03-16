@@ -55,7 +55,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void claimedRoute(Integer player, String routeID) {
-        mGameModel.claimARoute(player, routeID);
+        mGameModel.claimRoute(player, routeID);
     }
 
     @Override

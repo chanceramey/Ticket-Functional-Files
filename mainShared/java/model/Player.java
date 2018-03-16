@@ -119,10 +119,6 @@ public class Player {
         return discarded;
     }
 
-    public void setNumTrains(int numTrains) {
-        this.numTrains = numTrains;
-    }
-
     public void removeTrains(int i) { numTrains -= i;}
 
     public void removeDestCards(int num) { this.numDestCards -= num; }

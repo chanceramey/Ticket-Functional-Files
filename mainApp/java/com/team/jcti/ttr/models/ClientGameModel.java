@@ -4,6 +4,7 @@ import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.message.MessagePresenter;
+import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class ClientGameModel extends Observable {
 
     boolean active = false;
 
+    private Board board = null;
     private List<Player> players;
     private String gameId;
     private int userPlayer;
@@ -51,22 +53,6 @@ public class ClientGameModel extends Observable {
 
     public void setMyTurn(boolean myTurn) {
         currentPlayer.setTurn(myTurn);
-    }
-
-    public void claimARoute(Integer player, String routeID) {
-        Player p = players.get(player);
-        p.addRoute(routeID);
-        String user = p.getUser();
-        String message = String.format("***%s claimed a route %s***", user, routeID);
-        GameHistory gameHistory = new GameHistory(user, message);
-        addGameHistoryObj(gameHistory);
-        if(activePresenter.getClass() == GamePresenter.class) {
-            GamePresenter gamePresenter = (GamePresenter) activePresenter;
-            gamePresenter.onClaimRoute(player, routeID);
-
-        }
-        moveTurnPosition();
-        activePresenter.update();
     }
 
     public void startGame(Game game) {
@@ -287,5 +273,23 @@ public class ClientGameModel extends Observable {
 
     public int getUserPlayerInt() {
         return userPlayer;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void initializeBoard(String JSONCities, String JSONRoutes) {
+        this.board = new Board(JSONCities, JSONRoutes);
+    }
+
+    public void claimRoute(Integer player, String routeID) {
+        Player p = players.get(player);
+        board.claimRoute(p, routeID);
+        String user = p.getUser();
+        String message = String.format("***%s claimed a route %s***", user, routeID);
+        GameHistory gameHistory = new GameHistory(user, message);
+        addGameHistoryObj(gameHistory);
+        activePresenter.update();
     }
 }
