@@ -25,7 +25,6 @@ public class PlayerInfoActivity extends AppCompatActivity {
     private PlayerInfoPresenter mPresenter;
     private RecyclerView mRecycler;
     private Adapter adapter;
-    private ClientGameModel mClientGameModel;
     public int COUNTER = 0;
     public List<Player> players;
 
@@ -36,8 +35,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
         mPresenter = new PlayerInfoPresenter(this);
         mRecycler = (RecyclerView) findViewById(R.id.recycler_view_player_info);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mClientGameModel = ClientGameModel.getInstance();
-        players = mClientGameModel.getPlayers();
+        players = mPresenter.getPlayers();
         adapter = new Adapter(this, players);
         mRecycler.setAdapter(adapter);
     }

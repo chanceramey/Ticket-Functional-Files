@@ -8,6 +8,7 @@ public class DestinationCard {
     private int pointValue;
     private String srcCity;
     private String destCity;
+    private boolean finished = false;
 
     public DestinationCard(String destCity, String srcCity, int pointValue) {
         this.destCity = destCity;
@@ -25,6 +26,14 @@ public class DestinationCard {
 
     public String getDestCity() {
         return destCity;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean val) {
+        finished = val;
     }
 
     @Override
