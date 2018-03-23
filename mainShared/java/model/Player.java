@@ -23,9 +23,13 @@ public class Player {
 
     private boolean firstDestPick;
 
-    private int points;
+    private int points = 0;
 
     private List<String> claimedRouteIds;
+
+    private int routePoints = 0; // points from claiming routes
+    private int destCardPoints = 0; // points from completing destinations
+    private int unfinishedDestCardPoints = 0; // points lost from not completing destinations
 
     public int getNumTrains() {
         return numTrains;
@@ -150,4 +154,37 @@ public class Player {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public int getRoutePoints() {
+        routePoints = 0;
+        try {
+            for (String i: claimedRouteIds) {
+                // r = something.getRouteById(i);
+                // int length = r.getLength();
+                // switch (length):   pts 1-1 2-2 3-4 4-7 5-10 6-15
+            }
+            return routePoints;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+    // call this at the end of the game and it will filter through the dest cards and add to destCardPoints, and unfinishedDestCardPoints
+    public void calculateDestCardPoints() {
+        destCardPoints = 0;
+        for (DestinationCard d : destCards) {
+            if (d.isFinished()) {
+                destCardPoints += d.getPointValue();
+            } else {
+                unfinishedDestCardPoints -= d.getPointValue();
+            }
+        }
+    }
+
+
+    public int getDestCardPoints() { return destCardPoints; }
+
+    public int getUnfinishedDestCardPoints() { return unfinishedDestCardPoints; }
 }
