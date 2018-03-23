@@ -58,9 +58,7 @@ public class DecksAndCardsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(mGamePresenter.verifyTurn()){
-                    mGamePresenter.onDestDeckClick();
-                }
+                mGamePresenter.onDestDeckClick();
             }
         });
 
@@ -68,9 +66,7 @@ public class DecksAndCardsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(mGamePresenter.verifyTurn()){
-                    mGamePresenter.onTrainDeckClick();
-                }
+                mGamePresenter.onTrainDeckClick();
             }
         });
 
@@ -105,7 +101,7 @@ public class DecksAndCardsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    if(mGamePresenter.verifyTurn()){
+                    if(INDEX < mGamePresenter.getFaceUpCards().length){
                         mGamePresenter.onFaceUpClick(INDEX);
                     }
                 }

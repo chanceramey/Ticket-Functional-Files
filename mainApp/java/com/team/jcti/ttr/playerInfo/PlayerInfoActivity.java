@@ -20,6 +20,7 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 import model.Player;
+import model.StateType;
 
 public class PlayerInfoActivity extends AppCompatActivity {
     private PlayerInfoPresenter mPresenter;
@@ -114,7 +115,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
             numDestCards.setText(Integer.toString(p.getNumDestCards()));
             setColor();
 
-            if (p.isTurn()) {
+            if (p.getState() == StateType.TURN_STATE) {
                 turn.setText("Yes");
             } else  {
                 turn.setText("No");

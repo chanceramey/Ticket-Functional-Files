@@ -47,6 +47,10 @@ public class ServerGameModel {
             Player player = new Player(playerName, colors[playerNumber], playerNumber);
             players.add(player);
             userIndexMap.put(playerName, playerNumber);
+            if(playerNumber == 0){
+                player.setState(StateType.TURN_STATE);
+                player.setTurn(true);
+            }
             playerNumber++;
         }
     }
@@ -79,8 +83,11 @@ public class ServerGameModel {
             pos[i] = i;
         }
 
-        //add the swappingFaceUpTrainCards to the gameHistroyCommand list
+        //add the swappingFaceUpTrainCards to the gameHistoryCommand list
         clientProxy.swapFaceUpCards(pos, faceUpTrainCards, trainCardDeck.size());
+        gameHistoryCommands.add(clientProxy.getCommand());
+
+        clientProxy.updateState(players.get(0).getId(), StateType.TURN_STATE);
         gameHistoryCommands.add(clientProxy.getCommand());
     }
 
@@ -140,6 +147,8 @@ public class ServerGameModel {
         userPlayer.addRoute(routeID);
         clientProxy.claimedRoute(userPlayer.getId(), routeID);
         gameHistoryCommands.add(clientProxy.getCommand());
+
+        setNextTurn();
     }
 
     public DestCardDeck getDestCardDeck(){
@@ -158,6 +167,13 @@ public class ServerGameModel {
         clientProxy.drawTrainCards(p.getId(), 1, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
+        if(faceUpTrainCards[i] == TrainCard.WILD || p.getState() == StateType.ONE_TRAIN_PICKED_STATE){
+            setNextTurn();
+        }
+        else{
+            p.setState(StateType.ONE_TRAIN_PICKED_STATE);
+        }
+
         faceUpTrainCards[i] = trainCardDeck.drawCard();
 
         clientProxy.swapFaceUpCards(new int[] {i}, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
@@ -167,9 +183,16 @@ public class ServerGameModel {
     }
 
     public void returnDestinationCards(String username, int[] rejectedCardPositions) {
+        Player p = getPlayerFromUsername(username);
+        if(!p.isFirstDestPick()){
+            setNextTurn();
+        }
+        else {
+            p.setFirstDestPick();
+        }
+
         if (rejectedCardPositions.length == 0) return;
 
-        Player p = getPlayerFromUsername(username);
         destCardDeck.discard(p.removeDestCards(rejectedCardPositions));
 
         clientProxy.discardDestCards(p.getId(), rejectedCardPositions.length, rejectedCardPositions, destCardDeck.size());
@@ -200,9 +223,45 @@ public class ServerGameModel {
 
         p.addTrainCards(drawnTrainCards);
 
+        if(p.getState() == StateType.ONE_TRAIN_PICKED_STATE){
+            setNextTurn();
+        }
+        else{
+            p.setState(StateType.ONE_TRAIN_PICKED_STATE);
+        }
+
         clientProxy.drawTrainCards(p.getId(), drawnTrainCards.length, drawnTrainCards, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
         return true;
+    }
+
+    public void setNextTurn(){
+
+        Player p;
+        for(int i = 0; i < players.size(); i++){
+
+            p = players.get(i);
+            if(p.isTurn()){
+                p.setTurn(false);
+                p.setState(StateType.NOT_TURN_STATE);
+
+                if(i == players.size()-1){
+                    players.get(0).setTurn(true);
+                    players.get(0).setState(StateType.TURN_STATE);
+
+                    clientProxy.updateState(players.get(0).getId(), StateType.TURN_STATE);
+                    gameHistoryCommands.add(clientProxy.getCommand());
+                }
+                else{
+                    players.get(i+1).setTurn(true);
+                    players.get(i+1).setState(StateType.TURN_STATE);
+
+                    clientProxy.updateState(players.get(i+1).getId(), StateType.TURN_STATE);
+                    gameHistoryCommands.add(clientProxy.getCommand());
+                }
+                return;
+            }
+        }
     }
 }

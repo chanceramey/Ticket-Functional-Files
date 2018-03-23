@@ -10,6 +10,10 @@ import com.team.jcti.ttr.models.City;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 import com.team.jcti.ttr.models.Route;
+import com.team.jcti.ttr.state.NotTurnState;
+import com.team.jcti.ttr.state.OneTrainPickedState;
+import com.team.jcti.ttr.state.State;
+import com.team.jcti.ttr.state.TurnState;
 import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
 import model.Player;
+import model.StateType;
 import model.TrainCard;
 
 /**
@@ -39,11 +44,13 @@ public class GamePresenter implements IGamePresenter, Observer{
     private BoardFragment mBoardFragment;
     private DecksAndCardsFragment mDecksAndCardsFragment;
     private Route selectedRoute;
+    private State state;
 
 
     public GamePresenter(GameActivity gameActivity){
         mActiveGame.setActivePresenter(this);
         this.mGameActivity = gameActivity;
+        this.state = mActiveGame.getState();
     }
 
     public void makeActivePresenter() {
@@ -121,12 +128,6 @@ public class GamePresenter implements IGamePresenter, Observer{
         return mActiveGame.isFirstTurn();
     }
 
-    public boolean verifyTurn() {
-        return (mActiveGame.isMyTurn());
-    }
-
-    //ike
-
     public TrainCard[] getFaceUpCards(){
 
         return mActiveGame.getFaceUpCards();
@@ -134,22 +135,27 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     public int getDestDeckSize() {
 
-        return mActiveGame.getDestDeckSize(); //checkback not sure best way to implement
+        return mActiveGame.getDestDeckSize();
     }
 
     public int getTrainDeckSize() {
 
-        return mActiveGame.getTrainDeckSize(); //checkback not sure best way to implement, thought Tanner might've had an idea
+        return mActiveGame.getTrainDeckSize();
     }
 
     public void onDestDeckClick() {
 
-       mServerProxy.drawDestinationCards(mClientModel.getAuthToken(), mActiveGame.getGameID());
+        state.drawDestinationCards();
     }
 
     public void onTrainDeckClick() {
-        mServerProxy.drawTrainCards(mClientModel.getAuthToken(), 1, mClientModel.getGame().getID());
 
+        state.drawFromTrainDeck();
+    }
+
+    public void onFaceUpClick(int pos) {
+
+        state.drawFaceUpTrainCard(pos);
     }
 
     public Collection<City> getCities() {
@@ -158,10 +164,6 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     public Collection<Route> getRoutes() {
         return mActiveGame.getBoard().getRoutes();
-    }
-
-    public void onFaceUpClick(int i) {
-        mServerProxy.drawFaceUp(mClientModel.getAuthToken(), mActiveGame.getGameID(), i);
     }
 
 
@@ -180,6 +182,10 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     public int getNumCards(TrainCard card) {
         return mActiveGame.getPlayersNumTrainCards(card);
+    }
+
+    public void setState(State state){
+        this.state = state;
     }
 
 }
