@@ -38,6 +38,7 @@ public class GamePresenter implements IGamePresenter, Observer{
     private PlayersHandFragment mPlayersHandFragment;
     private BoardFragment mBoardFragment;
     private DecksAndCardsFragment mDecksAndCardsFragment;
+    private Route selectedRoute;
 
 
     public GamePresenter(GameActivity gameActivity){
@@ -50,7 +51,33 @@ public class GamePresenter implements IGamePresenter, Observer{
     }
 
     public void claimRoute(String routeId) {
-        mServerProxy.claimRoute(mClientModel.getAuthToken(), mClientModel.getGame().getID(), routeId);
+        Route route = mActiveGame.getRouteFromID(routeId);
+        if(route == null) {
+            mGameActivity.toast("Route already claimed by a player.");
+            return;
+        }
+
+        this.selectedRoute = route;
+        if (route.getTrainCardColor() == TrainCard.WILD) {
+            mGameActivity.toast("Select train card color to claim this route");
+            mPlayersHandFragment.startSelectionState();
+            return;
+        }
+
+        claimRouteWithColor(route.getTrainCardColor());
+
+    }
+
+    public void claimRouteWithColor(TrainCard color) {
+        if (selectedRoute == null) return;
+        int[] cardPos = mActiveGame.getClaimingCards(selectedRoute.getLength(), color);
+        if (cardPos == null) {
+            mGameActivity.toast("You do not have enough cards to claim this route");
+            return;
+        }
+
+        mServerProxy.claimRoute(mClientModel.getAuthToken(), mActiveGame.getGameID(), selectedRoute.getRouteId(), cardPos);
+        selectedRoute = null;
     }
 
     @Override
@@ -82,8 +109,8 @@ public class GamePresenter implements IGamePresenter, Observer{
     public void setBoardFragment(BoardFragment frag) { mBoardFragment = frag; }
 
 
-    public List<TrainCard> getPlayerTrainCards() {
-        return mActiveGame.getPlayersTrainCards();
+    public int getPlayerTrainCardsSize() {
+        return mActiveGame.getPlayersTrainCards().size();
     }
 
     public List<DestinationCard> getPlayerDestCards() {
@@ -150,4 +177,9 @@ public class GamePresenter implements IGamePresenter, Observer{
     public void initializeBoard(String jsonCities, String jsonRoutes) {
         mActiveGame.initializeBoard(jsonCities, jsonRoutes);
     }
+
+    public int getNumCards(TrainCard card) {
+        return mActiveGame.getPlayersNumTrainCards(card);
+    }
+
 }

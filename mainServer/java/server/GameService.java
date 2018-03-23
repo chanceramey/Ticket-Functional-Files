@@ -39,7 +39,7 @@ public class GameService extends AbstractService {
         }
     }
 
-    public Command[] claimRoute(String auth, String gameID, String routeID) {
+    public Command[] claimRoute(String auth, String gameID, String routeID, int[] cardPos) {
         String user;
         try {
             user = mServerModel.getUserFromAuth(auth);
@@ -50,7 +50,7 @@ public class GameService extends AbstractService {
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
 
-            gameModel.claimRoute(user, routeID);
+            gameModel.claimRoute(user, routeID, cardPos);
 
         } catch (ServerModel.GameNotFoundException e) {
             return displayError("Could Not Find Game");

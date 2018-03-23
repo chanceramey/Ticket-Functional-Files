@@ -132,7 +132,7 @@ public class ClientFacade implements IClient {
 
     @Override
     public void discardTrainCards(Integer player, Integer numCards, int[] pos, Integer deckSize) {
-
+        mGameModel.discardTrainCards(player, numCards, pos, deckSize);
     }
 
     @Override

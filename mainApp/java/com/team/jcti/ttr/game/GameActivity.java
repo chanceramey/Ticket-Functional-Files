@@ -107,7 +107,7 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
     }
 
     public void toast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 }

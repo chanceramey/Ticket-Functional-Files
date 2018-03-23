@@ -131,10 +131,13 @@ public class ServerGameModel {
         return commands;
     }
 
-    public void claimRoute(String user, String routeID) {
+    public void claimRoute(String user, String routeID, int[] cardPos) {
         Player userPlayer = getPlayerFromUsername(user);
-        userPlayer.addRoute(routeID);
+        trainCardDeck.discard(userPlayer.removeTrainCards(cardPos));
+        clientProxy.discardTrainCards(userPlayer.getId(), cardPos.length, cardPos, trainCardDeck.size());
+        gameHistoryCommands.add(clientProxy.getCommand());
 
+        userPlayer.addRoute(routeID);
         clientProxy.claimedRoute(userPlayer.getId(), routeID);
         gameHistoryCommands.add(clientProxy.getCommand());
     }

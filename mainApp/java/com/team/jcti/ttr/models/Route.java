@@ -22,6 +22,7 @@ import model.TrainCard;
 public class Route {
 
     private int routeColor;
+    private TrainCard trainCardColor;
     private String routeId;
     private String srcCity;
     private String destCity;
@@ -30,8 +31,9 @@ public class Route {
     private int length;
     private Route pairedRoute;
 
-    public Route(int routeColor, String routeId, String srcCity, String destCity, int length) {
-        this.routeColor = routeColor;
+    public Route(TrainCard color, String routeId, String srcCity, String destCity, int length) {
+        this.trainCardColor = color;
+        this.routeColor = Util.getColorCode(color);
         this.routeId = routeId;
         this.srcCity = srcCity;
         this.destCity = destCity;
@@ -39,8 +41,9 @@ public class Route {
         this.pairedRoute = null;
     }
 
-    public Route(int double_color, String routeId, String srcCity, String destCity, int length, Route pairedRoute) {
-        this.routeColor = double_color;
+    public Route(TrainCard double_color, String routeId, String srcCity, String destCity, int length, Route pairedRoute) {
+        this.trainCardColor = double_color;
+        this.routeColor = Util.getColorCode(double_color);
         this.routeId = routeId;
         this.srcCity = srcCity;
         this.destCity = destCity;
@@ -57,6 +60,8 @@ public class Route {
     public int getRouteColor() {
         return routeColor;
     }
+
+    public TrainCard getTrainCardColor() {return trainCardColor; }
 
     public String getRouteId() {
         return routeId;
@@ -89,13 +94,13 @@ public class Route {
             JSONArray routesArray = new JSONArray(JSONRoutes);
             for (int i = 0; i < routesArray.length(); i++) {
                 JSONObject thisObject = routesArray.getJSONObject(i);
-                int color = Util.getColorCode(TrainCard.valueOf(thisObject.getString("color")));
+                TrainCard color = TrainCard.valueOf(thisObject.getString("color"));
 
                 Route route = new Route(color, getRouteID(thisObject), thisObject.getString("from"),
                                         thisObject.getString("to"), thisObject.getInt("cost"));
                 routes.add(route);
                 if (thisObject.has("double_color")) {
-                    int double_color = Util.getColorCode(TrainCard.valueOf(thisObject.getString("double_color")));
+                    TrainCard double_color = TrainCard.valueOf(thisObject.getString("double_color"));
 
                     Route double_route = new Route(double_color, route.getRouteId().concat(" (alt)"),
                                                     route.getSrcCity(), route.getDestCity(),

@@ -1,8 +1,11 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tjense25 on 2/24/18.
@@ -16,6 +19,7 @@ public class Player {
 
     private int numTrainCards;
     private List<TrainCard> trainCards;
+    private Map<TrainCard, Integer> trainCardCounts;
     private int numDestCards;
     private List<DestinationCard> destCards;
     private int numTrains;
@@ -42,6 +46,10 @@ public class Player {
         this.id = id;
 
         this.trainCards = new ArrayList<>();
+        this.trainCardCounts = new HashMap<>();
+        for (TrainCard card : TrainCard.values()) {
+            trainCardCounts.put(card, 0);
+        }
         this.destCards = new ArrayList<>();
         this.claimedRouteIds = new ArrayList<>();
         this.numTrains = 45;
@@ -77,7 +85,12 @@ public class Player {
     }
 
     public void addTrainCards(TrainCard[] cards) {
-        Collections.addAll(trainCards, cards);
+        for (TrainCard card : cards) {
+            trainCards.add(card);
+            int updatedCount = trainCardCounts.get(card) + 1;
+            trainCardCounts.remove(card);
+            trainCardCounts.put(card, updatedCount);
+        }
         this.numTrainCards = trainCards.size();
     }
     public void addTrainCard(TrainCard card) {
@@ -91,10 +104,16 @@ public class Player {
 
     public TrainCard[] removeTrainCards(int[] pos) {
         TrainCard[] discarded = new TrainCard[pos.length];
-        for (int i = 0; i < pos.length; i++) {
+        Arrays.sort(pos);
+        for (int i = pos.length - 1; i >= 0; i--) {
             discarded[i] = trainCards.remove(pos[i]);
         }
         this.numTrainCards = trainCards.size();
+        for (TrainCard card : discarded) {
+            int updatedCount = trainCardCounts.get(card) - 1;
+            trainCardCounts.remove(card);
+            trainCardCounts.put(card, updatedCount);
+        }
         return discarded;
     }
 
@@ -187,4 +206,30 @@ public class Player {
     public int getDestCardPoints() { return destCardPoints; }
 
     public int getUnfinishedDestCardPoints() { return unfinishedDestCardPoints; }
+
+    public int getCountOfCardType(TrainCard card) {
+        return trainCardCounts.get(card);
+    }
+
+    public int[] getRouteClaimingCards(int length, TrainCard color) {
+        int[] cardPos = new int[length];
+        int total = 0;
+        for (int i = 0; i < trainCards.size(); i++) {
+            if (trainCards.get(i) == color) {
+                cardPos[total] = i;
+                total++;
+            }
+            if (total == length) return cardPos;
+        }
+
+        for (int i = 0; i < trainCards.size(); i++) {
+            if (trainCards.get(i) == TrainCard.WILD) {
+                cardPos[total] = i;
+                total++;
+            }
+            if (total == length) return cardPos;
+        }
+
+        return null;
+    }
 }
