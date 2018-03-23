@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +100,8 @@ public class Player {
 
     public TrainCard[] removeTrainCards(int[] pos) {
         TrainCard[] discarded = new TrainCard[pos.length];
-        for (int i = 0; i < pos.length; i++) {
+        Arrays.sort(pos);
+        for (int i = pos.length - 1; i >= 0; i--) {
             discarded[i] = trainCards.remove(pos[i]);
         }
         this.numTrainCards = trainCards.size();
@@ -170,5 +172,27 @@ public class Player {
 
     public int getCountOfCardType(TrainCard card) {
         return trainCardCounts.get(card);
+    }
+
+    public int[] getRouteClaimingCards(int length, TrainCard color) {
+        int[] cardPos = new int[length];
+        int total = 0;
+        for (int i = 0; i < trainCards.size(); i++) {
+            if (trainCards.get(i) == color) {
+                cardPos[total] = i;
+                total++;
+            }
+            if (total == length) return cardPos;
+        }
+
+        for (int i = 0; i < trainCards.size(); i++) {
+            if (trainCards.get(i) == TrainCard.WILD) {
+                cardPos[total] = i;
+                total++;
+            }
+            if (total == length) return cardPos;
+        }
+
+        return null;
     }
 }

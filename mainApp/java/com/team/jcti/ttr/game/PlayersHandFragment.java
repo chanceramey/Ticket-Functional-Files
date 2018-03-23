@@ -38,7 +38,7 @@ public class PlayersHandFragment extends Fragment {
     private TextView numCardsText;
     private Button switchCardsButton;
 
-
+    private boolean selectionState;
     private boolean trainCards;
 
 
@@ -59,14 +59,21 @@ public class PlayersHandFragment extends Fragment {
         switchCardsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                trainCards = !trainCards;
-                updateCardList();
+                if(selectionState) {
+                    selectionState = false;
+                    updateCardList();
+                }
+                else {
+                    trainCards = !trainCards;
+                    updateCardList();
+                }
             }
         });
 
 
 
         trainCards = true;
+        selectionState = false;
         updateCardList();
 
         return v;
@@ -76,7 +83,7 @@ public class PlayersHandFragment extends Fragment {
         int numCards = 0;
         if(trainCards) {
              List<TrainCard> cards = new ArrayList<TrainCard>(Arrays.asList(TrainCard.values()));
-             numCards = cards.size();
+             numCards = mPresenter.getPlayerTrainCardsSize();
              adapter = new TrainCardAdapter(getActivity(), cards);
              switchCardsButton.setText("View Destination Cards");
         } else {
@@ -88,6 +95,16 @@ public class PlayersHandFragment extends Fragment {
         cardRecyclerView.setAdapter(adapter);
         numCardsText.setText(String.format("Number of Cards: %d", numCards));
 
+    }
+
+    public void startSelectionState() {
+        selectionState = true;
+        List<TrainCard> cards = new ArrayList<TrainCard>(Arrays.asList(TrainCard.values()));
+        int numCards = mPresenter.getPlayerTrainCardsSize();
+        adapter = new TrainCardAdapter(getActivity(), cards);
+        switchCardsButton.setText("Cancel Route Selection");
+        cardRecyclerView.setAdapter(adapter);
+        numCardsText.setText("Choose a Train Card Color to select this route");
     }
 
     class TrainCardAdapter extends RecyclerView.Adapter<TrainCardHolder> {
@@ -121,18 +138,28 @@ public class PlayersHandFragment extends Fragment {
     class TrainCardHolder extends RecyclerView.ViewHolder {
 
         private TextView mTextView;
+        private TrainCard mTrainCard;
 
         public TrainCardHolder(View view) {
             super(view);
             mTextView = (TextView) view.findViewById(R.id.card_image_view);
+            mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.claimRouteWithColor(mTrainCard);
+                    selectionState = false;
+                }
+            });
         }
 
 
 
         void bind(TrainCard card) {
+            this.mTrainCard = card;
             Drawable drawable = getResources().getDrawable(Util.getTrainCardDrawable(card));
             mTextView.setBackground(drawable);
-            mTextView.setText(mPresenter.getNumCards(card));
+            mTextView.setTextSize(50);
+            mTextView.setText(Integer.toString(mPresenter.getNumCards(card)));
         }
 
 

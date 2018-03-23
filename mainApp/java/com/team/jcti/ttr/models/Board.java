@@ -91,4 +91,9 @@ public class Board {
         claimedRoutes.put(routeID, p.getId());
         routes.get(routeID).setColor(color);
     }
+
+    public Route getRouteFromID(String routeId) {
+        if(claimedRoutes.containsKey(routeId)) return null;
+        return routes.get(routeId);
+    }
 }

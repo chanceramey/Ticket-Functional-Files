@@ -291,4 +291,12 @@ public class ClientGameModel extends Observable {
         Player p = getUserPlayer();
         return p.getCountOfCardType(card);
     }
+
+    public Route getRouteFromID(String routeId) {
+        return board.getRouteFromID(routeId);
+    }
+
+    public int[] getClaimingCards(int length, TrainCard color) {
+        return players.get(userPlayer).getRouteClaimingCards(length, color);
+    }
 }
