@@ -150,4 +150,8 @@ public class GamePresenter implements IGamePresenter, Observer{
     public void initializeBoard(String jsonCities, String jsonRoutes) {
         mActiveGame.initializeBoard(jsonCities, jsonRoutes);
     }
+
+    public int getNumCards(TrainCard card) {
+        return mActiveGame.getPlayersNumTrainCards(card);
+    }
 }

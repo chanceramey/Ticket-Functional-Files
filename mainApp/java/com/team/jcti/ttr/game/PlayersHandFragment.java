@@ -1,6 +1,8 @@
 package com.team.jcti.ttr.game;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -18,6 +20,8 @@ import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.utils.Util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import model.DestinationCard;
@@ -71,7 +75,7 @@ public class PlayersHandFragment extends Fragment {
     public void updateCardList() {
         int numCards = 0;
         if(trainCards) {
-             List<TrainCard> cards = mPresenter.getPlayerTrainCards();
+             List<TrainCard> cards = new ArrayList<TrainCard>(Arrays.asList(TrainCard.values()));
              numCards = cards.size();
              adapter = new TrainCardAdapter(getActivity(), cards);
              switchCardsButton.setText("View Destination Cards");
@@ -116,18 +120,19 @@ public class PlayersHandFragment extends Fragment {
 
     class TrainCardHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mImageView;
+        private TextView mTextView;
 
         public TrainCardHolder(View view) {
             super(view);
-            mImageView = (ImageView) view.findViewById(R.id.card_image_view);
+            mTextView = (TextView) view.findViewById(R.id.card_image_view);
         }
 
 
 
         void bind(TrainCard card) {
-            int drawable = Util.getTrainCardDrawable(card);
-            mImageView.setImageResource(drawable);
+            Drawable drawable = getResources().getDrawable(Util.getTrainCardDrawable(card));
+            mTextView.setBackground(drawable);
+            mTextView.setText(mPresenter.getNumCards(card));
         }
 
 
@@ -165,17 +170,18 @@ public class PlayersHandFragment extends Fragment {
 
     class DestCardHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mImageView;
+        private TextView mImageView;
 
 
         public DestCardHolder(View view) {
             super(view);
-            mImageView = (ImageView) view.findViewById(R.id.card_image_view);
+            mImageView = (TextView) view.findViewById(R.id.card_image_view);
         }
 
 
         void bind(DestinationCard item) {
-            mImageView.setImageResource(R.drawable.tempdestcard);
+            mImageView.setText(item.toString());
+            mImageView.setBackgroundColor(Color.argb(100,0,0,255));
         }
     }
 

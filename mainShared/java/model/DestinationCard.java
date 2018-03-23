@@ -29,6 +29,13 @@ public class DestinationCard {
 
     @Override
     public String toString() {
-        return String.format("DestCard: {src: %s, dest: %s, points: %d}", srcCity, destCity, pointValue);
+        StringBuilder sb = new StringBuilder();
+        sb.append("From: ");
+        sb.append(srcCity);
+        sb.append("\nTo: ");
+        sb.append(destCity);
+        sb.append("\nValue: ");
+        sb.append(pointValue);
+        return sb.toString();
     }
 }

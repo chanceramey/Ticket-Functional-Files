@@ -2,7 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tjense25 on 2/24/18.
@@ -16,6 +18,7 @@ public class Player {
 
     private int numTrainCards;
     private List<TrainCard> trainCards;
+    private Map<TrainCard, Integer> trainCardCounts;
     private int numDestCards;
     private List<DestinationCard> destCards;
     private int numTrains;
@@ -38,6 +41,10 @@ public class Player {
         this.id = id;
 
         this.trainCards = new ArrayList<>();
+        this.trainCardCounts = new HashMap<>();
+        for (TrainCard card : TrainCard.values()) {
+            trainCardCounts.put(card, 0);
+        }
         this.destCards = new ArrayList<>();
         this.claimedRouteIds = new ArrayList<>();
         this.numTrains = 45;
@@ -73,7 +80,12 @@ public class Player {
     }
 
     public void addTrainCards(TrainCard[] cards) {
-        Collections.addAll(trainCards, cards);
+        for (TrainCard card : cards) {
+            trainCards.add(card);
+            int updatedCount = trainCardCounts.get(card) + 1;
+            trainCardCounts.remove(card);
+            trainCardCounts.put(card, updatedCount);
+        }
         this.numTrainCards = trainCards.size();
     }
     public void addTrainCard(TrainCard card) {
@@ -91,6 +103,11 @@ public class Player {
             discarded[i] = trainCards.remove(pos[i]);
         }
         this.numTrainCards = trainCards.size();
+        for (TrainCard card : discarded) {
+            int updatedCount = trainCardCounts.get(card) - 1;
+            trainCardCounts.remove(card);
+            trainCardCounts.put(card, updatedCount);
+        }
         return discarded;
     }
 
@@ -149,5 +166,9 @@ public class Player {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public int getCountOfCardType(TrainCard card) {
+        return trainCardCounts.get(card);
     }
 }

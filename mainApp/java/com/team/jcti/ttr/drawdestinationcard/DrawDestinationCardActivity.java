@@ -23,9 +23,7 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
     private IDrawDestinationCardPresenter drawDestinationCardPresenter;
     private Button submitButton;
     private List<Integer> chosenCards;
-    private List<ImageView> cardImages;
-    private List<TextView> cardTexts;
-
+    private List<TextView> cardImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +34,11 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
 
         chosenCards = new ArrayList<>();
         cardImages = new ArrayList<>();
-        cardTexts = new ArrayList<>();
 
-        cardImages.add((ImageView) findViewById(R.id.destination_option_one));
-        cardImages.add((ImageView) findViewById(R.id.destination_option_two));
-        cardImages.add((ImageView) findViewById(R.id.destination_option_three));
+        cardImages.add((TextView) findViewById(R.id.destination_option_one));
+        cardImages.add((TextView) findViewById(R.id.destination_option_two));
+        cardImages.add((TextView) findViewById(R.id.destination_option_three));
         setImageViews();
-
-        cardTexts.add((TextView) findViewById(R.id.destination_text_one));
-        cardTexts.add((TextView) findViewById(R.id.destination_text_two));
-        cardTexts.add((TextView) findViewById(R.id.destination_text_three));
-        setTextViews();
 
         submitButton = (Button) findViewById(R.id.submit_button);
         submitButton.setEnabled(false);
@@ -80,14 +72,12 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
             }
         });
 
-        setTextViews();
         setImageViews();
 
     }
 
     public void enterGameActivity() {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     private List<Integer> getRejectedDestCards() {
@@ -103,13 +93,13 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
 
     private void handleImageClick(int imageNum) {
 
-        ImageView selectedImage = cardImages.get(imageNum);
+        TextView selectedCard = cardImages.get(imageNum);
 
         if(!chosenCards.contains(imageNum)) {
-            selectedImage.setBackgroundColor(Color.argb(100,0,0,255));
+            selectedCard.setBackgroundColor(Color.MAGENTA);
         }
         else {
-            selectedImage.setBackgroundColor(Color.argb(0,0,0,0));
+            selectedCard.setBackgroundColor(Color.argb(100,0,0,255));
         }
 
 
@@ -131,17 +121,6 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
         }
     }
 
-    private void setTextViews() {
-
-        List<DestinationCard> destDeck = drawDestinationCardPresenter.getCards();
-        for(int i = 0; i < 3; i++){
-
-            if(destDeck.size() > i){
-
-                cardTexts.get(i).setText(destDeck.get(i).getSrcCity() + " to " + destDeck.get(i).getDestCity());
-            }
-        }
-    }
 
     @Override
     public void toast(String message) {
@@ -150,19 +129,21 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
 
     private void setImageViews() {
 
-        for(int i = 0; i < 3; i++){
+        List<DestinationCard> destDeck = drawDestinationCardPresenter.getCards();
+        for(int i = 0; i < destDeck.size(); i++){
 
             if(drawDestinationCardPresenter.getCards().size() > i){
-                cardImages.get(i).setImageResource(R.drawable.tempdestcard);
+                cardImages.get(i).setText(destDeck.get(i).toString());
+                cardImages.get(i).setBackgroundColor(Color.argb(100,0,0,255));
             }
             else{
-                cardImages.get(i).setImageResource(android.R.color.transparent);
+                cardImages.get(i).setBackgroundColor(Color.TRANSPARENT);
+                cardImages.get(i).setText("");
             }
         }
     }
 
     public void update() {
         setImageViews();
-        setTextViews();
     }
 }

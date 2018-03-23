@@ -175,7 +175,8 @@ public class ClientGameModel extends Observable {
     }
 
     public List<DestinationCard> getUsersDestCard() {
-       return players.get(userPlayer).getDestCards();
+       List<DestinationCard> destCards = players.get(userPlayer).getDestCards();
+        return destCards.subList(destCards.size() - 3, destCards.size());
     }
 
     public Player getUserPlayer() {
@@ -284,5 +285,10 @@ public class ClientGameModel extends Observable {
         GameHistory gameHistory = new GameHistory(user, message);
         addGameHistoryObj(gameHistory);
         activePresenter.update();
+    }
+
+    public int getPlayersNumTrainCards(TrainCard card) {
+        Player p = getUserPlayer();
+        return p.getCountOfCardType(card);
     }
 }
