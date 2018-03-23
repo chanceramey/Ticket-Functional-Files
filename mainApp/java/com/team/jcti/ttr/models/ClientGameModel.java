@@ -284,16 +284,20 @@ public class ClientGameModel extends Observable {
             this.state = new OneTrainPickedState((GamePresenter) activePresenter);
         }
 
-    public Route getRouteFromID(String routeId) {
-        return board.getRouteFromID(routeId);
         if(player == userPlayer){
             activePresenter.setState(this.state);
             activePresenter.displayError("It's your turn");
         }
     }
 
+    public Route getRouteFromID(String routeId) {
+        return board.getRouteFromID(routeId);
+    }
+
     public int[] getClaimingCards(int length, TrainCard color) {
         return players.get(userPlayer).getRouteClaimingCards(length, color);
+    }
+
     public State getState(){
         return state;
     }

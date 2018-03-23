@@ -185,6 +185,8 @@ public class Player {
     }
 
     public StateType getState(){
+        return state;
+    }
 
     // call this at the end of the game and it will filter through the dest cards and add to destCardPoints, and unfinishedDestCardPoints
     public void calculateDestCardPoints() {
@@ -196,10 +198,12 @@ public class Player {
                 unfinishedDestCardPoints -= d.getPointValue();
             }
         }
-        return state;
+
     }
 
     public void setState(StateType state){
+        this.state = state;
+    }
 
     public int getDestCardPoints() { return destCardPoints; }
 
@@ -207,7 +211,6 @@ public class Player {
 
     public int getCountOfCardType(TrainCard card) {
         return trainCardCounts.get(card);
-        this.state = state;
     }
 
     public int[] getRouteClaimingCards(int length, TrainCard color) {
@@ -228,11 +231,14 @@ public class Player {
             }
             if (total == length) return cardPos;
         }
+
+        return null;
+    }
+
     public boolean isTurn(){
         return turn;
     }
 
-        return null;
     public void setTurn(boolean turn){
         this.turn = turn;
     }

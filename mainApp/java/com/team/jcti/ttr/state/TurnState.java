@@ -51,7 +51,7 @@ public class TurnState implements State{
 
     @Override
     public void claimRoute(String routeId) {
-        mServerProxy.claimRoute(mClientModel.getAuthToken(), mClientModel.getGame().getID(), routeId);
+        //mServerProxy.claimRoute(mClientModel.getAuthToken(), mClientModel.getGame().getID(), routeId); comeback needs fix
         gamePresenter.setState(new NotTurnState(gamePresenter));
     }
 }

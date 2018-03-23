@@ -158,8 +158,6 @@ public class GamePresenter implements IGamePresenter, Observer{
         state.drawFaceUpTrainCard(pos);
     }
 
-    }
-
     public Collection<City> getCities() {
         return mActiveGame.getBoard().getCities();
     }
@@ -184,6 +182,8 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     public int getNumCards(TrainCard card) {
         return mActiveGame.getPlayersNumTrainCards(card);
+    }
+
     public void setState(State state){
         this.state = state;
     }
