@@ -109,7 +109,7 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Object drawDestinationCards(String auth, String gameId) { //ikes
+    public Object drawDestinationCards(String auth, String gameId) {
         Object[] params = {auth, gameId};
         String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
         Command command = new Command(SERVER_TARGET, "drawDestinationCards", paramTypes, params);
@@ -118,7 +118,7 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Object drawTrainCards(String auth, Integer numberCards, String gameId) { //ikes
+    public Object drawTrainCards(String auth, Integer numberCards, String gameId) {
         Object[] params = {auth, numberCards, gameId};
         String[] paramTypes = {auth.getClass().getName(), numberCards.getClass().getName(), gameId.getClass().getName()};
         Command command = new Command(SERVER_TARGET, "drawTrainCards", paramTypes, params);

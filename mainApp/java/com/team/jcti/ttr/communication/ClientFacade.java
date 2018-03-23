@@ -14,6 +14,7 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.StateType;
 import model.TrainCard;
 
 /**
@@ -126,7 +127,6 @@ public class ClientFacade implements IClient {
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards, Integer deckSize) {
         mGameModel.drawTrainCards(player, numCards, cards, deckSize);
-        mGameModel.moveTurnPosition();
 
     }
 
@@ -148,5 +148,10 @@ public class ClientFacade implements IClient {
     @Override
     public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer deckSize) {
         mGameModel.swapFaceUpCards(pos, cards, deckSize);
+    }
+
+    @Override
+    public void updateState(Integer player, StateType state) {
+        mGameModel.updateState(player, state);
     }
 }

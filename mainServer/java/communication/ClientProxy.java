@@ -5,6 +5,7 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.StateType;
 import model.TrainCard;
 
 /**
@@ -99,6 +100,11 @@ public class ClientProxy implements IClient {
     @Override
     public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer size) {
         this.command = createCommand("swapFaceUpCards", pos, cards, size);
+    }
+
+    @Override
+    public void updateState(Integer player, StateType state) {
+        this.command = createCommand("updateState", player, state);
     }
 
     @Override

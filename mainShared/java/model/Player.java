@@ -23,7 +23,6 @@ public class Player {
     private int numDestCards;
     private List<DestinationCard> destCards;
     private int numTrains;
-    private boolean turn = false; // if it is this player's turn or not
 
     private boolean firstDestPick;
 
@@ -34,6 +33,8 @@ public class Player {
     private int routePoints = 0; // points from claiming routes
     private int destCardPoints = 0; // points from completing destinations
     private int unfinishedDestCardPoints = 0; // points lost from not completing destinations
+    private StateType state;
+    private boolean turn;
 
     public int getNumTrains() {
         return numTrains;
@@ -54,6 +55,8 @@ public class Player {
         this.claimedRouteIds = new ArrayList<>();
         this.numTrains = 45;
         firstDestPick = true;
+        state = StateType.NOT_TURN_STATE;
+        turn = false;
     }
 
     public int getId() {
@@ -78,10 +81,6 @@ public class Player {
 
     public List<String> getRoutesClaimed() {
         return claimedRouteIds;
-    }
-
-    public boolean isTurn() {
-        return turn;
     }
 
     public void addTrainCards(TrainCard[] cards) {
@@ -115,10 +114,6 @@ public class Player {
             trainCardCounts.put(card, updatedCount);
         }
         return discarded;
-    }
-
-    public void setTurn(boolean b) {
-        turn = b;
     }
 
     public void removeTrainCards(int num) {
@@ -189,6 +184,7 @@ public class Player {
         }
     }
 
+    public StateType getState(){
 
     // call this at the end of the game and it will filter through the dest cards and add to destCardPoints, and unfinishedDestCardPoints
     public void calculateDestCardPoints() {
@@ -200,8 +196,10 @@ public class Player {
                 unfinishedDestCardPoints -= d.getPointValue();
             }
         }
+        return state;
     }
 
+    public void setState(StateType state){
 
     public int getDestCardPoints() { return destCardPoints; }
 
@@ -209,6 +207,7 @@ public class Player {
 
     public int getCountOfCardType(TrainCard card) {
         return trainCardCounts.get(card);
+        this.state = state;
     }
 
     public int[] getRouteClaimingCards(int length, TrainCard color) {
@@ -229,7 +228,12 @@ public class Player {
             }
             if (total == length) return cardPos;
         }
+    public boolean isTurn(){
+        return turn;
+    }
 
         return null;
+    public void setTurn(boolean turn){
+        this.turn = turn;
     }
 }
