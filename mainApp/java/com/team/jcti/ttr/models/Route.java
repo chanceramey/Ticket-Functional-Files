@@ -30,6 +30,7 @@ public class Route {
     private LatLng dest;
     private int length;
     private Route pairedRoute;
+    private int pointValue;
 
     public Route(TrainCard color, String routeId, String srcCity, String destCity, int length) {
         this.trainCardColor = color;
@@ -39,6 +40,7 @@ public class Route {
         this.destCity = destCity;
         this.length = length;
         this.pairedRoute = null;
+        this.setPointValue();
     }
 
     public Route(TrainCard double_color, String routeId, String srcCity, String destCity, int length, Route pairedRoute) {
@@ -49,6 +51,7 @@ public class Route {
         this.destCity = destCity;
         this.length = length;
         this.pairedRoute = pairedRoute;
+        this.setPointValue();
     }
 
     public void setPairedRoute(Route r) { this.pairedRoute = r; }
@@ -135,5 +138,35 @@ public class Route {
 
     public void setColor(int color) {
         this.routeColor = color;
+    }
+
+    public void setPointValue() {
+        switch (length){
+            case 1:
+                pointValue = 1;
+                break;
+            case 2:
+                pointValue = 2;
+                break;
+            case 3:
+                pointValue = 4;
+                break;
+            case 4:
+                pointValue = 7;
+                break;
+            case 5:
+                pointValue = 10;
+                break;
+            case 6:
+                pointValue = 15;
+                break;
+            default:
+                pointValue = 0;
+                break;
+        }
+    }
+
+    public int getPointValue() {
+        return pointValue;
     }
 }

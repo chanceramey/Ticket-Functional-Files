@@ -173,9 +173,7 @@ public class Player {
         routePoints = 0;
         try {
             for (String i: claimedRouteIds) {
-                // r = something.getRouteById(i);
-                // int length = r.getLength();
-                // switch (length):   pts 1-1 2-2 3-4 4-7 5-10 6-15
+
             }
             return routePoints;
         } catch (Exception e) {
