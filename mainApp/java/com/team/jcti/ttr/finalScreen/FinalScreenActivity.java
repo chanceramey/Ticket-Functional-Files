@@ -86,6 +86,7 @@ public class FinalScreenActivity extends AppCompatActivity {
         private TextView destPoints;
         private TextView unfinishedDestPoints;
         private TextView totalPoints;
+        private TextView longestPath;
         private Player player;
 
 
@@ -96,6 +97,7 @@ public class FinalScreenActivity extends AppCompatActivity {
             destPoints = (TextView) view.findViewById(R.id.final_destination);
             unfinishedDestPoints = (TextView) view.findViewById(R.id.final_unfinished_dest);
             totalPoints = (TextView) view.findViewById(R.id.final_total);
+            longestPath = (TextView) view.findViewById(R.id.final_longest_path);
         }
 
         @Override
@@ -110,7 +112,9 @@ public class FinalScreenActivity extends AppCompatActivity {
             destPoints.setText(Integer.toString(p.getDestCardPoints()));
             unfinishedDestPoints.setText(Integer.toString(p.getUnfinishedDestCardPoints()));
             totalPoints.setText(Integer.toString(p.getPoints()));
-            // add longest path
+//            if (p.hasLongestPath()) {        //
+//                longestPath.setText(10);
+//            }
         }
 
     }

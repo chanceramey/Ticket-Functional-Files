@@ -25,6 +25,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.2"/>
     <TextView
+        android:id="@+id/final_longest_path"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <TextView
         android:id="@+id/final_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
