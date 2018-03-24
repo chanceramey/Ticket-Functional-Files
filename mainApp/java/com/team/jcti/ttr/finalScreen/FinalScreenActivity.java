@@ -106,10 +106,11 @@ public class FinalScreenActivity extends AppCompatActivity {
             p.calculateDestCardPoints(); // this will calculate the finished and unfinished dest card points
             this.player = p;
             playerName.setText(p.getUser());
-            routePoints.setText(Integer.toString(p.getRoutePoints()));
+            routePoints.setText(Integer.toString(mPresenter.getRoutePoints(p.getRoutesClaimed())));
             destPoints.setText(Integer.toString(p.getDestCardPoints()));
             unfinishedDestPoints.setText(Integer.toString(p.getUnfinishedDestCardPoints()));
             totalPoints.setText(Integer.toString(p.getPoints()));
+            // add longest path
         }
 
     }

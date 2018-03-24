@@ -3,6 +3,7 @@ package com.team.jcti.ttr.finalScreen;
 import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientGameModel;
+import com.team.jcti.ttr.models.Route;
 import com.team.jcti.ttr.state.State;
 
 import java.util.List;
@@ -38,6 +39,19 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
             }
         }
         return winner.getUser();
+    }
+
+    public int getRoutePoints(List<String> routes) {
+        if (routes.size() <= 0) {
+            return 0;
+        }
+        int points = 0;
+        Route r;
+        for (String s : routes) {
+            r = mClientGameModel.getRouteFromID(s);
+            points += r.getPointValue();
+        }
+        return points;
     }
 
     @Override
