@@ -37,6 +37,9 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
             case R.id.action_scoreboard:
                 startActivity(new Intent(this, PlayerInfoActivity.class));
                 return true;
+            case R.id.temp_actions:
+                calculateLongestRoute();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -98,6 +101,11 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
 
         toast(sbr.toString());
 
+    }
+
+    public void calculateLongestRoute(){
+        mClientGameModel.calulateLongestRouteWinner();
+        toast(String.valueOf(mClientGameModel.getLengthOfLongestPath()));
     }
 
     @Override

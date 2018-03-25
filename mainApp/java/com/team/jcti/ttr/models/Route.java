@@ -140,7 +140,22 @@ public class Route {
         this.routeColor = color;
     }
 
-    public void setPointValue() {
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass() != Route.class) {
+            return false;
+        }
+
+        Route otherRoute = (Route) o;
+
+        if (otherRoute.getSrcCity() == this.getSrcCity() && otherRoute.getDestCity() == this.getDestCity()) {
+            return true;
+        }
+
+        return false;
+    }
+  
+  public void setPointValue() {
         switch (length){
             case 1:
                 pointValue = 1;
