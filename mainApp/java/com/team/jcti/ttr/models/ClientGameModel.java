@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.models;
 
+import com.google.android.gms.games.Players;
 import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
@@ -7,7 +8,9 @@ import com.team.jcti.ttr.message.MessagePresenter;
 import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 import model.Color;
@@ -46,6 +49,15 @@ public class ClientGameModel extends Observable {
     private Player currentPlayer;
     private int destDeckSize;
     private int trainDeckSize;
+
+    // Longest path or destination card calculation related
+    private Map<Player, List<Route>> mEachPlayersLongestPath = new HashMap<>();
+    private Map<Player, List<String>> mEachPlayersDistinctCities = new HashMap<>();
+    private Map<Player, List<DestinationCard>> mEachPlayersDestinationCards = new HashMap<>();
+    private Map<Player, List<Route>> mAllClaimedRoutes = new HashMap<>();
+    private Map<String, Route> mAllRoutes;
+    private int mLengthOfLongestPath = 0;
+    // until here
 
     public boolean isMyTurn() {
         return currentPlayer.isTurn();
@@ -272,6 +284,10 @@ public class ClientGameModel extends Observable {
         return board;
     }
 
+    public int getLengthOfLongestPath() {
+        return mLengthOfLongestPath;
+    }
+
     public void initializeBoard(String JSONCities, String JSONRoutes) {
         this.board = new Board(JSONCities, JSONRoutes);
     }
@@ -285,4 +301,236 @@ public class ClientGameModel extends Observable {
         addGameHistoryObj(gameHistory);
         activePresenter.update();
     }
+
+    // Longest Path Related
+    public void endGameRouteCalcSetup() {
+
+        //create a map from Player to routesIds
+        mAllRoutes = this.getBoard().getIdtoRouteMap();
+        mEachPlayersDestinationCards = new HashMap<>();
+        mEachPlayersDistinctCities = new HashMap<>();
+        mAllClaimedRoutes = new HashMap<>();
+
+        for (Player p : players) {
+
+            // create a map from Player to DestinationCards
+            mEachPlayersDestinationCards.put(p, p.getDestCards());
+
+            //fill mAllClaimedRoutes
+            ArrayList<Route> thisPlayersRoutes = new ArrayList<>();
+            //create an empty array list for storing distinct cities
+            mEachPlayersDistinctCities.put(p, new ArrayList<String>());
+            // loop through routeIds for this player
+            for (String routeId: p.getRoutesClaimed()){
+                // get the route from the route id
+                Route thisRoute = mAllRoutes.get(routeId);
+                //if this route contains any cities that are not touched by other routes claimed by this player, save them. They are endpoints
+                addCitiesIfDistinct(p, thisRoute);
+
+                // add this Route to this players list of routes
+                thisPlayersRoutes.add(thisRoute);
+            }
+
+            //add this players list of routes to map of Player to Routes (GameModel member variable)
+            mAllClaimedRoutes.put(p, thisPlayersRoutes);
+        }
+
+    }
+
+    // Longest Path Related
+    public void makeSureSetupIsDone() {
+        if (mAllRoutes == null) {
+            this.endGameRouteCalcSetup();
+        }
+    }
+
+
+    // Longest Path Related
+     public Player calulateLongestRouteWinner() {
+
+        // makeSureSetupIsDone();
+         endGameRouteCalcSetup();
+
+        //loop through the players in the game and find their longest route
+         for (Player p: players) {
+
+             List<String> thisPlayersDistinctCities = mEachPlayersDistinctCities.get(p);
+
+             //recurse through the routes beginning at the (distinct cities)
+             for (String city : thisPlayersDistinctCities) {
+                 longestRouteHelper(p, city, new ArrayList<Route>(), 0);
+             }
+         }
+
+         return getLongestPathWinner();
+     }
+
+    // Longest Path Related
+    private void longestRouteHelper(Player p, String currentCity, List<Route> currentPath, int length){
+
+        //look at the city at the end of that route and see if there is another route with that city
+        List<Route> unSeenRoutesWithThisCity = playersOtherRoutesContainingThisCity(p, currentCity, currentPath);
+        if (unSeenRoutesWithThisCity.size() == 0) {
+            //end of path
+            System.out.println("No routes with this city found, end of path");
+            if (length > getLengthOfPath(mEachPlayersLongestPath.get(p))) {
+                mEachPlayersLongestPath.remove(p);
+                mEachPlayersLongestPath.put(p, currentPath);
+            }
+            return;
+        }
+
+        for (Route unSeenRoute : unSeenRoutesWithThisCity) {
+            //go to the opposite end (the other city)
+            String oppositeCity = getOppositeCity(currentCity, unSeenRoute);
+
+            //keep track of the routes that are visited in a duplicated path list
+            List<Route> duplicatePath = new ArrayList<>();
+            for (Route r : currentPath) {
+                duplicatePath.add(r);
+            }
+            duplicatePath.add(unSeenRoute);
+            int thisLength = length + unSeenRoute.getLength();
+            longestRouteHelper(p, oppositeCity, duplicatePath, thisLength);
+        }
+
+        //TODO: check to make sure all routes we checked, if not, there may be a path with loops
+        //TODO: also make to add branches together if there are no duplicates
+    }
+
+    private Player getLongestPathWinner() {
+        Player winner =  null;
+        for (Map.Entry<Player, List<Route>> playerAndZerLongestPath : mEachPlayersLongestPath.entrySet()) {
+            int thisPlayersLongestPathLength = getLengthOfPath(playerAndZerLongestPath.getValue());
+            if (thisPlayersLongestPathLength > mLengthOfLongestPath) {
+                mLengthOfLongestPath = thisPlayersLongestPathLength;
+                winner = playerAndZerLongestPath.getKey();
+            }
+        }
+        return winner;
+    }
+
+    private int getLengthOfPath(List<Route> path) {
+        int length = 0;
+        if (path == null) return 0;
+        else if (path.size() != 0) {
+            for (Route route : path) {
+                length += route.getLength();
+            }
+        }
+        return length;
+    }
+
+    // Longest Path Related
+    private void addCitiesIfDistinct(Player p, Route r){
+        List<String> thisPlayersDistinctCities = mEachPlayersDistinctCities.get(p);
+        boolean srcFound = false;
+        boolean destFound = false;
+        for (int i = 0; i < thisPlayersDistinctCities.size(); i++) {
+            String cityName = thisPlayersDistinctCities.get(i);
+            String routeDestination = r.getDestCity();
+            String routeSource = r.getSrcCity();
+            if (cityName.equals(routeSource)) {
+                srcFound = true;
+                thisPlayersDistinctCities.remove(cityName);
+                i--;
+            } else if (cityName.equals(routeDestination)){
+                destFound = true;
+                thisPlayersDistinctCities.remove(cityName);
+                i--;
+            }
+        }
+
+//        if (!srcFound) {
+//            thisPlayersDistinctCities.add(r.getSrcCity());
+//        }
+//
+//        if (!destFound) {
+//            thisPlayersDistinctCities.add(r.getDestCity());
+//        }
+
+        thisPlayersDistinctCities.add(r.getSrcCity());
+        thisPlayersDistinctCities.add(r.getDestCity());
+
+
+    }
+
+     // Destination Card Scoring Related
+    private void checkDestinationCardCompletion(){
+
+        makeSureSetupIsDone();
+
+        //loop through destination cards and recurse
+        for (Player p : players) {
+            for (DestinationCard destinationCard : mEachPlayersDestinationCards.get(p)){
+                checkDestinationCardCompletionHelper(p, destinationCard.getSrcCity(), destinationCard.getDestCity(), new ArrayList<Route>());
+            }
+        }
+
+    }
+
+    // Destination Card Scoring Related
+    private boolean checkDestinationCardCompletionHelper(Player p, String currentCity, String finalCity, List<Route> currentPath) {
+        //start at starting city
+        //check all the routes with this city
+        List<Route> unSeenRoutesWithThisCity = playersOtherRoutesContainingThisCity(p, currentCity, currentPath);
+        if (unSeenRoutesWithThisCity.size() == 0) {
+            //if there is no route return false, end of path isn't the final city
+            System.out.println("No routes with this city found, returning false");
+            return false;
+        }
+        for (Route unSeenRoute : unSeenRoutesWithThisCity) {
+            //go to the opposite end (the other city)
+            String oppositeCity = getOppositeCity(currentCity, unSeenRoute);
+            //if the opposite city is the destination city return true
+            if (oppositeCity.equals(finalCity)) {
+                System.out.println("Opposite city matches final city, returning true");
+                return true;
+            }
+            else {
+                //keep track of the routes that are visited in a duplicated path list
+                List<Route> duplicatePath = new ArrayList<>();
+                for (Route r : currentPath) {
+                    duplicatePath.add(r);
+                }
+                duplicatePath.add(unSeenRoute);
+                System.out.println("Opposite city does NOT match final city, recursing");
+                return checkDestinationCardCompletionHelper(p, oppositeCity, finalCity, duplicatePath);
+            }
+        }
+        System.out.println("Reached the end of the function without returning, returning false");
+        return false;
+    }
+
+    // Destination Card Scoring Related
+    private String getOppositeCity(String city, Route route) {
+        if (city.equals(route.getDestCity())) {
+            return route.getSrcCity();
+        } else if (city.equals(route.getSrcCity())) {
+            return route.getDestCity();
+        } else return "city is not found in given route";
+    }
+
+    private List<Route> playersOtherRoutesContainingThisCity(Player p, String city, List<Route> currentPath) {
+
+        //create new list of routes
+        List<Route> unnavigatedRoutesContainingThisCity = new ArrayList<>();
+        //loop through the players routes and search for the city
+        for (Route route : mAllClaimedRoutes.get(p)){
+            if (route.getSrcCity().equals(city)|| route.getDestCity().equals(city)) {
+                //if this city is found check to make sure it isn't already in the current path
+                if (!currentPath.contains(route)){
+                    //if not found, add to list of routes
+                    unnavigatedRoutesContainingThisCity.add(route);
+                }
+            }
+        }
+
+        //return list of routes
+        return unnavigatedRoutesContainingThisCity;
+
+
+    }
+
+
 }

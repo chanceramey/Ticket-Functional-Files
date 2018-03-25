@@ -131,4 +131,19 @@ public class Route {
     public void setColor(int color) {
         this.routeColor = color;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass() != Route.class) {
+            return false;
+        }
+
+        Route otherRoute = (Route) o;
+
+        if (otherRoute.getSrcCity() == this.getSrcCity() && otherRoute.getDestCity() == this.getDestCity()) {
+            return true;
+        }
+
+        return false;
+    }
 }

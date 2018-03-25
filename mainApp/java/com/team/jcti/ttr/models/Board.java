@@ -85,6 +85,8 @@ public class Board {
         return routes.values();
     }
 
+    public Map<String, Route> getIdtoRouteMap() { return  this.routes; }
+
     public void claimRoute(Player p, String routeID) {
         p.addRoute(routeID);
         int color = Util.getPlayerColorCode(p.getColor());
