@@ -138,17 +138,20 @@ public class ServerGameModel {
         return commands;
     }
 
-    public void claimRoute(String user, String routeID, int[] cardPos) {
+    public boolean claimRoute(String user, String routeID, int length, int[] cardPos) {
         Player userPlayer = getPlayerFromUsername(user);
         trainCardDeck.discard(userPlayer.removeTrainCards(cardPos));
         clientProxy.discardTrainCards(userPlayer.getId(), cardPos.length, cardPos, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
-        userPlayer.addRoute(routeID);
+        if(!userPlayer.addRoute(routeID, length)) {
+            return false;
+        }
         clientProxy.claimedRoute(userPlayer.getId(), routeID);
         gameHistoryCommands.add(clientProxy.getCommand());
 
         setNextTurn();
+        return true;
     }
 
     public DestCardDeck getDestCardDeck(){

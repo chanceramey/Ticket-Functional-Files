@@ -58,33 +58,23 @@ public class GamePresenter implements IGamePresenter, Observer{
     }
 
     public void claimRoute(String routeId) {
-        Route route = mActiveGame.getRouteFromID(routeId);
-        if(route == null) {
-            mGameActivity.toast("Route already claimed by a player.");
-            return;
-        }
-
-        this.selectedRoute = route;
-        if (route.getTrainCardColor() == TrainCard.WILD) {
-            mGameActivity.toast("Select train card color to claim this route");
-            mPlayersHandFragment.startSelectionState();
-            return;
-        }
-
-        claimRouteWithColor(route.getTrainCardColor());
-
+        state.claimRoute(routeId);
     }
 
-    public void claimRouteWithColor(TrainCard color) {
-        if (selectedRoute == null) return;
+    public boolean claimRouteWithColor(TrainCard color) {
+        if (selectedRoute == null) return false;
         int[] cardPos = mActiveGame.getClaimingCards(selectedRoute.getLength(), color);
         if (cardPos == null) {
+            this.selectedRoute = null;
             mGameActivity.toast("You do not have enough cards to claim this route");
-            return;
+            mPlayersHandFragment.updateCardList();
+            this.state = new TurnState(this);
+            return false;
         }
 
-        mServerProxy.claimRoute(mClientModel.getAuthToken(), mActiveGame.getGameID(), selectedRoute.getRouteId(), cardPos);
+        mServerProxy.claimRoute(mClientModel.getAuthToken(), mActiveGame.getGameID(), selectedRoute.getRouteId(), selectedRoute.getLength(), cardPos);
         selectedRoute = null;
+        return true;
     }
 
     @Override
@@ -98,6 +88,11 @@ public class GamePresenter implements IGamePresenter, Observer{
         mPlayersHandFragment.updateCardList();
         mBoardFragment.update();
         mDecksAndCardsFragment.setFaceCardImages(mActiveGame.getFaceUpCards());
+    }
+
+    public void displayCities(DestinationCard destCard) {
+        City[] cities = mActiveGame.getCitiesFromDest(destCard);
+        mBoardFragment.drawMarkersForCities(cities);
     }
 
     @Override
@@ -188,4 +183,15 @@ public class GamePresenter implements IGamePresenter, Observer{
         this.state = state;
     }
 
+    public void setSelectedRoute(Route selectedRoute) {
+        this.selectedRoute = selectedRoute;
+    }
+
+    public void startSelectionState() {
+        mPlayersHandFragment.startSelectionState();
+    }
+
+    public void clearDestMarkers() {
+        mBoardFragment.clearCityMarkers();
+    }
 }

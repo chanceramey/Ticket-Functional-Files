@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.ClientGameModel;
+import com.team.jcti.ttr.state.TurnState;
 import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class PlayersHandFragment extends Fragment {
             public void onClick(View view) {
                 if(selectionState) {
                     selectionState = false;
+                    mPresenter.setState(new TurnState(mPresenter));
                     updateCardList();
                 }
                 else {
@@ -158,7 +160,6 @@ public class PlayersHandFragment extends Fragment {
             this.mTrainCard = card;
             Drawable drawable = getResources().getDrawable(Util.getTrainCardDrawable(card));
             mTextView.setBackground(drawable);
-            mTextView.setTextSize(50);
             mTextView.setText(Integer.toString(mPresenter.getNumCards(card)));
         }
 
@@ -177,7 +178,7 @@ public class PlayersHandFragment extends Fragment {
 
         @Override
         public DestCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = inflater.inflate(R.layout.card_list_item, parent, false);
+            View view = inflater.inflate(R.layout.dest_card_list_item, parent, false);
             DestCardHolder viewholder = new DestCardHolder(view);
             return viewholder;
         }
@@ -198,15 +199,29 @@ public class PlayersHandFragment extends Fragment {
     class DestCardHolder extends RecyclerView.ViewHolder {
 
         private TextView mImageView;
-
+        private DestinationCard item;
+        private boolean selected = false;
 
         public DestCardHolder(View view) {
             super(view);
             mImageView = (TextView) view.findViewById(R.id.card_image_view);
+            mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selected) {
+                        mPresenter.clearDestMarkers();
+                    }
+                    else {
+                        mPresenter.displayCities(item);
+                    }
+                    selected = !selected;
+                }
+            });
         }
 
 
         void bind(DestinationCard item) {
+            this.item = item;
             mImageView.setText(item.toString());
             mImageView.setBackgroundColor(Color.argb(100,0,0,255));
         }

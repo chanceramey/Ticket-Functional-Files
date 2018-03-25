@@ -4,6 +4,7 @@ import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
+import com.team.jcti.ttr.models.Route;
 
 import model.TrainCard;
 
@@ -51,7 +52,22 @@ public class TurnState implements State{
 
     @Override
     public void claimRoute(String routeId) {
-        //mServerProxy.claimRoute(mClientModel.getAuthToken(), mClientModel.getGame().getID(), routeId); comeback needs fix
-        gamePresenter.setState(new NotTurnState(gamePresenter));
+        Route route = mActiveGame.getRouteFromID(routeId);
+        if(route == null) {
+            gamePresenter.displayError("Route already claimed by a player.");
+            return;
+        }
+
+        gamePresenter.setSelectedRoute(route);
+        if (route.getTrainCardColor() == TrainCard.WILD) {
+            gamePresenter.displayError("Select train card color to claim this route");
+            gamePresenter.startSelectionState();
+            gamePresenter.setState(new WildRouteClickedState(gamePresenter));
+            return;
+        }
+
+        if(gamePresenter.claimRouteWithColor(route.getTrainCardColor())) {
+            gamePresenter.setState(new NotTurnState(gamePresenter));
+        }
     }
 }

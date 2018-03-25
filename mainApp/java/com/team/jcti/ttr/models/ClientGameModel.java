@@ -301,4 +301,8 @@ public class ClientGameModel extends Observable {
     public State getState(){
         return state;
     }
+
+    public City[] getCitiesFromDest(DestinationCard destCard) {
+        return board.getCitiesFromDest(destCard);
+    }
 }

@@ -153,8 +153,12 @@ public class Player {
         return numTrainCards;
     }
 
-    public void addRoute(String routeID) {
+    public boolean addRoute(String routeID, int length) {
+        if(numTrains - length < 0) return false;
+        this.numTrains -= length;
+        this.points += getPointsFromLength(length);
         this.claimedRouteIds.add(routeID);
+        return true;
     }
 
     public boolean isFirstDestPick() {
@@ -179,6 +183,18 @@ public class Player {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    private int getPointsFromLength(int length) {
+        switch(length) {
+            case 1: return 1;
+            case 2: return 2;
+            case 3: return 4;
+            case 4: return 7;
+            case 5: return 10;
+            case 6: return 15;
+            default: return 0;
         }
     }
 

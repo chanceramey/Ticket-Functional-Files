@@ -1,181 +1,181 @@
 [
   {
-    "name": "vancouver",
+    "name": "Vancouver",
     "lat": 49.2827,
     "long": -123.1207
   },
   {
-    "name": "calgary",
+    "name": "Calgary",
     "lat": 51.0486,
     "long": -114.0708
   },
   {
-    "name": "winnipeg",
+    "name": "Winnipeg",
     "lat": 49.8951,
     "long": -97.1384
   },
   {
-    "name": "sault_st_marie",
+    "name": "Sault St. Marie",
     "lat": 46.51677,
     "long": -84.33325
   },
   {
-    "name": "montreal",
+    "name": "Montreal",
     "lat": 45.501689,
     "long": -73.567256
   },
   {
-    "name": "seattle",
+    "name": "Seattle",
     "lat": 47.606209,
     "long":-122.332071
   },
   {
-    "name": "helena",
+    "name": "Helena",
     "lat": 46.588371,
     "long":-112.024505
   },
   {
-    "name": "duluth",
+    "name": "Duluth",
     "lat": 46.786672,
     "long": -92.100485
   },
   {
-    "name": "toronto",
+    "name": "Toronto",
     "lat": 43.653226,
     "long": -79.383184
   },
   {
-    "name": "boston",
+    "name": "Boston",
     "lat": 42.360082,
     "long":-71.05888
   },
   {
-    "name": "new_york",
+    "name": "New York",
     "lat": 40.712775,
     "long":-74.005973
   },
   {
-    "name": "pittsburgh",
+    "name": "Pittsburgh",
     "lat": 40.440625,
     "long":-79.995886
   },
   {
-    "name": "chicago",
+    "name": "Chicago",
     "lat": 41.878114,
     "long":-87.629798
   },
   {
-    "name": "omaha",
+    "name": "Omaha",
     "lat": 41.252363,
     "long":-95.997988
   },
   {
-    "name": "denver",
+    "name": "Denver",
     "lat": 39.739236,
     "long":-104.990251
   },
   {
-    "name": "salt_lake_city",
+    "name": "Salt Lake City",
     "lat": 40.760779,
     "long":-111.891047
   },
   {
-    "name": "portland",
+    "name": "Portland",
     "lat": 45.523062,
     "long":-122.676482
   },
   {
-    "name": "san_francisco",
+    "name": "San Francisco",
     "lat": 37.774929,
     "long":-122.419416
   },
   {
-    "name": "los_angeles",
+    "name": "Los Angeles",
     "lat": 34.052234,
     "long":-118.243685
   },
   {
-    "name": "las_vegas",
+    "name": "Las Vegas",
     "lat": 36.169941,
     "long":-115.13983
   },
   {
-    "name": "phoenix",
+    "name": "Phoenix",
     "lat": 33.448377,
     "long":-112.074037
   },
   {
-    "name": "santa_fe",
+    "name": "Santa Fe",
     "lat": 35.686975,
     "long":-105.937799
   },
   {
-    "name": "oklahoma_city",
+    "name": "Oklahoma City",
     "lat": 35.467560,
     "long":-97.516428
   },
   {
-    "name": "kansas_city",
+    "name": "Kansas City",
     "lat": 39.099727,
     "long":-94.578567
   },
   {
-    "name": "saint_louis",
+    "name": "Saint Louis",
     "lat": 38.627003,
     "long":-90.199404
   },
   {
-    "name": "nashville",
+    "name": "Nashville",
     "lat": 36.162664,
     "long":-86.781602
   },
   {
-    "name": "atlanta",
+    "name": "Atlanta",
     "lat": 33.748995,
     "long":-84.387982
   },
   {
-    "name": "raleigh",
+    "name": "Raleigh",
     "lat": 35.779590,
     "long":-78.638179
   },
   {
-    "name": "washington",
+    "name": "Washington",
     "lat": 38.907192,
     "long":-77.036871
   },
   {
-    "name": "charleston",
+    "name": "Charleston",
     "lat": 32.776475,
     "long":-79.931051
   },
   {
-    "name": "miami",
+    "name": "Miami",
     "lat": 25.761680,
     "long":-80.19179
   },
   {
-    "name": "new_orleans",
+    "name": "New Orleans",
     "lat": 29.951066,
     "long":-90.071532
   },
   {
-    "name": "houston",
+    "name": "Houston",
     "lat": 29.760427,
     "long":-95.369803
   },
   {
-    "name": "dallas",
+    "name": "Dallas",
     "lat": 32.776664,
     "long":-96.796988
   },
   {
-    "name": "el_paso",
+    "name": "El Paso",
     "lat": 31.761878,
     "long":-106.485022
   },
   {
-    "name": "little_rock",
+    "name": "Little Rock",
     "lat": 34.7465,
     "long":-92.2896
   }

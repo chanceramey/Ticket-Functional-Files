@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/destination_deck"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:text="dest deck count"
         android:background="@drawable/destdeck"
         android:textAlignment="center"
@@ -21,7 +21,7 @@
     <TextView
         android:id="@+id/train_deck"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:text="train deck count"
         android:background="@drawable/traindeck"
         android:textSize="50sp"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="175dp"
+    android:layout_height="match_parent"
+    android:id="@+id/card_image_view"
+    android:text="0"
+    android:textAlignment="center"
+    android:background="@drawable/rainbowtrain"
+    android:layout_margin="5dp"/>

@@ -28,7 +28,7 @@ public interface IServer {
 
     Object getGameCommands(String auth, String gameID, Integer gameHistoryPosition);
 
-    Object claimRoute(String auth, String gameId, String routeId, int[] cardPos);
+    Object claimRoute(String auth, String gameId, String routeId, Integer length, int[] cardPos);
 
     Object drawTrainCards(String auth, Integer numberToDraw, String gameId);
 

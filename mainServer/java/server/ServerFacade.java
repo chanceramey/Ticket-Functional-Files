@@ -77,9 +77,9 @@ public class ServerFacade implements IServer {
     }
 
     @Override
-    public Object claimRoute(String auth, String gameId, String routeId, int[] cardPos) {
+    public Object claimRoute(String auth, String gameId, String routeId, Integer length, int[] cardPos) {
         GameService service = new GameService();
-        return service.claimRoute(auth, gameId, routeId, cardPos);
+        return service.claimRoute(auth, gameId, routeId, length, cardPos);
     }
 
     @Override
