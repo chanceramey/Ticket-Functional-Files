@@ -6,10 +6,10 @@ import com.team.jcti.ttr.utils.Util;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import model.DestinationCard;
 import model.Player;
 
 /**
@@ -88,9 +88,22 @@ public class Board {
     public Map<String, Route> getIdtoRouteMap() { return  this.routes; }
 
     public void claimRoute(Player p, String routeID) {
-        p.addRoute(routeID);
         int color = Util.getPlayerColorCode(p.getColor());
         claimedRoutes.put(routeID, p.getId());
-        routes.get(routeID).setColor(color);
+        Route route = routes.get(routeID);
+        p.addRoute(routeID, route.getLength());
+        route.setColor(color);
+    }
+
+    public Route getRouteFromID(String routeId) {
+        if(claimedRoutes.containsKey(routeId)) return null;
+        return routes.get(routeId);
+    }
+
+    public City[] getCitiesFromDest(DestinationCard destCard) {
+        City[] destCities = new City[2];
+        destCities[0] = cities.get(destCard.getSrcCity());
+        destCities[1] = cities.get(destCard.getDestCity());
+        return destCities;
     }
 }

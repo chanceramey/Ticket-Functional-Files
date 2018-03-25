@@ -1,6 +1,8 @@
 package com.team.jcti.ttr.game;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -16,8 +18,11 @@ import android.widget.TextView;
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.ClientGameModel;
+import com.team.jcti.ttr.state.TurnState;
 import com.team.jcti.ttr.utils.Util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import model.DestinationCard;
@@ -34,7 +39,7 @@ public class PlayersHandFragment extends Fragment {
     private TextView numCardsText;
     private Button switchCardsButton;
 
-
+    private boolean selectionState;
     private boolean trainCards;
 
 
@@ -55,14 +60,22 @@ public class PlayersHandFragment extends Fragment {
         switchCardsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                trainCards = !trainCards;
-                updateCardList();
+                if(selectionState) {
+                    selectionState = false;
+                    mPresenter.setState(new TurnState(mPresenter));
+                    updateCardList();
+                }
+                else {
+                    trainCards = !trainCards;
+                    updateCardList();
+                }
             }
         });
 
 
 
         trainCards = true;
+        selectionState = false;
         updateCardList();
 
         return v;
@@ -71,8 +84,8 @@ public class PlayersHandFragment extends Fragment {
     public void updateCardList() {
         int numCards = 0;
         if(trainCards) {
-             List<TrainCard> cards = mPresenter.getPlayerTrainCards();
-             numCards = cards.size();
+             List<TrainCard> cards = new ArrayList<TrainCard>(Arrays.asList(TrainCard.values()));
+             numCards = mPresenter.getPlayerTrainCardsSize();
              adapter = new TrainCardAdapter(getActivity(), cards);
              switchCardsButton.setText("View Destination Cards");
         } else {
@@ -84,6 +97,16 @@ public class PlayersHandFragment extends Fragment {
         cardRecyclerView.setAdapter(adapter);
         numCardsText.setText(String.format("Number of Cards: %d", numCards));
 
+    }
+
+    public void startSelectionState() {
+        selectionState = true;
+        List<TrainCard> cards = new ArrayList<TrainCard>(Arrays.asList(TrainCard.values()));
+        int numCards = mPresenter.getPlayerTrainCardsSize();
+        adapter = new TrainCardAdapter(getActivity(), cards);
+        switchCardsButton.setText("Cancel Route Selection");
+        cardRecyclerView.setAdapter(adapter);
+        numCardsText.setText("Choose a Train Card Color to select this route");
     }
 
     class TrainCardAdapter extends RecyclerView.Adapter<TrainCardHolder> {
@@ -116,18 +139,28 @@ public class PlayersHandFragment extends Fragment {
 
     class TrainCardHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mImageView;
+        private TextView mTextView;
+        private TrainCard mTrainCard;
 
         public TrainCardHolder(View view) {
             super(view);
-            mImageView = (ImageView) view.findViewById(R.id.card_image_view);
+            mTextView = (TextView) view.findViewById(R.id.card_image_view);
+            mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.claimRouteWithColor(mTrainCard);
+                    selectionState = false;
+                }
+            });
         }
 
 
 
         void bind(TrainCard card) {
-            int drawable = Util.getTrainCardDrawable(card);
-            mImageView.setImageResource(drawable);
+            this.mTrainCard = card;
+            Drawable drawable = getResources().getDrawable(Util.getTrainCardDrawable(card));
+            mTextView.setBackground(drawable);
+            mTextView.setText(Integer.toString(mPresenter.getNumCards(card)));
         }
 
 
@@ -145,7 +178,7 @@ public class PlayersHandFragment extends Fragment {
 
         @Override
         public DestCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = inflater.inflate(R.layout.card_list_item, parent, false);
+            View view = inflater.inflate(R.layout.dest_card_list_item, parent, false);
             DestCardHolder viewholder = new DestCardHolder(view);
             return viewholder;
         }
@@ -165,17 +198,32 @@ public class PlayersHandFragment extends Fragment {
 
     class DestCardHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mImageView;
-
+        private TextView mImageView;
+        private DestinationCard item;
+        private boolean selected = false;
 
         public DestCardHolder(View view) {
             super(view);
-            mImageView = (ImageView) view.findViewById(R.id.card_image_view);
+            mImageView = (TextView) view.findViewById(R.id.card_image_view);
+            mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selected) {
+                        mPresenter.clearDestMarkers();
+                    }
+                    else {
+                        mPresenter.displayCities(item);
+                    }
+                    selected = !selected;
+                }
+            });
         }
 
 
         void bind(DestinationCard item) {
-            mImageView.setImageResource(R.drawable.tempdestcard);
+            this.item = item;
+            mImageView.setText(item.toString());
+            mImageView.setBackgroundColor(Color.argb(100,0,0,255));
         }
     }
 

@@ -1,4 +1,4 @@
-Los Angeles,New York City,21
+Los Angeles,New York,21
 Duluth,Houston,8
 Sault Ste Marie,Nashville,8
 New York,Atlanta,6
@@ -7,7 +7,7 @@ Vancouver,Montreal,20
 Duluth,El Paso,10
 Toronto,Miami,10
 Portland,Phoenix,11
-Dallas,New York City,11
+Dallas,New York,11
 Calgary,Salt Lake City,7
 Calgary,Phoenix,13
 Los Angeles,Miami,20
@@ -26,5 +26,5 @@ Denver,El Paso,4
 Helena,Los Angeles,8
 Winnipeg,Houston,12
 Montreal,New Orleans,13
-Sault Ste. Marie,Oklahoma City,9
+Sault St. Marie,Oklahoma City,9
 Seattle,Los Angeles,9

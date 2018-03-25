@@ -5,6 +5,10 @@ import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.message.MessagePresenter;
+import com.team.jcti.ttr.state.NotTurnState;
+import com.team.jcti.ttr.state.OneTrainPickedState;
+import com.team.jcti.ttr.state.State;
+import com.team.jcti.ttr.state.TurnState;
 import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ import model.GameHistory;
 
 import model.Game;
 import model.Player;
+import model.StateType;
 import model.TrainCard;
 
 /**
@@ -44,7 +49,6 @@ public class ClientGameModel extends Observable {
     private int gameHistoryPosition;
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
     private IGamePresenter activePresenter;
-    private int turnPosition = 0; // keeps track of who's turn it is by their position in the array
     private TrainCard[] faceUpCards;
     private Player currentPlayer;
     private int destDeckSize;
@@ -66,6 +70,8 @@ public class ClientGameModel extends Observable {
     public void setMyTurn(boolean myTurn) {
         currentPlayer.setTurn(myTurn);
     }
+  
+    private State state;
 
     public void startGame(Game game) {
         this.gameId = game.getID();
@@ -84,7 +90,6 @@ public class ClientGameModel extends Observable {
         this.active = true;
         gameHistoryPosition = 0;
         currentPlayer = players.get(userPlayer);
-        players.get(0).setTurn(true);
 
         trainDeckSize = 240;
         destDeckSize = 30;
@@ -144,22 +149,6 @@ public class ClientGameModel extends Observable {
         return null;
     }
 
-    public void moveTurnPosition() {
-        players.get(turnPosition).setTurn(false);
-        turnPosition++;
-        if (turnPosition == players.size()) {
-            turnPosition = 0;
-        }
-        players.get(turnPosition).setTurn(true);
-        turnToast();
-    }
-
-    public void turnToast() {
-        if (turnPosition == userPlayer) {
-            activePresenter.displayError("It's your turn");
-        }
-    }
-
     public TrainCard[] getFaceUpCards() {
         return faceUpCards;
     }
@@ -187,7 +176,8 @@ public class ClientGameModel extends Observable {
     }
 
     public List<DestinationCard> getUsersDestCard() {
-       return players.get(userPlayer).getDestCards();
+       List<DestinationCard> destCards = players.get(userPlayer).getDestCards();
+        return destCards.subList(destCards.size() - 3, destCards.size());
     }
 
     public Player getUserPlayer() {
@@ -211,7 +201,6 @@ public class ClientGameModel extends Observable {
         String message = String.format("***%s drew %d Train card***", user, numberCards);
         GameHistory drewCard = new GameHistory(user, message);
         addGameHistoryObj(drewCard);
-        //moveTurnPosition();
         trainDeckSize = deckSize;
 
         activePresenter.update();
@@ -233,7 +222,7 @@ public class ClientGameModel extends Observable {
 
 
     public void discardDestCards(Integer player, Integer numCards, int[] pos, Integer deckSize) {
-        if(numCards == 0) return; //don't do anything if they didnt' discard any cards
+        if(numCards == 0) return; //don't do anything if they didn't discard any cards
 
         Player p = players.get(player);
         if (player == userPlayer) {
@@ -532,5 +521,44 @@ public class ClientGameModel extends Observable {
 
     }
 
+    public int getPlayersNumTrainCards(TrainCard card) {
+        Player p = getUserPlayer();
+        return p.getCountOfCardType(card);
+    }
+    public void updateState(Integer player, StateType state){
+        Player p = players.get(player);
+        p.setState(state);
+
+        if(state == StateType.TURN_STATE){
+            this.state = new TurnState((GamePresenter) activePresenter);
+        }
+        else if(state == StateType.NOT_TURN_STATE){
+            this.state = new NotTurnState((GamePresenter) activePresenter);
+        }
+        else{
+            this.state = new OneTrainPickedState((GamePresenter) activePresenter);
+        }
+
+        if(player == userPlayer){
+            activePresenter.setState(this.state);
+            activePresenter.displayError("It's your turn");
+        }
+    }
+
+    public Route getRouteFromID(String routeId) {
+        return board.getRouteFromID(routeId);
+    }
+
+    public int[] getClaimingCards(int length, TrainCard color) {
+        return players.get(userPlayer).getRouteClaimingCards(length, color);
+    }
+
+    public State getState(){
+        return state;
+    }
+
+    public City[] getCitiesFromDest(DestinationCard destCard) {
+        return board.getCitiesFromDest(destCard);
+    }
 
 }

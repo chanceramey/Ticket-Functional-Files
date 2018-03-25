@@ -21,10 +21,8 @@ import model.TrainCard;
 public class DecksAndCardsFragment extends Fragment {
 
     private List<ImageView> faceUpCardIVs;
-    private ImageView destinationCardDeck;
-    private ImageView trainCardDeck;
-    private TextView destDeckCount;
-    private TextView trainDeckCount;
+    private TextView destinationCardDeck;
+    private TextView trainCardDeck;
     private GamePresenter mGamePresenter;
 
 
@@ -54,17 +52,13 @@ public class DecksAndCardsFragment extends Fragment {
 
         // initialize deck views
 
-        destinationCardDeck = (ImageView) v.findViewById(R.id.destination_deck);
-        trainCardDeck = (ImageView) v.findViewById(R.id.train_deck);
-        destDeckCount = (TextView) v.findViewById(R.id.dest_deck_count);
-        trainDeckCount = (TextView) v.findViewById(R.id.train_deck_count);
+        destinationCardDeck = (TextView) v.findViewById(R.id.destination_deck);
+        trainCardDeck = (TextView) v.findViewById(R.id.train_deck);
         destinationCardDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(mGamePresenter.verifyTurn()){
-                    mGamePresenter.onDestDeckClick();
-                }
+                mGamePresenter.onDestDeckClick();
             }
         });
 
@@ -72,24 +66,22 @@ public class DecksAndCardsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(mGamePresenter.verifyTurn()){
-                    mGamePresenter.onTrainDeckClick();
-                }
+                mGamePresenter.onTrainDeckClick();
             }
         });
 
         initializeFaceCardViews(v);
 
         //set deck counts
-        destDeckCount.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
-        trainDeckCount.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
+        destinationCardDeck.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
+        trainCardDeck.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
 
 
     }
 
     public void updateView() {
-        destDeckCount.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
-        trainDeckCount.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
+        destinationCardDeck.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
+        trainCardDeck.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
     }
 
     public void initializeFaceCardViews(View v) {
@@ -109,7 +101,7 @@ public class DecksAndCardsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    if(mGamePresenter.verifyTurn()){
+                    if(INDEX < mGamePresenter.getFaceUpCards().length){
                         mGamePresenter.onFaceUpClick(INDEX);
                     }
                 }

@@ -29,6 +29,7 @@ public class BoardFragment extends android.support.v4.app.Fragment {
 
     private GoogleMap mMap;
     private View mView;
+    private City[] markedCities = new City[] {};
     private Map<Polyline, Route> polylines = new HashMap<>();
     private Map<Polyline, Marker> railLines = new HashMap<>();
     private Map<Marker, Polyline> midPointsToRailLines = new HashMap<>();
@@ -43,20 +44,6 @@ public class BoardFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
-
-        mGameActivity = (GameActivity) getActivity();
-        mGamePresenter = mGameActivity.getGamePresenter();
-
-        if(mGamePresenter.getBoard() == null) {
-            try {
-                String JSONCities = Util.getStringFromResourceFile(getActivity(), R.raw.cities);
-                String JSONRoutes = Util.getStringFromResourceFile(getActivity(), R.raw.routes);
-                mGamePresenter.initializeBoard(JSONCities, JSONRoutes);
-
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
@@ -70,6 +57,13 @@ public class BoardFragment extends android.support.v4.app.Fragment {
         mMap.clear();
         drawCities();
         drawRailLines();
+        drawMarkedCities();
+    }
+
+    private void drawMarkedCities() {
+        for (City city : markedCities) {
+           mMap.addMarker(new MarkerOptions().position(city.getLocation()));
+        }
     }
 
 
@@ -146,8 +140,20 @@ public class BoardFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_board, container, false);
-
+        mGameActivity = (GameActivity) getActivity();
+        mGamePresenter = mGameActivity.getGamePresenter();
         mGamePresenter.setBoardFragment(this);
+
+        if(mGamePresenter.getBoard() == null) {
+            try {
+                String JSONCities = Util.getStringFromResourceFile(getActivity(), R.raw.cities);
+                String JSONRoutes = Util.getStringFromResourceFile(getActivity(), R.raw.routes);
+                mGamePresenter.initializeBoard(JSONCities, JSONRoutes);
+
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         supportMapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -163,6 +169,16 @@ public class BoardFragment extends android.support.v4.app.Fragment {
 
         //inflater.inflate(R.menu.map_menu, menu);
 
+    }
+
+    public void drawMarkersForCities(City[] cities) {
+        this.markedCities = cities;
+        update();
+    }
+
+    public void clearCityMarkers() {
+        this.markedCities = new City[] {};
+        update();
     }
 
 

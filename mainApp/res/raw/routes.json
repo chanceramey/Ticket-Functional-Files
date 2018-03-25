@@ -1,495 +1,495 @@
 [
   {
-    "from": "los_angeles",
-    "to": "san_francisco",
+    "from": "Los Angeles",
+    "to": "San Francisco",
     "cost": "3",
     "color": "PURPLE",
     "double_color": "YELLOW"
   },
   {
-    "from": "san_francisco",
-    "to": "salt_lake_city",
+    "from": "San Francisco",
+    "to": "Salt Lake City",
     "cost": "5",
     "color": "ORANGE",
     "double_color": "WHITE"
   },
   {
-    "from": "san_francisco",
-    "to": "portland",
+    "from": "San Francisco",
+    "to": "Portland",
     "cost": "5",
     "color": "GREEN",
     "double_color": "RED"
   },
   {
-    "from": "portland",
-    "to": "salt_lake_city",
+    "from": "Portland",
+    "to": "Salt Lake City",
     "cost": "6",
     "color": "BLUE"
   },
   {
-    "from": "salt_lake_city",
-    "to": "las_vegas",
+    "from": "Salt Lake City",
+    "to": "Las Vegas",
     "cost": "3",
     "color": "ORANGE"
   },
   {
-    "from": "las_vegas",
-    "to": "los_angeles",
+    "from": "Las Vegas",
+    "to": "Los Angeles",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "los_angeles",
-    "to": "phoenix",
+    "from": "Los Angeles",
+    "to": "Phoenix",
     "cost": "3",
     "color": "WILD"
   },
   {
-    "from": "los_angeles",
-    "to": "el_paso",
+    "from": "Los Angeles",
+    "to": "El Paso",
     "cost": "6",
     "color": "BLACK"
   },
   {
-    "from": "phoenix",
-    "to": "el_paso",
+    "from": "Phoenix",
+    "to": "El Paso",
     "cost": "3",
     "color": "WILD"
   },
   {
-    "from": "phoenix",
-    "to": "santa_fe",
+    "from": "Phoenix",
+    "to": "Santa Fe",
     "cost": "3",
     "color": "WILD"
   },
   {
-    "from": "phoenix",
-    "to": "denver",
+    "from": "Phoenix",
+    "to": "Denver",
     "cost": "5",
     "color": "WHITE"
   },
   {
-    "from": "el_paso",
-    "to": "santa_fe",
+    "from": "El Paso",
+    "to": "Santa Fe",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "el_paso",
-    "to": "houston",
+    "from": "El Paso",
+    "to": "Houston",
     "cost": "6",
     "color": "GREEN"
   },
   {
-    "from": "el_paso",
-    "to": "dallas",
+    "from": "El Paso",
+    "to": "Dallas",
     "cost": "4",
     "color": "RED"
   },
   {
-    "from": "el_paso",
-    "to": "oklahoma_city",
+    "from": "El Paso",
+    "to": "Oklahoma City",
     "cost": "5",
     "color": "YELLOW"
   },
   {
-    "from": "santa_fe",
-    "to": "oklahoma_city",
+    "from": "Santa Fe",
+    "to": "Oklahoma City",
     "cost": "3",
     "color": "BLUE"
   },
   {
-    "from": "santa_fe",
-    "to": "denver",
+    "from": "Santa Fe",
+    "to": "Denver",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "denver",
-    "to": "salt_lake_city",
+    "from": "Denver",
+    "to": "Salt Lake City",
     "cost": "3",
     "color": "RED",
     "double_color": "YELLOW"
   },
   {
-    "from": "denver",
-    "to": "helena",
+    "from": "Denver",
+    "to": "Helena",
     "cost": "4",
     "color": "GREEN"
   },
   {
-    "from": "denver",
-    "to": "omaha",
+    "from": "Denver",
+    "to": "Omaha",
     "cost": "4",
     "color": "PURPLE"
   },
   {
-    "from": "denver",
-    "to": "kansas_city",
+    "from": "Denver",
+    "to": "Kansas City",
     "cost": "4",
     "color": "BLACK"
   },
   {
-    "from": "kansas_city",
-    "to": "denver",
+    "from": "Kansas City",
+    "to": "Denver",
     "cost": "4",
     "color": "ORANGE"
   },
   {
-    "from": "denver",
-    "to": "oklahoma_city",
+    "from": "Denver",
+    "to": "Oklahoma City",
     "cost": "4",
     "color": "RED"
   },
   {
-    "from": "salt_lake_city",
-    "to": "helena",
+    "from": "Salt Lake City",
+    "to": "Helena",
     "cost": "3",
     "color": "PURPLE"
   },
   {
-    "from": "portland",
-    "to": "seattle",
+    "from": "Portland",
+    "to": "Seattle",
     "cost": "1",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "seattle",
-    "to": "vancouver",
+    "from": "Seattle",
+    "to": "Vancouver",
     "cost": "1",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "seattle",
-    "to": "helena",
+    "from": "Seattle",
+    "to": "Helena",
     "cost": "6",
     "color": "YELLOW"
   },
   {
-    "from": "seattle",
-    "to": "calgary",
+    "from": "Seattle",
+    "to": "Calgary",
     "cost": "4",
     "color": "WILD"
   },
   {
-    "from": "vancouver",
-    "to": "calgary",
+    "from": "Vancouver",
+    "to": "Calgary",
     "cost": "3",
     "color": "WILD"
   },
   {
-    "from": "calgary",
-    "to": "winnipeg",
+    "from": "Calgary",
+    "to": "Winnipeg",
     "cost": "6",
     "color": "WHITE"
   },
   {
-    "from": "calgary",
-    "to": "helena",
+    "from": "Calgary",
+    "to": "Helena",
     "cost": "4",
     "color": "WILD"
   },
   {
-    "from": "helena",
-    "to": "winnipeg",
+    "from": "Helena",
+    "to": "Winnipeg",
     "cost": "4",
     "color": "BLUE"
   },
   {
-    "from": "helena",
-    "to": "duluth",
+    "from": "Helena",
+    "to": "Duluth",
     "cost": "6",
     "color": "ORANGE"
   },
   {
-    "from": "helena",
-    "to": "omaha",
+    "from": "Helena",
+    "to": "Omaha",
     "cost": "5",
     "color": "RED"
   },
   {
-    "from": "winnipeg",
-    "to": "sault_st_marie",
+    "from": "Winnipeg",
+    "to": "Sault St. Marie",
     "cost": "6",
     "color": "WILD"
   },
   {
-    "from": "winnipeg",
-    "to": "duluth",
+    "from": "Winnipeg",
+    "to": "Duluth",
     "cost": "4",
     "color": "BLACK"
   },
   {
-    "from": "houston",
-    "to": "dallas",
+    "from": "Houston",
+    "to": "Dallas",
     "cost": "1",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "houston",
-    "to": "new_orleans",
+    "from": "Houston",
+    "to": "New Orleans",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "dallas",
-    "to": "oklahoma_city",
+    "from": "Dallas",
+    "to": "Oklahoma City",
     "cost": "2",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "dallas",
-    "to": "little_rock",
+    "from": "Dallas",
+    "to": "Little Rock",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "oklahoma_city",
-    "to": "little_rock",
+    "from": "Oklahoma City",
+    "to": "Little Rock",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "oklahoma_city",
-    "to": "kansas_city",
+    "from": "Oklahoma City",
+    "to": "Kansas City",
     "cost": "2",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "kansas_city",
-    "to": "saint_louis",
+    "from": "Kansas City",
+    "to": "Saint Louis",
     "cost": "2",
     "color": "BLUE",
     "double_color": "PURPLE"
   },
   {
-    "from": "kansas_city",
-    "to": "omaha",
+    "from": "Kansas City",
+    "to": "Omaha",
     "cost": "1",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "omaha",
-    "to": "chicago",
+    "from": "Omaha",
+    "to": "Chicago",
     "cost": "4",
     "color": "BLUE"
   },
   {
-    "from": "omaha",
-    "to": "duluth",
+    "from": "Omaha",
+    "to": "Duluth",
     "cost": "2",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "duluth",
-    "to": "chicago",
+    "from": "Duluth",
+    "to": "Chicago",
     "cost": "3",
     "color": "RED"
   },
   {
-    "from": "duluth",
-    "to": "toronto",
+    "from": "Duluth",
+    "to": "Toronto",
     "cost": "6",
     "color": "PURPLE"
   },
   {
-    "from": "duluth",
-    "to": "sault_st_marie",
+    "from": "Duluth",
+    "to": "Sault St. Marie",
     "cost": "3",
     "color": "WILD"
   },
   {
-    "from": "new_orleans",
-    "to": "miami",
+    "from": "New Orleans",
+    "to": "Miami",
     "cost": "6",
     "color": "RED"
   },
   {
-    "from": "new_orleans",
-    "to": "atlanta",
+    "from": "New Orleans",
+    "to": "Atlanta",
     "cost": "4",
     "color": "YELLOW",
     "double_color": "ORANGE"
   },
   {
-    "from": "new_orleans",
-    "to": "little_rock",
+    "from": "New Orleans",
+    "to": "Little Rock",
     "cost": "3",
     "color": "GREEN"
   },
   {
-    "from": "little_rock",
-    "to": "nashville",
+    "from": "Little Rock",
+    "to": "Nashville",
     "cost": "3",
     "color": "WHITE"
   },
   {
-    "from": "little_rock",
-    "to": "saint_louis",
+    "from": "Little Rock",
+    "to": "Saint Louis",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "saint_louis",
-    "to": "nashville",
+    "from": "Saint Louis",
+    "to": "Nashville",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "saint_louis",
-    "to": "pittsburgh",
+    "from": "Saint Louis",
+    "to": "Pittsburgh",
     "cost": "5",
     "color": "GREEN"
   },
   {
-    "from": "saint_louis",
-    "to": "chicago",
+    "from": "Saint Louis",
+    "to": "Chicago",
     "cost": "2",
     "color": "WHITE",
     "double_color": "GREEN"
   },
   {
-    "from": "chicago",
-    "to": "pittsburgh",
+    "from": "Chicago",
+    "to": "Pittsburgh",
     "cost": "3",
     "color": "ORANGE",
     "double_color": "BLACK"
   },
   {
-    "from": "chicago",
-    "to": "toronto",
+    "from": "Chicago",
+    "to": "Toronto",
     "cost": "4",
     "color": "WHITE"
   },
   {
-    "from": "sault_st_marie",
-    "to": "toronto",
+    "from": "Sault St. Marie",
+    "to": "Toronto",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "sault_st_marie",
-    "to": "montreal",
+    "from": "Sault St. Marie",
+    "to": "Montreal",
     "cost": "5",
     "color": "BLACK"
   },
   {
-    "from": "nashville",
-    "to": "atlanta",
+    "from": "Nashville",
+    "to": "Atlanta",
     "cost": "1",
     "color": "WILD"
   },
   {
-    "from": "nashville",
-    "to": "raleigh",
+    "from": "Nashville",
+    "to": "Raleigh",
     "cost": "3",
     "color": "BLACK"
   },
   {
-    "from": "nashville",
-    "to": "pittsburgh",
+    "from": "Nashville",
+    "to": "Pittsburgh",
     "cost": "4",
     "color": "YELLOW"
   },
   {
-    "from": "pittsburgh",
-    "to": "raleigh",
+    "from": "Pittsburgh",
+    "to": "Raleigh",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "pittsburgh",
-    "to": "washington",
+    "from": "Pittsburgh",
+    "to": "Washington",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "pittsburgh",
-    "to": "new_york",
+    "from": "Pittsburgh",
+    "to": "New York",
     "cost": "2",
     "color": "GREEN",
     "double_color": "WHITE"
   },
   {
-    "from": "pittsburgh",
-    "to": "toronto",
+    "from": "Pittsburgh",
+    "to": "Toronto",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "toronto",
-    "to": "montreal",
+    "from": "Toronto",
+    "to": "Montreal",
     "cost": "3",
     "color": "WILD"
   },
   {
-    "from": "atlanta",
-    "to": "miami",
+    "from": "Atlanta",
+    "to": "Miami",
     "cost": "5",
     "color": "BLUE"
   },
   {
-    "from": "atlanta",
-    "to": "charleston",
+    "from": "Atlanta",
+    "to": "Charleston",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "atlanta",
-    "to": "raleigh",
+    "from": "Atlanta",
+    "to": "Raleigh",
     "cost": "2",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "miami",
-    "to": "charleston",
+    "from": "Miami",
+    "to": "Charleston",
     "cost": "4",
     "color": "PURPLE"
   },
   {
-    "from": "charleston",
-    "to": "raleigh",
+    "from": "Charleston",
+    "to": "Raleigh",
     "cost": "2",
     "color": "WILD"
   },
   {
-    "from": "raleigh",
-    "to": "washington",
+    "from": "Raleigh",
+    "to": "Washington",
     "cost": "2",
     "color": "WILD",
     "double_color": "WILD"
   },
   {
-    "from": "washington",
-    "to": "new_york",
+    "from": "Washington",
+    "to": "New York",
     "cost": "2",
     "color": "ORANGE",
     "double_color": "BLACK"
   },
   {
-    "from": "new_york",
-    "to": "boston",
+    "from": "New York",
+    "to": "Boston",
     "cost": "2",
     "color": "RED",
     "double_color": "YELLOW"
   },
   {
-    "from": "new_york",
-    "to": "montreal",
+    "from": "New York",
+    "to": "Montreal",
     "cost": "3",
     "color": "BLUE"
   },
   {
-    "from": "boston",
-    "to": "montreal",
+    "from": "Boston",
+    "to": "Montreal",
     "cost": "2",
     "color": "WILD",
     "double_color": "WILD"

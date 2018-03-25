@@ -20,12 +20,12 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 import model.Player;
+import model.StateType;
 
 public class PlayerInfoActivity extends AppCompatActivity {
     private PlayerInfoPresenter mPresenter;
     private RecyclerView mRecycler;
     private Adapter adapter;
-    private ClientGameModel mClientGameModel;
     public int COUNTER = 0;
     public List<Player> players;
 
@@ -36,8 +36,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
         mPresenter = new PlayerInfoPresenter(this);
         mRecycler = (RecyclerView) findViewById(R.id.recycler_view_player_info);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mClientGameModel = ClientGameModel.getInstance();
-        players = mClientGameModel.getPlayers();
+        players = mPresenter.getPlayers();
         adapter = new Adapter(this, players);
         mRecycler.setAdapter(adapter);
     }
@@ -116,7 +115,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
             numDestCards.setText(Integer.toString(p.getNumDestCards()));
             setColor();
 
-            if (p.isTurn()) {
+            if (p.getState() == StateType.TURN_STATE) {
                 turn.setText("Yes");
             } else  {
                 turn.setText("No");

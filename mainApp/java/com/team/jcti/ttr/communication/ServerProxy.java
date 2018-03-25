@@ -100,16 +100,16 @@ public class ServerProxy implements IServer {
         return null;
     }
 
-    public Object claimRoute(String auth, String gameId, String routeId) {
-        Object[] params = {auth, gameId, routeId};
-        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), routeId.getClass().getName()};
+    public Object claimRoute(String auth, String gameId, String routeId, Integer length, int[] cardPos) {
+        Object[] params = {auth, gameId, routeId, length, cardPos};
+        String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName(), routeId.getClass().getName(), length.getClass().getName(), cardPos.getClass().getName()};
         Command command = new Command(SERVER_TARGET, "claimRoute", paramTypes, params);
         new SendCommandTask().execute(command);
         return null;
     }
 
     @Override
-    public Object drawDestinationCards(String auth, String gameId) { //ikes
+    public Object drawDestinationCards(String auth, String gameId) {
         Object[] params = {auth, gameId};
         String[] paramTypes = {auth.getClass().getName(), gameId.getClass().getName()};
         Command command = new Command(SERVER_TARGET, "drawDestinationCards", paramTypes, params);
@@ -118,7 +118,7 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Object drawTrainCards(String auth, Integer numberCards, String gameId) { //ikes
+    public Object drawTrainCards(String auth, Integer numberCards, String gameId) {
         Object[] params = {auth, numberCards, gameId};
         String[] paramTypes = {auth.getClass().getName(), numberCards.getClass().getName(), gameId.getClass().getName()};
         Command command = new Command(SERVER_TARGET, "drawTrainCards", paramTypes, params);

@@ -5,6 +5,7 @@ import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
+import com.team.jcti.ttr.state.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Observer;
 import model.DestinationCard;
 import model.Game;
 import model.Player;
+import model.StateType;
 import model.User;
 
 
@@ -66,18 +68,10 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
         int[] rejectedCardPositions = new int[rejectedCardsPos.size()];
         int count = 0;
         for(Integer pos : rejectedCardsPos){
-            rejectedCardPositions[count] = pos+player.getNumDestCards()-3; //checkback
+            rejectedCardPositions[count] = pos+player.getNumDestCards()-3;
             count++;
         }
-      
-       //mClientGameModel.getUserPlayer().removeDestCards(rejectedCardPositions);
 
-
-        if (mClientGameModel.getUserPlayer().isFirstDestPick()) {
-            mClientGameModel.turnToast();
-        } else {
-            mClientGameModel.moveTurnPosition();
-        }
 
         mServerProxy.returnDestinationCards(mClientModel.getAuthToken(), mClientModel.getGame().getID(), rejectedCardPositions);
     }
@@ -86,6 +80,11 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
     public void displayError(String message) {
         drawDestinationCardActivity.toast(message);
 
+    }
+
+    @Override
+    public void setState(State state) {
+        //nothing
     }
 
 

@@ -39,7 +39,7 @@ public class GameService extends AbstractService {
         }
     }
 
-    public Command[] claimRoute(String auth, String gameID, String routeID) {
+    public Command[] claimRoute(String auth, String gameID, String routeID, int length, int[] cardPos) {
         String user;
         try {
             user = mServerModel.getUserFromAuth(auth);
@@ -50,7 +50,9 @@ public class GameService extends AbstractService {
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
 
-            gameModel.claimRoute(user, routeID);
+            if (!gameModel.claimRoute(user, routeID, length, cardPos)) {
+                return displayError("You do not have enough train pieces to claim this route");
+            }
 
         } catch (ServerModel.GameNotFoundException e) {
             return displayError("Could Not Find Game");
