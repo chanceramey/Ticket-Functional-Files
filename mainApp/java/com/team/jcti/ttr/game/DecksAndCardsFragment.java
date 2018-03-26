@@ -71,6 +71,7 @@ public class DecksAndCardsFragment extends Fragment {
         });
 
         initializeFaceCardViews(v);
+        setFaceCardImages(mGamePresenter.getFaceUpCards());
 
         //set deck counts
         destinationCardDeck.setText(Integer.toString(mGamePresenter.getDestDeckSize()));

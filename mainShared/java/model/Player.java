@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +132,9 @@ public class Player {
 
 
     public void addDestCards(DestinationCard[] cards) {
-        Collections.addAll(destCards, cards);
+        for (DestinationCard card : cards) {
+            destCards.add(card);
+        }
         this.numDestCards = destCards.size();
     }
 
@@ -141,7 +142,8 @@ public class Player {
 
     public DestinationCard[] removeDestCards(int[] pos) {
         DestinationCard[] discarded = new DestinationCard[pos.length];
-        for (int i = 0; i < pos.length; i++) {
+        Arrays.sort(pos);
+        for (int i = pos.length - 1; i >= 0; i--) {
             discarded[i] = destCards.remove(pos[i]);
         }
         this.numDestCards = destCards.size();

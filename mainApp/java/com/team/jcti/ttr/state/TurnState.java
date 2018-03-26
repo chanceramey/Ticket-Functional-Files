@@ -25,9 +25,13 @@ public class TurnState implements State{
 
     @Override
     public void drawFromTrainDeck() {
-
+        if (mActiveGame.getTrainDeckSize() == 0) {
+            gamePresenter.displayError("No more train cards to draw");
+            return;
+        }
         mServerProxy.drawTrainCards(mClientModel.getAuthToken(), 1, mClientModel.getGame().getID());
-        gamePresenter.setState(new OneTrainPickedState(gamePresenter));
+        if(gamePresenter.getNumFaceUp() + gamePresenter.getTrainDeckSize() == 1) gamePresenter.setState(new NotTurnState(gamePresenter));
+        else gamePresenter.setState(new OneTrainPickedState(gamePresenter));
     }
 
     @Override
@@ -40,12 +44,17 @@ public class TurnState implements State{
             gamePresenter.setState(new NotTurnState(gamePresenter));
         }
         else{
-            gamePresenter.setState(new OneTrainPickedState(gamePresenter));
+            if(gamePresenter.getTrainDeckSize() + gamePresenter.getNumFaceUp() == 1) gamePresenter.setState(new NotTurnState(gamePresenter));
+            else gamePresenter.setState(new OneTrainPickedState(gamePresenter));
         }
     }
 
     @Override
     public void drawDestinationCards() {
+        if (mActiveGame.getDestDeckSize() == 0) {
+            gamePresenter.displayError("No more destination cards to draw");
+            return;
+        }
         mServerProxy.drawDestinationCards(mClientModel.getAuthToken(), mActiveGame.getGameID());
         gamePresenter.setState(new NotTurnState(gamePresenter));
     }

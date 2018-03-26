@@ -77,15 +77,14 @@ public class ServerGameModel {
         }
 
         //Draw 5 cards from TrainCard deck and update the faceup cards with the new cards
-        TrainCard[] newCards = trainCardDeck.drawCards(5); //draw 5 cards to be face up cards
-        int[] pos = new int[newCards.length];
-        for (int i = 0; i < newCards.length; i++) {
-            faceUpTrainCards[i] = newCards[i];
-            pos[i] = i;
+        faceUpTrainCards = trainCardDeck.drawCards(5); //draw 5 cards to be face up cards
+        while(hasThreeWilds(faceUpTrainCards)) {
+            trainCardDeck.discard(faceUpTrainCards);
+            trainCardDeck.drawCards(5);
         }
 
         //add the swappingFaceUpTrainCards to the gameHistoryCommand list
-        clientProxy.swapFaceUpCards(pos, faceUpTrainCards, trainCardDeck.size());
+        clientProxy.swapFaceUpCards(new int[] {0,1,2,3,4}, faceUpTrainCards, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
         clientProxy.updateState(players.get(0).getId(), StateType.TURN_STATE);
@@ -177,15 +176,40 @@ public class ServerGameModel {
             setNextTurn();
         }
         else{
-            p.setState(StateType.ONE_TRAIN_PICKED_STATE);
+            if (trainCardDeck.size() + getFaceUpNum() == 0) setNextTurn();
+            else p.setState(StateType.ONE_TRAIN_PICKED_STATE);
         }
 
         faceUpTrainCards[i] = trainCardDeck.drawCard();
-
-        clientProxy.swapFaceUpCards(new int[] {i}, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
+        if (hasThreeWilds(faceUpTrainCards) && trainCardDeck.size() != 0) {
+            while(hasThreeWilds(faceUpTrainCards)) {
+                trainCardDeck.discard(faceUpTrainCards);
+                faceUpTrainCards = trainCardDeck.drawCards(5);
+            }
+            clientProxy.swapFaceUpCards(new int[] {0,1,2,3,4}, faceUpTrainCards,trainCardDeck.size());
+        }
+        else clientProxy.swapFaceUpCards(new int[] {i}, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
         return true;
+    }
+
+    private void fillFaceUp(TrainCard[] cards) {
+        for(int i = 0; i < cards.length; i++) {
+            faceUpTrainCards[i] = cards[i];
+        }
+        for(int i = cards.length; i < 5; i++) {
+            faceUpTrainCards[i] = null;
+        }
+    }
+
+    private boolean hasThreeWilds(TrainCard[] faceUpTrainCards) {
+        int count = 0;
+        for (TrainCard trainCard : faceUpTrainCards) {
+            if (trainCard == TrainCard.WILD) count++;
+        }
+        if (count >= 3) return true;
+        else return false;
     }
 
     public void returnDestinationCards(String username, int[] rejectedCardPositions) {
@@ -233,7 +257,8 @@ public class ServerGameModel {
             setNextTurn();
         }
         else{
-            p.setState(StateType.ONE_TRAIN_PICKED_STATE);
+            if (trainCardDeck.size() + getFaceUpNum() == 0) setNextTurn();
+            else p.setState(StateType.ONE_TRAIN_PICKED_STATE);
         }
 
         clientProxy.drawTrainCards(p.getId(), drawnTrainCards.length, drawnTrainCards, trainCardDeck.size());
@@ -273,5 +298,13 @@ public class ServerGameModel {
                 return;
             }
         }
+    }
+
+    public int getFaceUpNum() {
+        int count = 0;
+        for(TrainCard card : faceUpTrainCards) {
+            if (card != null) count++;
+        }
+        return count;
     }
 }

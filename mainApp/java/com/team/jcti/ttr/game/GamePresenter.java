@@ -198,4 +198,12 @@ public class GamePresenter implements IGamePresenter, Observer{
     public void clearDestMarkers() {
         mBoardFragment.clearCityMarkers();
     }
+
+    public int getNumFaceUp() {
+        int count = 0;
+        for (TrainCard card : getFaceUpCards()) {
+            if (card != null) count++;
+        }
+        return count;
+    }
 }
