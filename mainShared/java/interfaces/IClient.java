@@ -54,5 +54,7 @@ public interface IClient {
 
     public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer deckSize);
 
-    void updateState(Integer player, StateType state);
+    public void onGameEnded();
+
+    public void updateState(Integer player, StateType state);
 }

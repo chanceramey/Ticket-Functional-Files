@@ -90,6 +90,10 @@ public class GamePresenter implements IGamePresenter, Observer{
         mDecksAndCardsFragment.setFaceCardImages(mActiveGame.getFaceUpCards());
     }
 
+    public void onGameEnded() {
+       mGameActivity.enterFinalScreen();
+    }
+
     public void displayCities(DestinationCard destCard) {
         City[] cities = mActiveGame.getCitiesFromDest(destCard);
         mBoardFragment.drawMarkersForCities(cities);

@@ -48,7 +48,7 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
         int points = 0;
         Route r;
         for (String s : routes) {
-            r = mClientGameModel.getRouteFromID(s);
+            r = mClientGameModel.getmAllRoutes().get(s);
             points += r.getPointValue();
         }
         return points;
@@ -73,6 +73,7 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
     public void update() {
         startRecyclerView();
     }
+
 
     @Override
     public void update(Observable observable, Object o) {

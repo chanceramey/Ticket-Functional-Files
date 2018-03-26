@@ -51,6 +51,7 @@ public class MessagePresenter implements IMessagePresenter, IGamePresenter, Obse
         mFragment.setHistory(mActiveGame.getGameHistory());
     }
 
+
     @Override
     public void drawDestCards() {
         //do nothing

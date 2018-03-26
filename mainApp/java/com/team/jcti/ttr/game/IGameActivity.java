@@ -10,4 +10,6 @@ public interface IGameActivity {
     void displayErrorMessages(ArrayList<String> errorMessages);
 
     void enterDrawDestinationActivity();
+
+    void enterFinalScreen();
 }

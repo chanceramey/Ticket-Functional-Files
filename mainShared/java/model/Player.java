@@ -33,6 +33,8 @@ public class Player {
     private int routePoints = 0; // points from claiming routes
     private int destCardPoints = 0; // points from completing destinations
     private int unfinishedDestCardPoints = 0; // points lost from not completing destinations
+
+    private int longestRoutePoints = 0;
     private StateType state;
     private boolean turn;
 
@@ -57,6 +59,15 @@ public class Player {
         firstDestPick = true;
         state = StateType.NOT_TURN_STATE;
         turn = false;
+    }
+
+    public int getLongestRoutePoints() {
+        return longestRoutePoints;
+    }
+
+    public void setLongestRoutePoints(int longestRoutePoints) {
+        this.longestRoutePoints = longestRoutePoints;
+        this.points += longestRoutePoints;
     }
 
     public int getId() {
@@ -205,6 +216,7 @@ public class Player {
     // call this at the end of the game and it will filter through the dest cards and add to destCardPoints, and unfinishedDestCardPoints
     public void calculateDestCardPoints() {
         destCardPoints = 0;
+        unfinishedDestCardPoints = 0;
         for (DestinationCard d : destCards) {
             if (d.isFinished()) {
                 destCardPoints += d.getPointValue();
@@ -212,6 +224,9 @@ public class Player {
                 unfinishedDestCardPoints -= d.getPointValue();
             }
         }
+
+        points += destCardPoints;
+        points += unfinishedDestCardPoints;
 
     }
 

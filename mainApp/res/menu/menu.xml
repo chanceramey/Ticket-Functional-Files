@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/temp_actions"
-        android:title="GetLongestRoute"
+        android:title="End Game"
         app:showAsAction="ifRoom"/>
 
 </menu>

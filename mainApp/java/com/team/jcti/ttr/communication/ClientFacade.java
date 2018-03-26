@@ -154,4 +154,9 @@ public class ClientFacade implements IClient {
     public void updateState(Integer player, StateType state) {
         mGameModel.updateState(player, state);
     }
+
+    @Override
+    public void onGameEnded(){
+        mGameModel.onGameEnded();
+    }
 }

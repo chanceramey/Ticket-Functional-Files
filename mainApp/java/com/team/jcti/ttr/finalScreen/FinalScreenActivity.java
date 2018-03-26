@@ -35,6 +35,7 @@ public class FinalScreenActivity extends AppCompatActivity {
         mPresenter = new FinalScreenPresenter(this);
         mWinner.setText(mPresenter.getWinner());
         mPresenter.startRecyclerView();
+
     }
 
     public void startRecyclerView(List<Player> players) {
@@ -112,6 +113,7 @@ public class FinalScreenActivity extends AppCompatActivity {
             destPoints.setText(Integer.toString(p.getDestCardPoints()));
             unfinishedDestPoints.setText(Integer.toString(p.getUnfinishedDestCardPoints()));
             totalPoints.setText(Integer.toString(p.getPoints()));
+            longestPath.setText(Integer.toString(p.getLongestRoutePoints()));
 //            if (p.hasLongestPath()) {        //
 //                longestPath.setText(10);
 //            }

@@ -26,6 +26,7 @@ public class ServerGameModel {
     List<GameHistory> gameHistory;
     private DestCardDeck destCardDeck;
     private List<Command> gameHistoryCommands;
+    private boolean lastTurn = false;
 
     public ServerGameModel(Game game) {
         initializePlayersList(game);
@@ -147,6 +148,8 @@ public class ServerGameModel {
         if(!userPlayer.addRoute(routeID, length)) {
             return false;
         }
+
+        if (userPlayer.getNumTrains() <= 2) lastTurn = true;
         clientProxy.claimedRoute(userPlayer.getId(), routeID);
         gameHistoryCommands.add(clientProxy.getCommand());
 
@@ -250,6 +253,10 @@ public class ServerGameModel {
                 p.setState(StateType.NOT_TURN_STATE);
 
                 if(i == players.size()-1){
+                    if (lastTurn) {
+                        clientProxy.onGameEnded();
+                        gameHistoryCommands.add(clientProxy.getCommand());
+                    }
                     players.get(0).setTurn(true);
                     players.get(0).setState(StateType.TURN_STATE);
 

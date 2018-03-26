@@ -56,9 +56,10 @@ public class ClientGameModel extends Observable {
 
     // Longest path or destination card calculation related
     private Map<Player, List<Route>> mEachPlayersLongestPath = new HashMap<>();
-    private Map<Player, List<String>> mEachPlayersDistinctCities = new HashMap<>();
+    private Map<Player, List<String>> mEachPlayersCities = new HashMap<>();
     private Map<Player, List<DestinationCard>> mEachPlayersDestinationCards = new HashMap<>();
     private Map<Player, List<Route>> mAllClaimedRoutes = new HashMap<>();
+    private Map<Player, Map<DestinationCard, Boolean>> mPlayersDestinationCardStatus = new HashMap<>();
     private Map<String, Route> mAllRoutes;
     private int mLengthOfLongestPath = 0;
     // until here
@@ -123,6 +124,10 @@ public class ClientGameModel extends Observable {
         return gameId;
     }
 
+    public Map<String, Route> getmAllRoutes() {
+        return mAllRoutes;
+    }
+
     public void increment(int numCommands) {
         gameHistoryPosition += numCommands;
     }
@@ -182,6 +187,10 @@ public class ClientGameModel extends Observable {
 
     public Player getUserPlayer() {
        return players.get(userPlayer);
+    }
+
+    public Map<Player, Map<DestinationCard, Boolean>> getPlayersDestinationCardStatus() {
+        return mPlayersDestinationCardStatus;
     }
 
     public void receiveMessage(GameHistory gameHistory) {
@@ -291,13 +300,12 @@ public class ClientGameModel extends Observable {
         activePresenter.update();
     }
 
-    // Longest Path Related
     public void endGameRouteCalcSetup() {
 
         //create a map from Player to routesIds
         mAllRoutes = this.getBoard().getIdtoRouteMap();
         mEachPlayersDestinationCards = new HashMap<>();
-        mEachPlayersDistinctCities = new HashMap<>();
+        mEachPlayersCities = new HashMap<>();
         mAllClaimedRoutes = new HashMap<>();
 
         for (Player p : players) {
@@ -308,13 +316,13 @@ public class ClientGameModel extends Observable {
             //fill mAllClaimedRoutes
             ArrayList<Route> thisPlayersRoutes = new ArrayList<>();
             //create an empty array list for storing distinct cities
-            mEachPlayersDistinctCities.put(p, new ArrayList<String>());
+            mEachPlayersCities.put(p, new ArrayList<String>());
             // loop through routeIds for this player
             for (String routeId: p.getRoutesClaimed()){
                 // get the route from the route id
                 Route thisRoute = mAllRoutes.get(routeId);
                 //if this route contains any cities that are not touched by other routes claimed by this player, save them. They are endpoints
-                addCitiesIfDistinct(p, thisRoute);
+                addCities(p, thisRoute);
 
                 // add this Route to this players list of routes
                 thisPlayersRoutes.add(thisRoute);
@@ -326,7 +334,6 @@ public class ClientGameModel extends Observable {
 
     }
 
-    // Longest Path Related
     public void makeSureSetupIsDone() {
         if (mAllRoutes == null) {
             this.endGameRouteCalcSetup();
@@ -334,16 +341,14 @@ public class ClientGameModel extends Observable {
     }
 
 
-    // Longest Path Related
-     public Player calulateLongestRouteWinner() {
+     public Player calculateLongestRouteWinner() {
 
-        // makeSureSetupIsDone();
-         endGameRouteCalcSetup();
+        makeSureSetupIsDone();
 
         //loop through the players in the game and find their longest route
          for (Player p: players) {
 
-             List<String> thisPlayersDistinctCities = mEachPlayersDistinctCities.get(p);
+             List<String> thisPlayersDistinctCities = mEachPlayersCities.get(p);
 
              //recurse through the routes beginning at the (distinct cities)
              for (String city : thisPlayersDistinctCities) {
@@ -383,8 +388,6 @@ public class ClientGameModel extends Observable {
             longestRouteHelper(p, oppositeCity, duplicatePath, thisLength);
         }
 
-        //TODO: check to make sure all routes we checked, if not, there may be a path with loops
-        //TODO: also make to add branches together if there are no duplicates
     }
 
     private Player getLongestPathWinner() {
@@ -396,7 +399,27 @@ public class ClientGameModel extends Observable {
                 winner = playerAndZerLongestPath.getKey();
             }
         }
+
+        setLongestPathPoints(winner);
+
         return winner;
+    }
+
+    public void onGameEnded(){
+        endGameRouteCalcSetup();
+        checkDestinationCardCompletion();
+        calculateLongestRouteWinner();
+        ((GamePresenter)activePresenter).onGameEnded();
+    }
+
+    private void setLongestPathPoints (Player winner) {
+        for (Player p : players) {
+            if (winner.getUser().equals(winner.getUser())) {
+                p.setLongestRoutePoints(10);
+            } else {
+                p.setLongestRoutePoints(0);
+            }
+        }
     }
 
     private int getLengthOfPath(List<Route> path) {
@@ -411,48 +434,23 @@ public class ClientGameModel extends Observable {
     }
 
     // Longest Path Related
-    private void addCitiesIfDistinct(Player p, Route r){
-        List<String> thisPlayersDistinctCities = mEachPlayersDistinctCities.get(p);
-        boolean srcFound = false;
-        boolean destFound = false;
-        for (int i = 0; i < thisPlayersDistinctCities.size(); i++) {
-            String cityName = thisPlayersDistinctCities.get(i);
-            String routeDestination = r.getDestCity();
-            String routeSource = r.getSrcCity();
-            if (cityName.equals(routeSource)) {
-                srcFound = true;
-                thisPlayersDistinctCities.remove(cityName);
-                i--;
-            } else if (cityName.equals(routeDestination)){
-                destFound = true;
-                thisPlayersDistinctCities.remove(cityName);
-                i--;
-            }
-        }
+    private void addCities(Player p, Route r){
+        List<String> thisPlayersCities = mEachPlayersCities.get(p);
 
-//        if (!srcFound) {
-//            thisPlayersDistinctCities.add(r.getSrcCity());
-//        }
-//
-//        if (!destFound) {
-//            thisPlayersDistinctCities.add(r.getDestCity());
-//        }
-
-        thisPlayersDistinctCities.add(r.getSrcCity());
-        thisPlayersDistinctCities.add(r.getDestCity());
+        thisPlayersCities.add(r.getSrcCity());
+        thisPlayersCities.add(r.getDestCity());
 
 
     }
 
      // Destination Card Scoring Related
-    private void checkDestinationCardCompletion(){
-
-        makeSureSetupIsDone();
+    public void checkDestinationCardCompletion(){
 
         //loop through destination cards and recurse
         for (Player p : players) {
             for (DestinationCard destinationCard : mEachPlayersDestinationCards.get(p)){
-                checkDestinationCardCompletionHelper(p, destinationCard.getSrcCity(), destinationCard.getDestCity(), new ArrayList<Route>());
+                Boolean thisCardsStatus = checkDestinationCardCompletionHelper(p, destinationCard.getSrcCity(), destinationCard.getDestCity(), new ArrayList<Route>());
+                destinationCard.setFinished(thisCardsStatus);
             }
         }
 

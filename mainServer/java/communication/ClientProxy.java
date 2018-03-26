@@ -128,6 +128,11 @@ public class ClientProxy implements IClient {
         return new Command(CLIENT_TARGET, methodName, paramTypes, params);
     }
 
+    public void onGameEnded() {
+        this.command = createCommand("onGameEnded");
+    }
+
+
     public Command getCommand() {
         return this.command;
     }

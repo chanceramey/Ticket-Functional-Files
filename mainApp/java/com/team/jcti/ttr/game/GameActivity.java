@@ -13,11 +13,16 @@ import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.drawdestinationcard.DrawDestinationCardActivity;
+import com.team.jcti.ttr.finalScreen.FinalScreenActivity;
 import com.team.jcti.ttr.message.MessageActivity;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.playerInfo.PlayerInfoActivity;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import model.DestinationCard;
+import model.Player;
 
 public class GameActivity extends AppCompatActivity implements IGameActivity {
 
@@ -26,6 +31,12 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public void enterFinalScreen(){
+        Intent intent = new Intent(this, FinalScreenActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -38,7 +49,7 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
                 startActivity(new Intent(this, PlayerInfoActivity.class));
                 return true;
             case R.id.temp_actions:
-                calculateLongestRoute();
+                mClientGameModel.onGameEnded();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -104,8 +115,18 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
     }
 
     public void calculateLongestRoute(){
-        mClientGameModel.calulateLongestRouteWinner();
+        mClientGameModel.calculateLongestRouteWinner();
         toast(String.valueOf(mClientGameModel.getLengthOfLongestPath()));
+    }
+
+    public void calculateClaimedDests(){
+        mClientGameModel.endGameRouteCalcSetup();
+        mClientGameModel.checkDestinationCardCompletion();
+        for (Player p: mClientGameModel.getPlayers()) {
+            for (DestinationCard destinationCard: p.getDestCards()){
+                toast(destinationCard.getSrcCity() + ' ' + destinationCard.getDestCity() + ' ' + destinationCard.isFinished());
+            }
+        }
     }
 
     @Override
