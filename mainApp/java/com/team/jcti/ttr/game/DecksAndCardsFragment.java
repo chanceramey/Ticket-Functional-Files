@@ -112,7 +112,12 @@ public class DecksAndCardsFragment extends Fragment {
     public void setFaceCardImages(TrainCard[] cards){
 
         for(int i = 0; i < cards.length; i++) {
-            faceUpCardIVs.get(i).setImageResource(Util.getTrainCardDrawable(cards[i]));
+            if(cards[i] != null){
+                faceUpCardIVs.get(i).setImageResource(Util.getTrainCardDrawable(cards[i]));
+            }
+            else{
+                faceUpCardIVs.get(i).setImageResource(android.R.color.transparent);
+            }
         }
     }
 
