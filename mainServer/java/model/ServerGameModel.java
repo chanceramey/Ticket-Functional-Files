@@ -149,15 +149,18 @@ public class ServerGameModel {
             return false;
         }
 
+
+        clientProxy.claimedRoute(userPlayer.getId(), routeID);
+        gameHistoryCommands.add(clientProxy.getCommand());
+
+        setNextTurn();
+
         if (userPlayer.getNumTrains() <= 2) {
             lastTurn = true;
             clientProxy.finalTurn();
             gameHistoryCommands.add(clientProxy.getCommand());
         }
-        clientProxy.claimedRoute(userPlayer.getId(), routeID);
-        gameHistoryCommands.add(clientProxy.getCommand());
-
-        setNextTurn();
+        
         return true;
     }
 
