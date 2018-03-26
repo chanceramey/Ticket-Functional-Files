@@ -146,9 +146,4 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
     public void update() {
         setImageViews();
     }
-
-    @Override
-    public void onBackPressed() {
-        Toast.makeText(this, "Must make destination card selection", Toast.LENGTH_SHORT).show();
-    }
 }

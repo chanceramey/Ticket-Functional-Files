@@ -1,18 +1,13 @@
 package com.team.jcti.ttr.models;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.utils.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import model.TrainCard;
 
 /**
  * Created by Chance on 3/7/18.

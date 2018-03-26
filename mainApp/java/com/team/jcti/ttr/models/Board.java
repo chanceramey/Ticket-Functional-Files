@@ -1,7 +1,7 @@
 package com.team.jcti.ttr.models;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.team.jcti.ttr.utils.Util;
+import com.team.jcti.ttr.utils.AppUtil;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -88,7 +88,7 @@ public class Board {
     public Map<String, Route> getIdtoRouteMap() { return  this.routes; }
 
     public void claimRoute(Player p, String routeID) {
-        int color = Util.getPlayerColorCode(p.getColor());
+        int color = AppUtil.getPlayerColorCode(p.getColor());
         claimedRoutes.put(routeID, p.getId());
         Route route = routes.get(routeID);
         p.addRoute(routeID, route.getLength());

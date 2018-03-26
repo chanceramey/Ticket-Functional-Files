@@ -1,33 +1,21 @@
 package com.team.jcti.ttr.game;
 
-import android.view.MenuItem;
-
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.Board;
 import com.team.jcti.ttr.models.City;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 import com.team.jcti.ttr.models.Route;
-import com.team.jcti.ttr.state.NotTurnState;
-import com.team.jcti.ttr.state.OneTrainPickedState;
 import com.team.jcti.ttr.state.State;
 import com.team.jcti.ttr.state.TurnState;
-import com.team.jcti.ttr.utils.Util;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.Color;
 import model.DestinationCard;
-import model.Game;
-import model.GameHistory;
-import model.Player;
-import model.StateType;
 import model.TrainCard;
 
 /**

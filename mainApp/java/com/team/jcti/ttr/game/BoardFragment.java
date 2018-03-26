@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.City;
-import com.team.jcti.ttr.utils.Util;
+import com.team.jcti.ttr.utils.AppUtil;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,7 +110,7 @@ public class BoardFragment extends android.support.v4.app.Fragment {
 
         for (Route route : mGamePresenter.getRoutes()) {
 
-                int image = Util.getImage(route.getLength());
+                int image = AppUtil.getImage(route.getLength());
 
                 int color = route.getRouteColor();
 
@@ -146,8 +146,8 @@ public class BoardFragment extends android.support.v4.app.Fragment {
 
         if(mGamePresenter.getBoard() == null) {
             try {
-                String JSONCities = Util.getStringFromResourceFile(getActivity(), R.raw.cities);
-                String JSONRoutes = Util.getStringFromResourceFile(getActivity(), R.raw.routes);
+                String JSONCities = AppUtil.getStringFromResourceFile(getActivity(), R.raw.cities);
+                String JSONRoutes = AppUtil.getStringFromResourceFile(getActivity(), R.raw.routes);
                 mGamePresenter.initializeBoard(JSONCities, JSONRoutes);
 
             } catch(IOException e) {

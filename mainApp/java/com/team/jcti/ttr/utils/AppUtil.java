@@ -20,7 +20,7 @@ import model.TrainCard;
  * Created by Chance on 3/7/18.
  */
 
-public class Util {
+public class AppUtil {
 
     public static int getColorCode(TrainCard c) {
 

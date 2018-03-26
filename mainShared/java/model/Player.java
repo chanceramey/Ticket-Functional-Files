@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import SharedUtil.SharedUtil;
+
 /**
  * Created by tjense25 on 2/24/18.
  */
@@ -55,7 +57,7 @@ public class Player {
         }
         this.destCards = new ArrayList<>();
         this.claimedRouteIds = new ArrayList<>();
-        this.numTrains = 45;
+        this.numTrains = 15;
         firstDestPick = true;
         state = StateType.NOT_TURN_STATE;
         turn = false;
@@ -167,7 +169,7 @@ public class Player {
     public boolean addRoute(String routeID, int length) {
         if(numTrains - length < 0) return false;
         this.numTrains -= length;
-        this.points += getPointsFromLength(length);
+        this.points += SharedUtil.getPointsFromLength(length);
         this.claimedRouteIds.add(routeID);
         return true;
     }
@@ -194,18 +196,6 @@ public class Player {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
-        }
-    }
-
-    private int getPointsFromLength(int length) {
-        switch(length) {
-            case 1: return 1;
-            case 2: return 2;
-            case 3: return 4;
-            case 4: return 7;
-            case 5: return 10;
-            case 6: return 15;
-            default: return 0;
         }
     }
 

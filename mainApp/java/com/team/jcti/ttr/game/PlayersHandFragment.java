@@ -12,14 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.state.TurnState;
-import com.team.jcti.ttr.utils.Util;
+import com.team.jcti.ttr.utils.AppUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,7 +157,7 @@ public class PlayersHandFragment extends Fragment {
 
         void bind(TrainCard card) {
             this.mTrainCard = card;
-            Drawable drawable = getResources().getDrawable(Util.getTrainCardDrawable(card));
+            Drawable drawable = getResources().getDrawable(AppUtil.getTrainCardDrawable(card));
             mTextView.setBackground(drawable);
             mTextView.setText(Integer.toString(mPresenter.getNumCards(card)));
         }

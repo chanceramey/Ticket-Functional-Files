@@ -256,6 +256,7 @@ public class ServerGameModel {
                     if (lastTurn) {
                         clientProxy.onGameEnded();
                         gameHistoryCommands.add(clientProxy.getCommand());
+                        return;
                     }
                     players.get(0).setTurn(true);
                     players.get(0).setState(StateType.TURN_STATE);

@@ -1,18 +1,15 @@
 package com.team.jcti.ttr.models;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.utils.Util;
+import com.team.jcti.ttr.utils.AppUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Color;
 import model.TrainCard;
 
 /**
@@ -34,7 +31,7 @@ public class Route {
 
     public Route(TrainCard color, String routeId, String srcCity, String destCity, int length) {
         this.trainCardColor = color;
-        this.routeColor = Util.getColorCode(color);
+        this.routeColor = AppUtil.getColorCode(color);
         this.routeId = routeId;
         this.srcCity = srcCity;
         this.destCity = destCity;
@@ -45,7 +42,7 @@ public class Route {
 
     public Route(TrainCard double_color, String routeId, String srcCity, String destCity, int length, Route pairedRoute) {
         this.trainCardColor = double_color;
-        this.routeColor = Util.getColorCode(double_color);
+        this.routeColor = AppUtil.getColorCode(double_color);
         this.routeId = routeId;
         this.srcCity = srcCity;
         this.destCity = destCity;

@@ -1,15 +1,12 @@
 package com.team.jcti.ttr.models;
 
-import com.google.android.gms.games.Players;
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.message.MessagePresenter;
 import com.team.jcti.ttr.state.NotTurnState;
 import com.team.jcti.ttr.state.OneTrainPickedState;
 import com.team.jcti.ttr.state.State;
 import com.team.jcti.ttr.state.TurnState;
-import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -9,8 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.models.ClientModel;
-import com.team.jcti.ttr.utils.Util;
+import com.team.jcti.ttr.utils.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,12 +111,7 @@ public class DecksAndCardsFragment extends Fragment {
     public void setFaceCardImages(TrainCard[] cards){
 
         for(int i = 0; i < cards.length; i++) {
-            if(cards[i] != null){
-                faceUpCardIVs.get(i).setImageResource(Util.getTrainCardDrawable(cards[i]));
-            }
-            else{
-                faceUpCardIVs.get(i).setImageResource(android.R.color.transparent);
-            }
+            faceUpCardIVs.get(i).setImageResource(AppUtil.getTrainCardDrawable(cards[i]));
         }
     }
 

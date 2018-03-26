@@ -12,10 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.models.ClientGameModel;
-import com.team.jcti.ttr.utils.Util;
-
-import org.w3c.dom.Text;
+import com.team.jcti.ttr.utils.AppUtil;
 
 import java.util.List;
 
@@ -124,13 +121,13 @@ public class PlayerInfoActivity extends AppCompatActivity {
         }
 
         void setColor() {
-            playerNumber.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
-            playerName.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
-            points.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
-            trains.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
-            numTrainCards.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
-            numDestCards.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
-            turn.setTextColor(Util.getPlayerColorCode(this.player.getColor()));
+            playerNumber.setTextColor(AppUtil.getPlayerColorCode(this.player.getColor()));
+            playerName.setTextColor(AppUtil.getPlayerColorCode(this.player.getColor()));
+            points.setTextColor(AppUtil.getPlayerColorCode(this.player.getColor()));
+            trains.setTextColor(AppUtil.getPlayerColorCode(this.player.getColor()));
+            numTrainCards.setTextColor(AppUtil.getPlayerColorCode(this.player.getColor()));
+            numDestCards.setTextColor(AppUtil.getPlayerColorCode(this.player.getColor()));
+            turn.setTextColor(AppUtil.getPlayerColorCode(this.player.getColor()));
         }
     }
 
