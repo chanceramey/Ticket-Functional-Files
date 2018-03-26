@@ -198,4 +198,8 @@ public class GamePresenter implements IGamePresenter, Observer{
     public void clearDestMarkers() {
         mBoardFragment.clearCityMarkers();
     }
+
+    public void finalTurn() {
+        mGameActivity.toast("Final Turn");
+    }
 }

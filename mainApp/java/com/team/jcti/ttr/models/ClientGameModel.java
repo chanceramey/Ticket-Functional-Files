@@ -559,4 +559,7 @@ public class ClientGameModel extends Observable {
         return board.getCitiesFromDest(destCard);
     }
 
+    public void finalTurn() {
+        ((GamePresenter)activePresenter).finalTurn();
+    }
 }

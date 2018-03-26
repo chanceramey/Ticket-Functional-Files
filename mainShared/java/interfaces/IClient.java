@@ -57,4 +57,6 @@ public interface IClient {
     public void onGameEnded();
 
     public void updateState(Integer player, StateType state);
+
+    public void finalTurn();
 }

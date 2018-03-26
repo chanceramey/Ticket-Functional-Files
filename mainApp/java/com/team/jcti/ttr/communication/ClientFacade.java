@@ -156,6 +156,11 @@ public class ClientFacade implements IClient {
     }
 
     @Override
+    public void finalTurn() {
+        mGameModel.finalTurn();
+    }
+
+    @Override
     public void onGameEnded(){
         mGameModel.onGameEnded();
     }

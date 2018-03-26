@@ -108,6 +108,11 @@ public class ClientProxy implements IClient {
     }
 
     @Override
+    public void finalTurn() {
+        this.command = createCommand("finalTurn");
+    }
+
+    @Override
     public void claimedRoute(Integer player, String routeID) {
         this.command = createCommand("claimedRoute", player, routeID);
     }
