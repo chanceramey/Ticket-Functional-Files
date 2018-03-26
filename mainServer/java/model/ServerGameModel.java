@@ -261,7 +261,7 @@ public class ServerGameModel {
 
                 if(i == players.size()-1){
                     if (lastTurn) {
-                        clientProxy.onGameEnded();
+                        clientProxy.onGameEnded(players);
                         gameHistoryCommands.add(clientProxy.getCommand());
                     }
                     players.get(0).setTurn(true);
@@ -281,4 +281,6 @@ public class ServerGameModel {
             }
         }
     }
+
+
 }

@@ -405,7 +405,8 @@ public class ClientGameModel extends Observable {
         return winner;
     }
 
-    public void onGameEnded(){
+    public void onGameEnded(List<Player> players){
+        this.players = players;
         endGameRouteCalcSetup();
         checkDestinationCardCompletion();
         calculateLongestRouteWinner();

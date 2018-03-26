@@ -1,10 +1,13 @@
 package communication;
 
+import java.util.List;
+
 import command.Command;
 import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.Player;
 import model.StateType;
 import model.TrainCard;
 
@@ -133,8 +136,8 @@ public class ClientProxy implements IClient {
         return new Command(CLIENT_TARGET, methodName, paramTypes, params);
     }
 
-    public void onGameEnded() {
-        this.command = createCommand("onGameEnded");
+    public void onGameEnded(List<Player> players) {
+        this.command = createCommand("onGameEnded", players);
     }
 
 

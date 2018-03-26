@@ -14,6 +14,7 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.Player;
 import model.StateType;
 import model.TrainCard;
 
@@ -161,7 +162,7 @@ public class ClientFacade implements IClient {
     }
 
     @Override
-    public void onGameEnded(){
-        mGameModel.onGameEnded();
+    public void onGameEnded(List<Player> players){
+        mGameModel.onGameEnded(players);
     }
 }

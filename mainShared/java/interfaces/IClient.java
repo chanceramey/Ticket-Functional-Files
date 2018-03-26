@@ -7,6 +7,7 @@ import model.Color;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
+import model.Player;
 import model.StateType;
 import model.TrainCard;
 
@@ -54,7 +55,7 @@ public interface IClient {
 
     public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer deckSize);
 
-    public void onGameEnded();
+    public void onGameEnded(List<Player> players);
 
     public void updateState(Integer player, StateType state);
 
