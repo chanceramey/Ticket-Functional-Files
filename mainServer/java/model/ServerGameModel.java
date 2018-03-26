@@ -160,7 +160,7 @@ public class ServerGameModel {
             clientProxy.finalTurn();
             gameHistoryCommands.add(clientProxy.getCommand());
         }
-        
+
         return true;
     }
 
