@@ -14,7 +14,6 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
-import model.StateType;
 import model.TrainCard;
 
 /**
@@ -151,12 +150,17 @@ public class ClientFacade implements IClient {
     }
 
     @Override
-    public void updateState(Integer player, StateType state) {
-        mGameModel.updateState(player, state);
+    public void onGameEnded(){
+        mGameModel.onGameEnded();
     }
 
     @Override
-    public void onGameEnded(){
-        mGameModel.onGameEnded();
+    public void setTurn(Integer player) {
+        mGameModel.setTurn(player);
+    }
+
+    @Override
+    public void setLastTurn() {
+        mGameModel.setLastTurn();
     }
 }

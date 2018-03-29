@@ -11,14 +11,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.games.Players;
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.playerInfo.PlayerInfoActivity;
-import com.team.jcti.ttr.utils.Util;
 
 import java.util.List;
 
-import model.Player;
+import model.playerStates.Player;
 
 public class FinalScreenActivity extends AppCompatActivity {
     FinalScreenPresenter mPresenter;

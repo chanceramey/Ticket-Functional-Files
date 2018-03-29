@@ -51,7 +51,7 @@ public class GameService extends AbstractService {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
 
             if (!gameModel.claimRoute(user, routeID, length, cardPos)) {
-                return displayError("You do not have enough train pieces to claim this route");
+                return displayError("Invalid move");
             }
 
         } catch (ServerModel.GameNotFoundException e) {

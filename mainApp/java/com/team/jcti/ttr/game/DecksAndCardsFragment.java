@@ -71,10 +71,7 @@ public class DecksAndCardsFragment extends Fragment {
         });
 
         initializeFaceCardViews(v);
-
-        //set deck counts
-        destinationCardDeck.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
-        trainCardDeck.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
+        updateView();
 
 
     }
@@ -82,6 +79,7 @@ public class DecksAndCardsFragment extends Fragment {
     public void updateView() {
         destinationCardDeck.setText(Integer.toString(mGamePresenter.getDestDeckSize()));
         trainCardDeck.setText(Integer.toString(mGamePresenter.getTrainDeckSize()));
+        setFaceCardImages(mGamePresenter.getFaceUpCards());
     }
 
     public void initializeFaceCardViews(View v) {
@@ -92,7 +90,6 @@ public class DecksAndCardsFragment extends Fragment {
         faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_three));
         faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_four));
         faceUpCardIVs.add((ImageView) v.findViewById(R.id.face_up_train_five));
-        setFaceCardImages(mGamePresenter.getFaceUpCards());
 
         for (int i = 0; i < faceUpCardIVs.size(); i++) {
             ImageView faceUpCard = faceUpCardIVs.get(i);
@@ -100,7 +97,7 @@ public class DecksAndCardsFragment extends Fragment {
             faceUpCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if (mGamePresenter.getFaceUpCards()[INDEX] == null) return;
                     if(INDEX < mGamePresenter.getFaceUpCards().length){
                         mGamePresenter.onFaceUpClick(INDEX);
                     }
@@ -109,14 +106,16 @@ public class DecksAndCardsFragment extends Fragment {
         }
     }
 
-    public void setFaceCardImages(TrainCard[] cards){
+    private void setFaceCardImages(TrainCard[] cards){
 
         for(int i = 0; i < cards.length; i++) {
             if(cards[i] != null){
                 faceUpCardIVs.get(i).setImageResource(Util.getTrainCardDrawable(cards[i]));
+                faceUpCardIVs.get(i).setAlpha(1.0f);
             }
-            else{
-                faceUpCardIVs.get(i).setImageResource(android.R.color.transparent);
+            else {
+                faceUpCardIVs.get(i).setImageResource(Util.getTrainCardDrawable(TrainCard.WILD));
+                faceUpCardIVs.get(i).setAlpha(0.0f);
             }
         }
     }

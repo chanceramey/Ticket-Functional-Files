@@ -92,7 +92,7 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
     }
 
     private void handleImageClick(int imageNum) {
-
+        if (drawDestinationCardPresenter.getCards().get(imageNum) == null) return;
         TextView selectedCard = cardImages.get(imageNum);
 
         if(!chosenCards.contains(imageNum)) {
@@ -132,13 +132,13 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
         List<DestinationCard> destDeck = drawDestinationCardPresenter.getCards();
         for(int i = 0; i < destDeck.size(); i++){
 
-            if(drawDestinationCardPresenter.getCards().size() > i){
-                cardImages.get(i).setText(destDeck.get(i).toString());
-                cardImages.get(i).setBackgroundColor(Color.argb(100,0,0,255));
-            }
-            else{
+            if(drawDestinationCardPresenter.getCards().get(i) == null){
                 cardImages.get(i).setBackgroundColor(Color.TRANSPARENT);
                 cardImages.get(i).setText("");
+            }
+            else{
+                cardImages.get(i).setText(destDeck.get(i).toString());
+                cardImages.get(i).setBackgroundColor(Color.argb(100,0,0,255));
             }
         }
     }

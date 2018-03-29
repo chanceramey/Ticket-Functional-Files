@@ -1,18 +1,16 @@
 package com.team.jcti.ttr.models;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.utils.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Color;
+import model.playerStates.Player;
 import model.TrainCard;
 
 /**
@@ -29,6 +27,7 @@ public class Route {
     private LatLng src;
     private LatLng dest;
     private int length;
+    private int claimedBy;
     private Route pairedRoute;
     private int pointValue;
 
@@ -40,6 +39,7 @@ public class Route {
         this.destCity = destCity;
         this.length = length;
         this.pairedRoute = null;
+        this.claimedBy = -1;
         this.setPointValue();
     }
 
@@ -51,6 +51,7 @@ public class Route {
         this.destCity = destCity;
         this.length = length;
         this.pairedRoute = pairedRoute;
+        this.claimedBy = -1;
         this.setPointValue();
     }
 
@@ -136,9 +137,15 @@ public class Route {
         return dest;
     }
 
-    public void setColor(int color) {
-        this.routeColor = color;
+    public void claim(Player player) {
+        this.claimedBy = player.getId();
+        this.routeColor = Util.getPlayerColorCode(player.getColor());
     }
+
+    public int getClaimedBy() {
+        return this.claimedBy;
+    }
+
 
     @Override
     public boolean equals(Object o) {

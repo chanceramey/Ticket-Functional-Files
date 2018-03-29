@@ -5,7 +5,6 @@ import interfaces.IClient;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
-import model.StateType;
 import model.TrainCard;
 
 /**
@@ -103,18 +102,13 @@ public class ClientProxy implements IClient {
     }
 
     @Override
-    public void updateState(Integer player, StateType state) {
-        this.command = createCommand("updateState", player, state);
-    }
-
-    @Override
     public void claimedRoute(Integer player, String routeID) {
         this.command = createCommand("claimedRoute", player, routeID);
     }
 
     @Override
     public void promptRenewSession() {
-        createCommand("promptRenewSession");
+        this.command = createCommand("promptRenewSession");
     }
 
     private Command createCommand(String methodName, Object... params) {
@@ -130,6 +124,16 @@ public class ClientProxy implements IClient {
 
     public void onGameEnded() {
         this.command = createCommand("onGameEnded");
+    }
+
+    @Override
+    public void setTurn(Integer player) {
+        this.command = createCommand("setTurn", player);
+    }
+
+    @Override
+    public void setLastTurn() {
+        this.command = createCommand("lastTurn");
     }
 
 

@@ -1,33 +1,20 @@
 package com.team.jcti.ttr.game;
 
-import android.view.MenuItem;
-
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.Board;
 import com.team.jcti.ttr.models.City;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 import com.team.jcti.ttr.models.Route;
-import com.team.jcti.ttr.state.NotTurnState;
-import com.team.jcti.ttr.state.OneTrainPickedState;
-import com.team.jcti.ttr.state.State;
-import com.team.jcti.ttr.state.TurnState;
 import com.team.jcti.ttr.utils.Util;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.Color;
 import model.DestinationCard;
-import model.Game;
-import model.GameHistory;
-import model.Player;
-import model.StateType;
 import model.TrainCard;
 
 /**
@@ -44,21 +31,56 @@ public class GamePresenter implements IGamePresenter, Observer{
     private BoardFragment mBoardFragment;
     private DecksAndCardsFragment mDecksAndCardsFragment;
     private Route selectedRoute;
-    private State state;
+
 
 
     public GamePresenter(GameActivity gameActivity){
         mActiveGame.setActivePresenter(this);
         this.mGameActivity = gameActivity;
-        this.state = mActiveGame.getState();
     }
 
     public void makeActivePresenter() {
         mActiveGame.setActivePresenter(this);
+        mDecksAndCardsFragment.updateView();
     }
 
     public void claimRoute(String routeId) {
-        state.claimRoute(routeId);
+        if(!mActiveGame.isMyTurn()) {
+            mGameActivity.toast("It is not your turn!");
+            return;
+        }
+
+        Route route = mActiveGame.getRouteFromID(routeId);
+        if(route == null) {
+            mGameActivity.toast("Route already claimed by a player.");
+            return;
+        }
+
+        if(route.getPairedRoute() != null) {
+            Route pairedRoute = route.getPairedRoute();
+            if(pairedRoute.getClaimedBy() == mActiveGame.getUserPlayer().getId()) {
+                mGameActivity.toast("You already Claim the paired route!");
+                return;
+            }
+            if(mActiveGame.getRouteFromID(pairedRoute.getRouteId()) == null && mActiveGame.getPlayers().size() <= 3) {
+                mGameActivity.toast("Cannot claim double route with less than 3 players");
+                return;
+            }
+        }
+
+        if(!mActiveGame.playerHasEnoughTrains(route.getLength())) {
+            mGameActivity.toast("You do not have enough trains to claim this route");
+            return;
+        }
+
+        this.selectedRoute = route;
+        if (route.getTrainCardColor() == TrainCard.WILD) {
+            mGameActivity.toast("Select train card color to claim this route");
+            mPlayersHandFragment.startSelectionState();
+            return;
+        }
+
+        claimRouteWithColor(route.getTrainCardColor());
     }
 
     public boolean claimRouteWithColor(TrainCard color) {
@@ -68,7 +90,6 @@ public class GamePresenter implements IGamePresenter, Observer{
             this.selectedRoute = null;
             mGameActivity.toast("You do not have enough cards to claim this route");
             mPlayersHandFragment.updateCardList();
-            this.state = new TurnState(this);
             return false;
         }
 
@@ -87,7 +108,6 @@ public class GamePresenter implements IGamePresenter, Observer{
         mDecksAndCardsFragment.updateView();
         mPlayersHandFragment.updateCardList();
         mBoardFragment.update();
-        mDecksAndCardsFragment.setFaceCardImages(mActiveGame.getFaceUpCards());
     }
 
     public void onGameEnded() {
@@ -123,10 +143,6 @@ public class GamePresenter implements IGamePresenter, Observer{
         return mActiveGame.getPlayersDestCards();
     }
 
-    public boolean isFirstTurn(){
-        return mActiveGame.isFirstTurn();
-    }
-
     public TrainCard[] getFaceUpCards(){
 
         return mActiveGame.getFaceUpCards();
@@ -143,18 +159,41 @@ public class GamePresenter implements IGamePresenter, Observer{
     }
 
     public void onDestDeckClick() {
+        if(!mActiveGame.isMyTurn()) {
+            mGameActivity.toast("It's not your turn!");
+            return;
+        }
+        if(getDestDeckSize() == 0) {
+            mGameActivity.toast("No More Destination Cards in Deck");
+            return;
+        }
 
-        state.drawDestinationCards();
+        mServerProxy.drawDestinationCards(mClientModel.getAuthToken(), mActiveGame.getGameID());
+
     }
 
     public void onTrainDeckClick() {
+        if(!mActiveGame.isMyTurn()) {
+            mGameActivity.toast("It's not your turn!");
+            return;
+        }
+        if(getTrainDeckSize() == 0) {
+            mGameActivity.toast("No More Train Cards in Deck");
+            return;
+        }
 
-        state.drawFromTrainDeck();
+        mServerProxy.drawTrainCards(mClientModel.getAuthToken(), 1, mActiveGame.getGameID());
     }
 
     public void onFaceUpClick(int pos) {
+        if(!mActiveGame.isMyTurn()) {
+            mGameActivity.toast("It's not your turn!");
+            return;
+        }
 
-        state.drawFaceUpTrainCard(pos);
+
+        mServerProxy.drawFaceUp(mClientModel.getAuthToken(), mActiveGame.getGameID(), pos);
+
     }
 
     public Collection<City> getCities() {
@@ -183,19 +222,9 @@ public class GamePresenter implements IGamePresenter, Observer{
         return mActiveGame.getPlayersNumTrainCards(card);
     }
 
-    public void setState(State state){
-        this.state = state;
-    }
-
-    public void setSelectedRoute(Route selectedRoute) {
-        this.selectedRoute = selectedRoute;
-    }
-
-    public void startSelectionState() {
-        mPlayersHandFragment.startSelectionState();
-    }
 
     public void clearDestMarkers() {
         mBoardFragment.clearCityMarkers();
     }
+
 }

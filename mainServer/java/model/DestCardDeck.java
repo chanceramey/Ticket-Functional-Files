@@ -49,12 +49,10 @@ public class DestCardDeck {
 
     public DestinationCard[] drawCards(int numToDraw) {
         //If player tries to draw more cards than are currently in deck, shuffle discard and add to deck
-        if (numToDraw > deck.size()) {
-           numToDraw = deck.size();
-        }
         DestinationCard[] cards = new DestinationCard[numToDraw];
         for (int i = 0; i < numToDraw; i++) {
-            cards[i] = deck.remove(0);
+            if (deck.size() == 0) cards[i] = null;
+            else cards[i] = deck.remove(0);
         }
         return cards;
     }
@@ -62,6 +60,7 @@ public class DestCardDeck {
     public void discard(DestinationCard[] discarded) {
         //Put each card in the discarded array into the end of the deck
         for (int i = 0; i < discarded.length; i ++) {
+            if(discarded[i] == null) continue;
             deck.add(discarded[i]);
         }
     }

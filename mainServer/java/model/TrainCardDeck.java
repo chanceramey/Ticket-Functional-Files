@@ -73,4 +73,18 @@ public class TrainCardDeck {
     public int size() {
         return deck.size() + discard.size();
     }
+
+    public boolean hasEnoughNonWilds() {
+        int nonWildCount = 0;
+        for (TrainCard card : deck) {
+            if (card != TrainCard.WILD) nonWildCount++;
+            if (nonWildCount == 3) return true;
+        }
+        for (TrainCard card : discard) {
+            if(card != TrainCard.WILD) nonWildCount++;
+            if (nonWildCount == 3) return true;
+        }
+
+        return false;
+    }
 }

@@ -1,17 +1,14 @@
 package com.team.jcti.ttr.finalScreen;
 
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.Route;
-import com.team.jcti.ttr.state.State;
 
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.Game;
-import model.Player;
+import model.playerStates.Player;
 
 /**
  * Created by Jeff on 3/22/2018.
@@ -59,10 +56,6 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
         mActivity.toast(message);
     }
 
-    @Override
-    public void setState(State state) {
-        //do nothing?
-    }
 
     @Override
     public void drawDestCards() {
