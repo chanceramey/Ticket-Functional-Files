@@ -1,7 +1,6 @@
 package com.team.jcti.ttr.game;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +18,9 @@ import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.playerInfo.PlayerInfoActivity;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import model.DestinationCard;
-import model.Player;
+import model.playerStates.Player;
 
 public class GameActivity extends AppCompatActivity implements IGameActivity {
 

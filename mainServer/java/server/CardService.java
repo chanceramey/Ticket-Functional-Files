@@ -1,17 +1,9 @@
 package server;
 
-import java.util.List;
-
 import command.Command;
 import communication.ClientProxy;
-import model.DestCardDeck;
-import model.DestinationCard;
-import model.Game;
-import model.Player;
 import model.ServerGameModel;
 import model.ServerModel;
-import model.TrainCard;
-import model.TrainCardDeck;
 
 /**
  * Created by Isaak on 3/7/2018.
@@ -33,7 +25,7 @@ public class CardService extends AbstractService{
             if(game.drawDestCards(username)) {
                 return new Command[] {};
             } else {
-                return displayError("No destination cards left in deck");
+                return displayError("Invalid action");
             }
 
         } catch (ServerModel.AuthTokenNotFoundException | ServerModel.GameNotFoundException e) {
@@ -47,17 +39,15 @@ public class CardService extends AbstractService{
             String username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameId);
 
-            if (game.drawTrainCards(username, numberCards)) {
+            if (game.drawDeckTrainCard(username)) {
                 return new Command[] {};
             }
             else {
-                return displayError("No cards left in deck");
+                return displayError("Invalid action");
             }
 
         } catch (ServerModel.AuthTokenNotFoundException | ServerModel.GameNotFoundException e) {
-            clientProxy.displayError("501 SERVER ERROR");
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
+            return displayError("SERVER ERROR");
         }
     }
 
@@ -88,7 +78,7 @@ public class CardService extends AbstractService{
             if (game.drawFaceUp(username, i)) {
                 return new Command[] {};
             } else {
-                return displayError("No Train Card in this position");
+                return displayError("Invalid action");
             }
         } catch (ServerModel.AuthTokenNotFoundException | ServerModel.GameNotFoundException e) {
             return promptRenewSession();

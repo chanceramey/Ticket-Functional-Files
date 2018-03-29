@@ -1,17 +1,13 @@
 package com.team.jcti.ttr.playerInfo;
 
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.models.ClientGameModel;
-import com.team.jcti.ttr.state.State;
 
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.Game;
-import model.Player;
-import model.StateType;
+import model.playerStates.Player;
 
 /**
  * Created by Jeff on 3/7/2018.
@@ -34,10 +30,6 @@ public class PlayerInfoPresenter implements IGamePresenter, Observer {
         mActivity.toast(message);
     }
 
-    @Override
-    public void setState(State state) {
-        //nothing?
-    }
 
     @Override
     public void update() {

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import model.DestinationCard;
-import model.Player;
+import model.playerStates.Player;
 
 /**
  * Created by tjense25 on 3/15/18.
@@ -92,7 +92,7 @@ public class Board {
         claimedRoutes.put(routeID, p.getId());
         Route route = routes.get(routeID);
         p.addRoute(routeID, route.getLength());
-        route.setColor(color);
+        route.claim(p);
     }
 
     public Route getRouteFromID(String routeId) {

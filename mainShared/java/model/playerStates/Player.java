@@ -1,10 +1,16 @@
-package model;
+package model.playerStates;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import model.Color;
+import model.DestinationCard;
+import model.TrainCard;
+import model.playerStates.IPlayerState;
+import model.playerStates.NotTurnState;
 
 /**
  * Created by tjense25 on 2/24/18.
@@ -29,13 +35,12 @@ public class Player {
 
     private List<String> claimedRouteIds;
 
-    private int routePoints = 0; // points from claiming routes
     private int destCardPoints = 0; // points from completing destinations
     private int unfinishedDestCardPoints = 0; // points lost from not completing destinations
 
     private int longestRoutePoints = 0;
-    private StateType state;
-    private boolean turn;
+
+    private IPlayerState state;
 
     public int getNumTrains() {
         return numTrains;
@@ -56,8 +61,7 @@ public class Player {
         this.claimedRouteIds = new ArrayList<>();
         this.numTrains = 45;
         firstDestPick = true;
-        state = StateType.NOT_TURN_STATE;
-        turn = false;
+        state = new NotTurnState(this);
     }
 
     public int getLongestRoutePoints() {
@@ -126,12 +130,7 @@ public class Player {
         return discarded;
     }
 
-    public void removeTrainCards(int num) {
-        numTrainCards -= num;
-    }
-
-
-    public void addDestCards(DestinationCard[] cards) {
+    public void addDrawnDestCards(DestinationCard[] cards) {
         for (DestinationCard card : cards) {
             destCards.add(card);
         }
@@ -149,8 +148,6 @@ public class Player {
         this.numDestCards = destCards.size();
         return discarded;
     }
-
-    public void removeTrains(int i) { numTrains -= i;}
 
     public void removeDestCards(int num) { this.numDestCards -= num; }
 
@@ -186,19 +183,6 @@ public class Player {
         this.points = points;
     }
 
-    public int getRoutePoints() {
-        routePoints = 0;
-        try {
-            for (String i: claimedRouteIds) {
-
-            }
-            return routePoints;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
     private int getPointsFromLength(int length) {
         switch(length) {
             case 1: return 1;
@@ -211,9 +195,6 @@ public class Player {
         }
     }
 
-    public StateType getState(){
-        return state;
-    }
 
     // call this at the end of the game and it will filter through the dest cards and add to destCardPoints, and unfinishedDestCardPoints
     public void calculateDestCardPoints() {
@@ -230,10 +211,6 @@ public class Player {
         points += destCardPoints;
         points += unfinishedDestCardPoints;
 
-    }
-
-    public void setState(StateType state){
-        this.state = state;
     }
 
     public int getDestCardPoints() { return destCardPoints; }
@@ -266,11 +243,28 @@ public class Player {
         return null;
     }
 
-    public boolean isTurn(){
-        return turn;
+    public TrainCard[] claimRoute(String routeID, int[] pos) {
+        return state.claimRoute(routeID, pos);
     }
 
-    public void setTurn(boolean turn){
-        this.turn = turn;
+    public boolean addFaceUpCard(TrainCard card) {
+        return state.addFaceUpCard(card);
     }
+
+    public boolean addTrainDeckCard(TrainCard card) {
+        return state.addTrainDeckCard(card);
+    }
+
+    public boolean addDestCards(DestinationCard[] cards) {
+        return state.addDestCards(cards);
+    }
+
+    public boolean isTurn(){
+        return state.isTurn();
+    }
+
+    public void setState(IPlayerState state) {
+        this.state = state;
+    }
+
 }

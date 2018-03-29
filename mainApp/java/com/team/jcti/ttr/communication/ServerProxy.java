@@ -140,7 +140,7 @@ public class ServerProxy implements IServer {
         Object[] params = {auth, gameID, gameHistoryPosition};
         String[] paramTypes = {auth.getClass().getName(), gameID.getClass().getName(), gameHistoryPosition.getClass().getName() };
         Command command = new Command(SERVER_TARGET, "getGameCommands", paramTypes, params);
-        new SendCommandTask().execute(command);
+        new GetGameCommandsTask().execute(command);
         return null;
     }
 

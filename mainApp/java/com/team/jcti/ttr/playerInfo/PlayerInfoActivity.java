@@ -12,15 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.utils.Util;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
-import model.Player;
-import model.StateType;
+import model.playerStates.Player;
 
 public class PlayerInfoActivity extends AppCompatActivity {
     private PlayerInfoPresenter mPresenter;
@@ -115,12 +111,6 @@ public class PlayerInfoActivity extends AppCompatActivity {
             numDestCards.setText(Integer.toString(p.getNumDestCards()));
             setColor();
 
-            if (p.getState() == StateType.TURN_STATE) {
-                turn.setText("Yes");
-            } else  {
-                turn.setText("No");
-
-            }
         }
 
         void setColor() {

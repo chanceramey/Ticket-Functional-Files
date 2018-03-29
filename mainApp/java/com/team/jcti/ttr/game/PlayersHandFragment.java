@@ -12,13 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.team.jcti.ttr.R;
 import com.team.jcti.ttr.models.ClientGameModel;
-import com.team.jcti.ttr.state.TurnState;
 import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
@@ -62,7 +60,6 @@ public class PlayersHandFragment extends Fragment {
             public void onClick(View view) {
                 if(selectionState) {
                     selectionState = false;
-                    mPresenter.setState(new TurnState(mPresenter));
                     updateCardList();
                 }
                 else {

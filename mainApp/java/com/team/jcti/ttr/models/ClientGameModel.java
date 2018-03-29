@@ -1,15 +1,8 @@
 package com.team.jcti.ttr.models;
 
-import com.google.android.gms.games.Players;
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.message.MessagePresenter;
-import com.team.jcti.ttr.state.NotTurnState;
-import com.team.jcti.ttr.state.OneTrainPickedState;
-import com.team.jcti.ttr.state.State;
-import com.team.jcti.ttr.state.TurnState;
-import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +15,7 @@ import model.DestinationCard;
 import model.GameHistory;
 
 import model.Game;
-import model.Player;
-import model.StateType;
+import model.playerStates.Player;
 import model.TrainCard;
 
 /**
@@ -46,11 +38,11 @@ public class ClientGameModel extends Observable {
     private List<Player> players;
     private String gameId;
     private int userPlayer;
+    private boolean turn;
     private int gameHistoryPosition;
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
     private IGamePresenter activePresenter;
     private TrainCard[] faceUpCards;
-    private Player currentPlayer;
     private int destDeckSize;
     private int trainDeckSize;
 
@@ -65,14 +57,8 @@ public class ClientGameModel extends Observable {
     // until here
 
     public boolean isMyTurn() {
-        return currentPlayer.isTurn();
+        return turn;
     }
-
-    public void setMyTurn(boolean myTurn) {
-        currentPlayer.setTurn(myTurn);
-    }
-  
-    private State state;
 
     public void startGame(Game game) {
         this.gameId = game.getID();
@@ -90,8 +76,7 @@ public class ClientGameModel extends Observable {
         }
         this.active = true;
         gameHistoryPosition = 0;
-        currentPlayer = players.get(userPlayer);
-
+        turn = false;
         trainDeckSize = 240;
         destDeckSize = 30;
     }
@@ -140,10 +125,6 @@ public class ClientGameModel extends Observable {
         return players.get(userPlayer).getDestCards();
     }
 
-    public boolean isFirstTurn(){
-        return players.get(userPlayer).isFirstDestPick();
-    }
-
     public Player getPlayerById(int id){
         for(Player player : players){
             if(player.getId() == id){
@@ -161,7 +142,7 @@ public class ClientGameModel extends Observable {
     public void drawDestCards(Integer playerIndex, Integer numCards, DestinationCard[] cards, Integer deckSize) {
         Player player = players.get(playerIndex);
         if (playerIndex == userPlayer) {
-            player.addDestCards(cards);
+            player.addDrawnDestCards(cards);
             activePresenter.drawDestCards();
         }
         else {
@@ -239,10 +220,6 @@ public class ClientGameModel extends Observable {
         }
         else {
             p.removeDestCards(numCards);
-        }
-
-        if(p.isFirstDestPick()){
-            p.setFirstDestPick(); //to false
         }
 
         String user = p.getUser();
@@ -523,25 +500,7 @@ public class ClientGameModel extends Observable {
         Player p = getUserPlayer();
         return p.getCountOfCardType(card);
     }
-    public void updateState(Integer player, StateType state){
-        Player p = players.get(player);
-        p.setState(state);
 
-        if(state == StateType.TURN_STATE){
-            this.state = new TurnState((GamePresenter) activePresenter);
-        }
-        else if(state == StateType.NOT_TURN_STATE){
-            this.state = new NotTurnState((GamePresenter) activePresenter);
-        }
-        else{
-            this.state = new OneTrainPickedState((GamePresenter) activePresenter);
-        }
-
-        if(player == userPlayer){
-            activePresenter.setState(this.state);
-            activePresenter.displayError("It's your turn");
-        }
-    }
 
     public Route getRouteFromID(String routeId) {
         return board.getRouteFromID(routeId);
@@ -551,12 +510,27 @@ public class ClientGameModel extends Observable {
         return players.get(userPlayer).getRouteClaimingCards(length, color);
     }
 
-    public State getState(){
-        return state;
-    }
-
     public City[] getCitiesFromDest(DestinationCard destCard) {
         return board.getCitiesFromDest(destCard);
     }
 
+    public void setTurn(int player) {
+        if (player == userPlayer) {
+            activePresenter.displayError("It's your turn!");
+            turn = true;
+        }
+        else {
+            turn = false;
+        }
+
+    }
+
+    public void setLastTurn() {
+        activePresenter.displayError("Last round of turns!!!");
+    }
+
+    public boolean playerHasEnoughTrains(int length) {
+        if (players.get(userPlayer).getNumTrains() < length) return false;
+        else return true;
+    }
 }

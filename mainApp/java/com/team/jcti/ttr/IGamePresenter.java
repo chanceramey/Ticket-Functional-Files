@@ -1,7 +1,5 @@
 package com.team.jcti.ttr;
 
-import com.team.jcti.ttr.state.OneTrainPickedState;
-import com.team.jcti.ttr.state.State;
 
 import model.DestinationCard;
 
@@ -12,9 +10,6 @@ import model.DestinationCard;
 public interface IGamePresenter {
 
     void displayError(String message);
-    void setState(State state);
-
     void drawDestCards();
     void update();
-
 }

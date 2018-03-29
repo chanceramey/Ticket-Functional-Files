@@ -21,7 +21,7 @@ public class TrainCardDeck {
 
     private void initializeDeck() {
         for (TrainCard color : TrainCard.values()) {
-            for (int i = 0; i < (color == TrainCard.WILD ? 14 : 12); i++) {
+            for (int i = 0; i < (color == TrainCard.WILD ? 4 : 2); i++) {
                 deck.add(color);
             }
         }
@@ -72,5 +72,19 @@ public class TrainCardDeck {
 
     public int size() {
         return deck.size() + discard.size();
+    }
+
+    public boolean hasEnoughNonWilds() {
+        int nonWildCount = 0;
+        for (TrainCard card : deck) {
+            if (card != TrainCard.WILD) nonWildCount++;
+            if (nonWildCount == 3) return true;
+        }
+        for (TrainCard card : discard) {
+            if(card != TrainCard.WILD) nonWildCount++;
+            if (nonWildCount == 3) return true;
+        }
+
+        return false;
     }
 }

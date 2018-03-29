@@ -1,13 +1,8 @@
 package interfaces;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import model.Color;
 import model.DestinationCard;
 import model.Game;
 import model.GameHistory;
-import model.StateType;
 import model.TrainCard;
 
 /**
@@ -56,5 +51,7 @@ public interface IClient {
 
     public void onGameEnded();
 
-    public void updateState(Integer player, StateType state);
+    public void setTurn(Integer player);
+
+    public void setLastTurn();
 }

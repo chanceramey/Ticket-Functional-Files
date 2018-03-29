@@ -1,19 +1,14 @@
 package com.team.jcti.ttr.message;
 
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.IPresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
-import com.team.jcti.ttr.state.State;
 
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.Game;
 import model.GameHistory;
-import model.StateType;
 
 /**
  * Created by Jeff on 2/27/2018.
@@ -38,11 +33,6 @@ public class MessagePresenter implements IMessagePresenter, IGamePresenter, Obse
     @Override
     public void displayError(String message) {
         mActivity.toast(message);
-    }
-
-    @Override
-    public void setState(State state) {
-        //do nothing?
     }
 
 
