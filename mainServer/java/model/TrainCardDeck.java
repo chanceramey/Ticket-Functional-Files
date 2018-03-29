@@ -21,7 +21,7 @@ public class TrainCardDeck {
 
     private void initializeDeck() {
         for (TrainCard color : TrainCard.values()) {
-            for (int i = 0; i < (color == TrainCard.WILD ? 4 : 2); i++) {
+            for (int i = 0; i < (color == TrainCard.WILD ? 14 : 12); i++) {
                 deck.add(color);
             }
         }
