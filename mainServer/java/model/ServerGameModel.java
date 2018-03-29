@@ -133,6 +133,7 @@ public class ServerGameModel {
         if (!p.isTurn()) {
             setNextTurn();
         }
+
         return true;
     }
 
@@ -259,4 +260,6 @@ public class ServerGameModel {
         }
         return count;
     }
+
+
 }

@@ -59,7 +59,7 @@ public class Player {
         }
         this.destCards = new ArrayList<>();
         this.claimedRouteIds = new ArrayList<>();
-        this.numTrains = 45;
+        this.numTrains = 25;
         firstDestPick = true;
         state = new NotTurnState(this);
     }

@@ -112,6 +112,7 @@ public class GamePresenter implements IGamePresenter, Observer{
 
     public void onGameEnded() {
        mGameActivity.enterFinalScreen();
+       mGameActivity.toast(Integer.toString(mActiveGame.getLengthOfLongestPath()));
     }
 
     public void displayCities(DestinationCard destCard) {
@@ -227,4 +228,7 @@ public class GamePresenter implements IGamePresenter, Observer{
         mBoardFragment.clearCityMarkers();
     }
 
+    public void finalTurn() {
+        mGameActivity.toast("Final Turn");
+    }
 }

@@ -382,7 +382,8 @@ public class ClientGameModel extends Observable {
         return winner;
     }
 
-    public void onGameEnded(){
+    public void onGameEnded(List<Player> players){
+        this.players = players;
         endGameRouteCalcSetup();
         checkDestinationCardCompletion();
         calculateLongestRouteWinner();
@@ -532,5 +533,9 @@ public class ClientGameModel extends Observable {
     public boolean playerHasEnoughTrains(int length) {
         if (players.get(userPlayer).getNumTrains() < length) return false;
         else return true;
+    }
+
+    public void finalTurn() {
+        ((GamePresenter)activePresenter).finalTurn();
     }
 }

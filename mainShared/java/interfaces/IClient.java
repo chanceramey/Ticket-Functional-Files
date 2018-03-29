@@ -49,9 +49,11 @@ public interface IClient {
 
     public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer deckSize);
 
-    public void onGameEnded();
+    public void onGameEnded(List<Player> players);
 
     public void setTurn(Integer player);
 
     public void setLastTurn();
+
+    public void finalTurn();
 }
