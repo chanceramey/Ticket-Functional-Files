@@ -12,4 +12,6 @@ public interface IGamePresenter {
     void displayError(String message);
     void drawDestCards();
     void update();
+
+    void onGameEnded();
 }

@@ -12,4 +12,6 @@ public interface IMessageActivity {
 
     void toast(String message);
     void sendMessage();
+
+    void enterFinalGameScreen();
 }

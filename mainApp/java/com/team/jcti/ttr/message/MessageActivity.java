@@ -1,5 +1,6 @@
 package com.team.jcti.ttr.message;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.finalScreen.FinalScreenActivity;
 
 import java.util.List;
 
@@ -65,6 +67,12 @@ public class MessageActivity extends AppCompatActivity implements IMessageActivi
             mPresenter.sendMessage(mMessage.getText().toString());
             mMessage.setText("");
         } else {} // do nothing if there is no message typed out
+    }
+
+    @Override
+    public void enterFinalGameScreen() {
+        Intent intent = new Intent(this, FinalScreenActivity.class);
+        startActivity(intent);
     }
 
     @Override

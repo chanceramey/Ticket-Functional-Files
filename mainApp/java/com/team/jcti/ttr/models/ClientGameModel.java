@@ -1,8 +1,11 @@
 package com.team.jcti.ttr.models;
 
 import com.team.jcti.ttr.IGamePresenter;
+import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.game.GameActivity;
 import com.team.jcti.ttr.game.GamePresenter;
 import com.team.jcti.ttr.message.MessagePresenter;
+import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,11 +77,14 @@ public class ClientGameModel extends Observable {
             Player player = new Player(playerStrings.get(i), colors[i], i);
             players.add(player);
         }
-        this.active = true;
+
+
         gameHistoryPosition = 0;
         turn = false;
         trainDeckSize = 240;
         destDeckSize = 30;
+
+        this.active = true;
     }
 
     public IGamePresenter getActivePresenter() {
@@ -274,7 +280,17 @@ public class ClientGameModel extends Observable {
         String message = String.format("***%s claimed a route %s***", user, routeID);
         GameHistory gameHistory = new GameHistory(user, message);
         addGameHistoryObj(gameHistory);
+        if(player == userPlayer) updateDestCards();
         activePresenter.update();
+    }
+
+    private void updateDestCards() {
+        endGameRouteCalcSetup();
+        for (DestinationCard card : players.get(userPlayer).getDestCards()) {
+            if (card.isFinished()) continue;
+            boolean finished = checkDestinationCardCompletionHelper(players.get(userPlayer), card.getSrcCity(), card.getDestCity(), new ArrayList<Route>());
+            card.setFinished(finished);
+        }
     }
 
     public void endGameRouteCalcSetup() {
@@ -382,12 +398,11 @@ public class ClientGameModel extends Observable {
         return winner;
     }
 
-    public void onGameEnded(List<Player> players){
-        this.players = players;
+    public void onGameEnded(){
         endGameRouteCalcSetup();
         checkDestinationCardCompletion();
         calculateLongestRouteWinner();
-        ((GamePresenter)activePresenter).onGameEnded();
+        activePresenter.onGameEnded();
     }
 
     private void setLongestPathPoints (Player winner) {
@@ -535,7 +550,4 @@ public class ClientGameModel extends Observable {
         else return true;
     }
 
-    public void finalTurn() {
-        ((GamePresenter)activePresenter).finalTurn();
-    }
 }

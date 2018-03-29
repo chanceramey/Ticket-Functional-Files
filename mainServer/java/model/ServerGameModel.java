@@ -242,7 +242,7 @@ public class ServerGameModel {
             gameHistoryCommands.add(clientProxy.getCommand());
             return;
         }
-        if (lastPlayer == -1 && players.get(currentPlayer).getNumTrains() < 2) {
+        if (lastPlayer == -1 && players.get(currentPlayer).getNumTrains() <= 2) {
             lastPlayer = currentPlayer;
             clientProxy.setLastTurn();
             gameHistoryCommands.add(clientProxy.getCommand());

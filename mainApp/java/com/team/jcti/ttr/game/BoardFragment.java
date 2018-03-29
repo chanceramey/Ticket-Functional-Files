@@ -150,6 +150,7 @@ public class BoardFragment extends android.support.v4.app.Fragment {
                 String JSONRoutes = Util.getStringFromResourceFile(getActivity(), R.raw.routes);
                 mGamePresenter.initializeBoard(JSONCities, JSONRoutes);
 
+
             } catch(IOException e) {
                 e.printStackTrace();
             }

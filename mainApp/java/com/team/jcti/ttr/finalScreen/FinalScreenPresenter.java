@@ -67,6 +67,11 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
         startRecyclerView();
     }
 
+    @Override
+    public void onGameEnded() {
+
+    }
+
 
     @Override
     public void update(Observable observable, Object o) {

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.finalScreen.FinalScreenActivity;
 import com.team.jcti.ttr.game.GameActivity;
 
 import java.util.ArrayList;
@@ -145,6 +146,12 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
 
     public void update() {
         setImageViews();
+    }
+
+    @Override
+    public void enterFinalScreen() {
+        Intent intent = new Intent(this, FinalScreenActivity.class);
+        startActivity(intent);
     }
 
     @Override

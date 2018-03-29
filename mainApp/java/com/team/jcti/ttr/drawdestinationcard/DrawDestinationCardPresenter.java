@@ -87,6 +87,11 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
     }
 
     @Override
+    public void onGameEnded() {
+        drawDestinationCardActivity.enterFinalScreen();
+    }
+
+    @Override
     public void drawDestCards() {
 
     }

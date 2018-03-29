@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.playerInfo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.finalScreen.FinalScreenActivity;
 import com.team.jcti.ttr.utils.Util;
 
 import java.util.List;
@@ -39,6 +41,11 @@ public class PlayerInfoActivity extends AppCompatActivity {
 
     public void toast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    public void enterFinalScreen() {
+        Intent intent = new Intent(this, FinalScreenActivity.class);
+        startActivity(intent);
     }
 
     class Adapter extends RecyclerView.Adapter<Holder> {

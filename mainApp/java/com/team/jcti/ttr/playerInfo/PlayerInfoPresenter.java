@@ -36,6 +36,11 @@ public class PlayerInfoPresenter implements IGamePresenter, Observer {
     }
 
     @Override
+    public void onGameEnded() {
+        mActivity.enterFinalScreen();
+    }
+
+    @Override
     public void drawDestCards() {
         //do nothing
     }

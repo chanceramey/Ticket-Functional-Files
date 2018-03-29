@@ -220,7 +220,8 @@ public class PlayersHandFragment extends Fragment {
         void bind(DestinationCard item) {
             this.item = item;
             mImageView.setText(item.toString());
-            mImageView.setBackgroundColor(Color.argb(100,0,0,255));
+            if (item.isFinished()) mImageView.setBackgroundColor(Color.MAGENTA);
+            else mImageView.setBackgroundColor(Color.argb(100,0,0,255));
         }
     }
 
