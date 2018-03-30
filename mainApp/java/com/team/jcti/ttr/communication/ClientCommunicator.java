@@ -104,7 +104,7 @@ public class ClientCommunicator {
     }
 
 
-    private static final String SERVER_HOST = "10.0.2.2";
+    private static final String SERVER_HOST = "192.168.2.11";//"10.0.2.2";
     private static final int SERVER_PORT = 8080;
     private static final String URL_PREFIX = "http://" + SERVER_HOST + ":" + SERVER_PORT;
 }
