@@ -1,5 +1,6 @@
 package interfaces;
 
+import model.FinalGamePoints;
 import model.GameHistory;
 
 /**
@@ -37,4 +38,6 @@ public interface IServer {
     Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions);
 
     Object drawFaceUp(String auth, String gameID, Integer i);
+
+    Object sendFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints);
 }

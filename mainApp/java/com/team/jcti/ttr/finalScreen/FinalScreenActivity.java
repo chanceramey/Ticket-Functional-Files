@@ -15,6 +15,7 @@ import com.team.jcti.ttr.R;
 
 import java.util.List;
 
+import model.FinalGamePoints;
 import model.playerStates.Player;
 
 public class FinalScreenActivity extends AppCompatActivity {
@@ -22,6 +23,8 @@ public class FinalScreenActivity extends AppCompatActivity {
     private RecyclerView mRecycler;
     private Adapter mAdapter;
     private TextView mWinner;
+    private List<Player> players;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +35,13 @@ public class FinalScreenActivity extends AppCompatActivity {
         mPresenter = new FinalScreenPresenter(this);
         mWinner.setText(mPresenter.getWinner());
         mPresenter.startRecyclerView();
+        this.players = mPresenter.getPlayers();
+
 
     }
 
-    public void startRecyclerView(List<Player> players) {
-        mAdapter = new Adapter(this, players);
+    public void startRecyclerView(FinalGamePoints[] finalGamePoints) {
+        mAdapter = new Adapter(this, finalGamePoints);
         mRecycler.setAdapter(mAdapter);
     }
 
@@ -48,11 +53,11 @@ public class FinalScreenActivity extends AppCompatActivity {
 
     class Adapter extends RecyclerView.Adapter<Holder> {
 
-        private List<Player> players;
+        private FinalGamePoints[] mFinalGamePoints;
         private LayoutInflater inflater;
 
-        public Adapter(Context context, List<Player> players) {
-            this.players = players;
+        public Adapter(Context context, FinalGamePoints[] finalGamePoints) {
+            this.mFinalGamePoints = finalGamePoints;
             inflater = LayoutInflater.from(context);
         }
 
@@ -65,13 +70,13 @@ public class FinalScreenActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(Holder holder, int position) {
-            Player item = players.get(position);
+            FinalGamePoints item = mFinalGamePoints[position];
             holder.bind(item);
         }
 
         @Override
         public int getItemCount() {
-            return players.size();
+            return mFinalGamePoints.length;
         }
 
 
@@ -85,7 +90,7 @@ public class FinalScreenActivity extends AppCompatActivity {
         private TextView unfinishedDestPoints;
         private TextView totalPoints;
         private TextView longestPath;
-        private Player player;
+        private Player thisPlayer;
 
 
         public Holder(View view) {
@@ -102,18 +107,15 @@ public class FinalScreenActivity extends AppCompatActivity {
         public void onClick(View view) {
         }
 
-        void bind(Player p) {
-            p.calculateDestCardPoints(); // this will calculate the finished and unfinished dest card points
-            this.player = p;
-            playerName.setText(p.getUser());
-            routePoints.setText(Integer.toString(mPresenter.getRoutePoints(p.getRoutesClaimed())));
-            destPoints.setText(Integer.toString(p.getDestCardPoints()));
-            unfinishedDestPoints.setText(Integer.toString(p.getUnfinishedDestCardPoints()));
-            totalPoints.setText(Integer.toString(p.getPoints()));
-            longestPath.setText(Integer.toString(p.getLongestRoutePoints()));
-//            if (p.hasLongestPath()) {        //
-//                longestPath.setText(10);
-//            }
+        void bind(FinalGamePoints fgp) {
+            //TODO: ORDER THESE FROM WINNER TO LOSER
+            this.thisPlayer = players.get(fgp.getPlayerNumber());
+            playerName.setText(thisPlayer.getUser());
+            routePoints.setText(Integer.toString(fgp.getRoutePoints()));
+            destPoints.setText(Integer.toString(fgp.getFinishedDestPoints()));
+            unfinishedDestPoints.setText(Integer.toString(fgp.getUnfinishedDestPoints()));
+            totalPoints.setText(Integer.toString(fgp.getTotalPoints()));
+            longestPath.setText(Integer.toString(fgp.getLongestPathPoints()));
         }
 
     }

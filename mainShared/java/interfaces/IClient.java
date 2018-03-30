@@ -1,6 +1,9 @@
 package interfaces;
 
+import java.util.List;
+
 import model.DestinationCard;
+import model.FinalGamePoints;
 import model.Game;
 import model.GameHistory;
 import model.TrainCard;
@@ -54,5 +57,7 @@ public interface IClient {
     public void setTurn(Integer player);
 
     public void setLastTurn();
+
+    public void updateAllPlayerFinalPoints(FinalGamePoints[] allFinalPoints);
 
 }

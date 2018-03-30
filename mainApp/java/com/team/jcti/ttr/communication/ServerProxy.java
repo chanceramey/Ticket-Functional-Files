@@ -2,6 +2,7 @@ package com.team.jcti.ttr.communication;
 
 import command.Command;
 import interfaces.IServer;
+import model.FinalGamePoints;
 import model.GameHistory;
 
 /**
@@ -151,6 +152,15 @@ public class ServerProxy implements IServer {
         Object[] params = {auth, gameID, i};
         String[] paramTypes = {auth.getClass().getName(), gameID.getClass().getName(), i.getClass().getName()};
         Command command = new Command(SERVER_TARGET, "drawFaceUp", paramTypes, params);
+        new SendCommandTask().execute(command);
+        return null;
+    }
+
+    @Override
+    public Object sendFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints) {
+        Object[] params = {auth, gameID, finalGamePoints};
+        String[] paramTypes = {auth.getClass().getName(), gameID.getClass().getName(), finalGamePoints.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "sendFinalPoints", paramTypes, params);
         new SendCommandTask().execute(command);
         return null;
     }

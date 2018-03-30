@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class ServerGameModel {
     private DestCardDeck destCardDeck;
     private List<Command> gameHistoryCommands;
     private int lastPlayer;
+    private Map<Integer, FinalGamePoints> allPlayersPoints = new HashMap<>();
 
     public ServerGameModel(Game game) {
         initializePlayersList(game);
@@ -259,6 +262,62 @@ public class ServerGameModel {
             if (card != null) count++;
         }
         return count;
+    }
+
+    public void calculateTotalPointsAndLongestPath(FinalGamePoints[] finalGamePointsArray){
+        int winnerPlayerNumber = getLongestPathWinner(finalGamePointsArray);
+        for (int i = 0; i < finalGamePointsArray.length; i++){
+            FinalGamePoints fgp = finalGamePointsArray[i];
+            if (fgp.getPlayerNumber() == winnerPlayerNumber) {
+                fgp.setLongestPathPoints(10);
+            }
+            fgp.setTotalPoints();
+        }
+    }
+
+    public int getLongestPathWinner(FinalGamePoints[] finalGamePointsArray){
+        int longestRoute = 0;
+        int winner = 0;
+        for (int i = 0; i < finalGamePointsArray.length; i++){
+            FinalGamePoints fgp = finalGamePointsArray[i];
+            if (fgp.getLengthOfLongestPath() > longestRoute) {
+                longestRoute = fgp.getLengthOfLongestPath();
+                winner = fgp.getPlayerNumber();
+            }
+
+        }
+        return winner;
+    }
+
+    public boolean addToAllPlayersPoints(FinalGamePoints finalGamePoints) {
+        if (allPlayersPoints.containsKey(finalGamePoints.getPlayerNumber())) {
+            return false;
+        } else {
+            allPlayersPoints.put(finalGamePoints.getPlayerNumber(), finalGamePoints);
+            System.out.println("adding points for player" + finalGamePoints.getPlayerNumber());
+        }
+
+        int numberOfPlayers = players.size();
+        int numberOfPointsRecorded = allPlayersPoints.values().size();
+        if (numberOfPlayers == numberOfPointsRecorded){
+            List<FinalGamePoints> finalGamePointsList = new ArrayList<>();
+            for (Map.Entry<Integer, FinalGamePoints> onePlayersEntry : allPlayersPoints.entrySet()){
+                finalGamePointsList.add(onePlayersEntry.getValue());
+            }
+            Collections.sort(finalGamePointsList);
+            FinalGamePoints [] finalGamePointsArray = new FinalGamePoints[players.size()];
+            int counter = 0;
+            for (FinalGamePoints onePlayersPoints : finalGamePointsList) {
+                finalGamePointsArray[counter] = onePlayersPoints;
+                counter++;
+            }
+            calculateTotalPointsAndLongestPath(finalGamePointsArray);
+            System.out.println("sending game points from ServerGameModel");
+            clientProxy.updateAllPlayerFinalPoints(finalGamePointsArray);
+            gameHistoryCommands.add(clientProxy.getCommand());
+
+        }
+        return true;
     }
 
 

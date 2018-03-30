@@ -2,6 +2,7 @@ package server;
 
 import interfaces.IServer;
 import command.Command;
+import model.FinalGamePoints;
 import model.GameHistory;
 
 /**
@@ -104,5 +105,11 @@ public class ServerFacade implements IServer {
     public Object drawFaceUp(String auth, String gameID, Integer i) {
        CardService service = new CardService();
         return service.drawFaceUp(auth, gameID, i);
+    }
+
+    @Override
+    public Object sendFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints) {
+        GameService service = new GameService();
+        return service.updatePlayerFinalPoints(auth, gameID, finalGamePoints);
     }
 }

@@ -2,6 +2,7 @@ package server;
 
 import command.Command;
 import communication.ClientProxy;
+import model.FinalGamePoints;
 import model.Game;
 import model.GameHistory;
 import model.ServerGameModel;
@@ -58,6 +59,26 @@ public class GameService extends AbstractService {
             return displayError("Could Not Find Game");
         }
 
+        return new Command[]{};
+    }
+
+    public Command[] updatePlayerFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints) {
+        try {
+            mServerModel.getUserFromAuth(auth);
+        } catch(ServerModel.AuthTokenNotFoundException e) {
+            return promptRenewSession();
+        }
+
+        try {
+            ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
+
+            if(!gameModel.addToAllPlayersPoints(finalGamePoints)){
+                return displayError("Already added to points");
+            }
+
+        } catch (ServerModel.GameNotFoundException e) {
+            return displayError("Could Not Find Game");
+        }
         return new Command[]{};
     }
 }

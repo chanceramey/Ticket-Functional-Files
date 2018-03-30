@@ -113,13 +113,13 @@ public class GameActivity extends AppCompatActivity implements IGameActivity {
     }
 
     public void calculateLongestRoute(){
-        mClientGameModel.calculateLongestRouteWinner();
+        mClientGameModel.calculateThisPlayersLongestRoute();
         toast(String.valueOf(mClientGameModel.getLengthOfLongestPath()));
     }
 
     public void calculateClaimedDests(){
         mClientGameModel.endGameRouteCalcSetup();
-        mClientGameModel.checkDestinationCardCompletion();
+        mClientGameModel.checkThisPlayersDestinationCardCompletion();
         for (Player p: mClientGameModel.getPlayers()) {
             for (DestinationCard destinationCard: p.getDestCards()){
                 toast(destinationCard.getSrcCity() + ' ' + destinationCard.getDestCity() + ' ' + destinationCard.isFinished());
