@@ -65,7 +65,18 @@ public class Command {
             System.err.println("ERROR: Could not instantiate the class " + className);
         } catch (NoSuchMethodException e) {
             System.err.println("ERROR: Could not find the method " + methodName);
-            e.printStackTrace();
+            System.out.println("className:" + className);
+            System.out.println("methodName:" + methodName);
+            int counter = 0;
+            for (String str: parametersAsJsonStrings) {
+                System.out.println("Parameter "+ counter + ": " + str);
+            }
+            for (String str: parameterTypesNames) {
+                System.out.println("ParameterType "+ counter + ": " + str);
+            }
+            for (Object o: parameters) {
+                System.out.println("Actual Parameter Type "+ counter + ": " + o.getClass());
+            }
         } catch (IllegalAccessException e) {
             System.err.println("ERROR: Illegal access while trying to execute the method " + methodName);
             e.printStackTrace();

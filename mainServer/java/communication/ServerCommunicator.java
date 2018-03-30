@@ -56,7 +56,7 @@ public class ServerCommunicator {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             try {
-                System.out.println("in command handler");
+                //System.out.println("in command handler");
                 InputStream reqBody = exchange.getRequestBody();
                 Command command = new Command(new InputStreamReader(reqBody));
                 Object result = command.execute();

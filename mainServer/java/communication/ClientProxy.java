@@ -5,6 +5,7 @@ import java.util.List;
 import command.Command;
 import interfaces.IClient;
 import model.DestinationCard;
+import model.FinalGamePoints;
 import model.Game;
 import model.GameHistory;
 import model.TrainCard;
@@ -138,6 +139,10 @@ public class ClientProxy implements IClient {
         this.command = createCommand("setLastTurn");
     }
 
+    @Override
+    public void updateAllPlayerFinalPoints(FinalGamePoints[] allFinalPoints) {
+        this.command = createCommand("updateAllPlayerFinalPoints", allFinalPoints);
+    }
 
     public Command getCommand() {
         return this.command;

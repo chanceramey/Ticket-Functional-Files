@@ -24,7 +24,9 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
     }
 
     public void startRecyclerView() {
-        mActivity.startRecyclerView(mClientGameModel.getPlayers());
+        if (mClientGameModel.isFinalPointsReceived()) {
+            mActivity.startRecyclerView(mClientGameModel.getAllPlayersFinalPoints());
+        }
     }
 
     public String getWinner() {
@@ -36,6 +38,10 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
             }
         }
         return winner.getUser();
+    }
+
+    public List<Player> getPlayers(){
+        return mClientGameModel.getPlayers();
     }
 
     public int getRoutePoints(List<String> routes) {

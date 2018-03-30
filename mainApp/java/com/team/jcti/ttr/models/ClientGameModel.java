@@ -1,11 +1,8 @@
 package com.team.jcti.ttr.models;
 
 import com.team.jcti.ttr.IGamePresenter;
-import com.team.jcti.ttr.R;
-import com.team.jcti.ttr.game.GameActivity;
-import com.team.jcti.ttr.game.GamePresenter;
+import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.message.MessagePresenter;
-import com.team.jcti.ttr.utils.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.AuthToken;
 import model.Color;
 import model.DestinationCard;
+import model.FinalGamePoints;
 import model.GameHistory;
 
 import model.Game;
@@ -46,18 +45,21 @@ public class ClientGameModel extends Observable {
     private List<GameHistory> gameHistoryArr = new ArrayList<>();
     private IGamePresenter activePresenter;
     private TrainCard[] faceUpCards;
+    private FinalGamePoints[] allPlayersFinalPoints;
     private int destDeckSize;
     private int trainDeckSize;
 
     // Longest path or destination card calculation related
-    private Map<Player, List<Route>> mEachPlayersLongestPath = new HashMap<>();
-    private Map<Player, List<String>> mEachPlayersCities = new HashMap<>();
-    private Map<Player, List<DestinationCard>> mEachPlayersDestinationCards = new HashMap<>();
-    private Map<Player, List<Route>> mAllClaimedRoutes = new HashMap<>();
-    private Map<Player, Map<DestinationCard, Boolean>> mPlayersDestinationCardStatus = new HashMap<>();
+    private List<Route> mThisPlayersLongestPath = new ArrayList<>();
+    private List<String> mThisPlayersCities = new ArrayList<>();
+    private List<DestinationCard> mThisPlayersDestinationCards = new ArrayList<>();
+    private List<Route> mThisPlayersClaimedRoutes = new ArrayList<>();
+    private Map<DestinationCard, Boolean> mThisPlayersDestinationCardStatus = new HashMap<>();
     private Map<String, Route> mAllRoutes;
     private int mLengthOfLongestPath = 0;
+    private boolean finalPointsReceived = false;
     // until here
+
 
     public boolean isMyTurn() {
         return turn;
@@ -176,9 +178,6 @@ public class ClientGameModel extends Observable {
        return players.get(userPlayer);
     }
 
-    public Map<Player, Map<DestinationCard, Boolean>> getPlayersDestinationCardStatus() {
-        return mPlayersDestinationCardStatus;
-    }
 
     public void receiveMessage(GameHistory gameHistory) {
         gameHistory.setChat(true);
@@ -297,33 +296,25 @@ public class ClientGameModel extends Observable {
 
         //create a map from Player to routesIds
         mAllRoutes = this.getBoard().getIdtoRouteMap();
-        mEachPlayersDestinationCards = new HashMap<>();
-        mEachPlayersCities = new HashMap<>();
-        mAllClaimedRoutes = new HashMap<>();
 
-        for (Player p : players) {
+        Player p = this.getUserPlayer();
 
             // create a map from Player to DestinationCards
-            mEachPlayersDestinationCards.put(p, p.getDestCards());
+            mThisPlayersDestinationCards = p.getDestCards();
 
-            //fill mAllClaimedRoutes
-            ArrayList<Route> thisPlayersRoutes = new ArrayList<>();
-            //create an empty array list for storing distinct cities
-            mEachPlayersCities.put(p, new ArrayList<String>());
-            // loop through routeIds for this player
-            for (String routeId: p.getRoutesClaimed()){
-                // get the route from the route id
-                Route thisRoute = mAllRoutes.get(routeId);
-                //if this route contains any cities that are not touched by other routes claimed by this player, save them. They are endpoints
-                addCities(p, thisRoute);
+        //fill mAllClaimedRoutes
+        //create an empty array list for storing distinct cities
+        // loop through routeIds for this player
+        for (String routeId: p.getRoutesClaimed()){
+            // get the route from the route id
+            Route thisRoute = mAllRoutes.get(routeId);
+            //if this route contains any cities that are not touched by other routes claimed by this player, save them. They are endpoints
+            addCities(p, thisRoute);
 
-                // add this Route to this players list of routes
-                thisPlayersRoutes.add(thisRoute);
-            }
-
-            //add this players list of routes to map of Player to Routes (GameModel member variable)
-            mAllClaimedRoutes.put(p, thisPlayersRoutes);
+            // add this Route to this players list of routes
+            mThisPlayersClaimedRoutes.add(thisRoute);
         }
+
 
     }
 
@@ -334,35 +325,31 @@ public class ClientGameModel extends Observable {
     }
 
 
-     public Player calculateLongestRouteWinner() {
+     public void calculateThisPlayersLongestRoute() {
 
-        makeSureSetupIsDone();
+         makeSureSetupIsDone();
 
-        //loop through the players in the game and find their longest route
-         for (Player p: players) {
+         //loop through the players in the game and find their longest route
 
-             List<String> thisPlayersDistinctCities = mEachPlayersCities.get(p);
+         Player p = this.getUserPlayer();
 
-             //recurse through the routes beginning at the (distinct cities)
-             for (String city : thisPlayersDistinctCities) {
-                 longestRouteHelper(p, city, new ArrayList<Route>(), 0);
-             }
+         //recurse through the routes beginning at the (distinct cities)
+         for (String city : mThisPlayersCities) {
+             longestRouteHelper(p, city, new ArrayList<Route>(), 0);
          }
 
-         return getLongestPathWinner();
      }
 
     // Longest Path Related
     private void longestRouteHelper(Player p, String currentCity, List<Route> currentPath, int length){
 
         //look at the city at the end of that route and see if there is another route with that city
-        List<Route> unSeenRoutesWithThisCity = playersOtherRoutesContainingThisCity(p, currentCity, currentPath);
+        List<Route> unSeenRoutesWithThisCity = playersOtherRoutesContainingThisCity(currentCity, currentPath);
         if (unSeenRoutesWithThisCity.size() == 0) {
             //end of path
             System.out.println("No routes with this city found, end of path");
-            if (length > getLengthOfPath(mEachPlayersLongestPath.get(p))) {
-                mEachPlayersLongestPath.remove(p);
-                mEachPlayersLongestPath.put(p, currentPath);
+            if (length > getLengthOfPath(mThisPlayersLongestPath)) {
+                mThisPlayersLongestPath = currentPath;
             }
             return;
         }
@@ -383,37 +370,64 @@ public class ClientGameModel extends Observable {
 
     }
 
-    private Player getLongestPathWinner() {
-        Player winner =  null;
-        for (Map.Entry<Player, List<Route>> playerAndZerLongestPath : mEachPlayersLongestPath.entrySet()) {
-            int thisPlayersLongestPathLength = getLengthOfPath(playerAndZerLongestPath.getValue());
-            if (thisPlayersLongestPathLength > mLengthOfLongestPath) {
-                mLengthOfLongestPath = thisPlayersLongestPathLength;
-                winner = playerAndZerLongestPath.getKey();
-            }
-        }
 
-        setLongestPathPoints(winner);
-
-        return winner;
-    }
+//    Do this on the Server
+//    private Player getLongestPathWinner() {
+//        Player winner =  null;
+//        for (Map.Entry<Player, List<Route>> playerAndZerLongestPath : mEachPlayersLongestPath.entrySet()) {
+//            int thisPlayersLongestPathLength = getLengthOfPath(playerAndZerLongestPath.getValue());
+//            if (thisPlayersLongestPathLength > mLengthOfLongestPath) {
+//                mLengthOfLongestPath = thisPlayersLongestPathLength;
+//                winner = playerAndZerLongestPath.getKey();
+//            }
+//        }
+//
+//        setLongestPathPoints(winner);
+//
+//        return winner;
+//    }
 
     public void onGameEnded(){
         endGameRouteCalcSetup();
-        checkDestinationCardCompletion();
-        calculateLongestRouteWinner();
+        checkThisPlayersDestinationCardCompletion();
+        calculateThisPlayersLongestRoute();
+        FinalGamePoints myFinalPoints = createFinalGamePointsObject();
+        sendFinalPoints(myFinalPoints);
         activePresenter.onGameEnded();
     }
 
-    private void setLongestPathPoints (Player winner) {
-        for (Player p : players) {
-            if (winner.getUser().equals(winner.getUser())) {
-                p.setLongestRoutePoints(10);
+    private void sendFinalPoints(FinalGamePoints myFinalPoints){
+        ServerProxy serverProxy = ServerProxy.getInstance();
+        ClientModel clientModel = ClientModel.getInstance();
+        String auth = clientModel.getAuthToken();
+        serverProxy.sendFinalPoints(auth, gameId, myFinalPoints);
+    }
+
+    private FinalGamePoints createFinalGamePointsObject() {
+        int finishedDestinationPoints = 0;
+        int unfinishedDestinationPoints = 0;
+        for (DestinationCard destinationCard : mThisPlayersDestinationCards) {
+            if (destinationCard.isFinished() == true){
+                finishedDestinationPoints += destinationCard.getPointValue();
             } else {
-                p.setLongestRoutePoints(0);
+                unfinishedDestinationPoints -= destinationCard.getPointValue();
             }
         }
+        FinalGamePoints myFinalPoints = new FinalGamePoints(userPlayer, finishedDestinationPoints, unfinishedDestinationPoints, getLengthOfPath(mThisPlayersLongestPath));
+        return  myFinalPoints;
     }
+
+
+//    Do this on the server
+//    private void setLongestPathPoints (Player winner) {
+//        for (Player p : players) {
+//            if (winner.getUser().equals(winner.getUser())) {
+//                p.setLongestRoutePoints(10);
+//            } else {
+//                p.setLongestRoutePoints(0);
+//            }
+//        }
+//    }
 
     private int getLengthOfPath(List<Route> path) {
         int length = 0;
@@ -428,24 +442,22 @@ public class ClientGameModel extends Observable {
 
     // Longest Path Related
     private void addCities(Player p, Route r){
-        List<String> thisPlayersCities = mEachPlayersCities.get(p);
 
-        thisPlayersCities.add(r.getSrcCity());
-        thisPlayersCities.add(r.getDestCity());
-
-
+        mThisPlayersCities.add(r.getSrcCity());
+        mThisPlayersCities.add(r.getDestCity());
     }
 
      // Destination Card Scoring Related
-    public void checkDestinationCardCompletion(){
+    public void checkThisPlayersDestinationCardCompletion(){
 
-        //loop through destination cards and recurse
-        for (Player p : players) {
-            for (DestinationCard destinationCard : mEachPlayersDestinationCards.get(p)){
-                Boolean thisCardsStatus = checkDestinationCardCompletionHelper(p, destinationCard.getSrcCity(), destinationCard.getDestCity(), new ArrayList<Route>());
-                destinationCard.setFinished(thisCardsStatus);
-            }
+        Player p = this.getUserPlayer();
+
+        //loop through destination cards of this playerOnly and recurse
+        for (DestinationCard destinationCard : mThisPlayersDestinationCards){
+            Boolean thisCardsStatus = checkDestinationCardCompletionHelper(p, destinationCard.getSrcCity(), destinationCard.getDestCity(), new ArrayList<Route>());
+            destinationCard.setFinished(thisCardsStatus);
         }
+
 
     }
 
@@ -453,7 +465,7 @@ public class ClientGameModel extends Observable {
     private boolean checkDestinationCardCompletionHelper(Player p, String currentCity, String finalCity, List<Route> currentPath) {
         //start at starting city
         //check all the routes with this city
-        List<Route> unSeenRoutesWithThisCity = playersOtherRoutesContainingThisCity(p, currentCity, currentPath);
+        List<Route> unSeenRoutesWithThisCity = playersOtherRoutesContainingThisCity(currentCity, currentPath);
         if (unSeenRoutesWithThisCity.size() == 0) {
             //if there is no route return false, end of path isn't the final city
             System.out.println("No routes with this city found, returning false");
@@ -491,12 +503,12 @@ public class ClientGameModel extends Observable {
         } else return "city is not found in given route";
     }
 
-    private List<Route> playersOtherRoutesContainingThisCity(Player p, String city, List<Route> currentPath) {
+    private List<Route> playersOtherRoutesContainingThisCity(String city, List<Route> currentPath) {
 
         //create new list of routes
         List<Route> unnavigatedRoutesContainingThisCity = new ArrayList<>();
         //loop through the players routes and search for the city
-        for (Route route : mAllClaimedRoutes.get(p)){
+        for (Route route : mThisPlayersClaimedRoutes){
             if (route.getSrcCity().equals(city)|| route.getDestCity().equals(city)) {
                 //if this city is found check to make sure it isn't already in the current path
                 if (!currentPath.contains(route)){
@@ -517,6 +529,9 @@ public class ClientGameModel extends Observable {
         return p.getCountOfCardType(card);
     }
 
+    public FinalGamePoints[] getAllPlayersFinalPoints() {
+        return allPlayersFinalPoints;
+    }
 
     public Route getRouteFromID(String routeId) {
         return board.getRouteFromID(routeId);
@@ -550,4 +565,14 @@ public class ClientGameModel extends Observable {
         else return true;
     }
 
+    public void setAllFinalPoints(FinalGamePoints[] allFinalPoints) {
+        this.allPlayersFinalPoints = allFinalPoints;
+        finalPointsReceived = true;
+        activePresenter.update();
+        System.out.println("All player points received");
+    }
+
+    public boolean isFinalPointsReceived() {
+        return finalPointsReceived;
+    }
 }

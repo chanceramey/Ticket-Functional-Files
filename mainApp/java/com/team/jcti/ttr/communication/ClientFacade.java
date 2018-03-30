@@ -12,6 +12,7 @@ import java.util.List;
 
 import interfaces.IClient;
 import model.DestinationCard;
+import model.FinalGamePoints;
 import model.Game;
 import model.GameHistory;
 import model.TrainCard;
@@ -162,6 +163,10 @@ public class ClientFacade implements IClient {
     @Override
     public void setLastTurn() {
         mGameModel.setLastTurn();
-    } 
+    }
 
+    @Override
+    public void updateAllPlayerFinalPoints(FinalGamePoints[] allFinalPoints) {
+        mGameModel.setAllFinalPoints(allFinalPoints);
+    }
 }
