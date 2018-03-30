@@ -39,6 +39,7 @@ public class Player {
     private int unfinishedDestCardPoints = 0; // points lost from not completing destinations
 
     private int longestRoutePoints = 0;
+    private boolean playerTurn = false;
 
     private IPlayerState state;
 
@@ -265,6 +266,14 @@ public class Player {
 
     public void setState(IPlayerState state) {
         this.state = state;
+    }
+
+    public void setTurn(boolean turn) {
+        playerTurn = turn;
+    }
+
+    public boolean isPlayerTurn() {
+        return playerTurn;
     }
 
 }

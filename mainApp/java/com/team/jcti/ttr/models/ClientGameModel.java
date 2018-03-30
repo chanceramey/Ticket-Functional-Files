@@ -560,9 +560,17 @@ public class ClientGameModel extends Observable {
         if (player == userPlayer) {
             activePresenter.displayError("It's your turn!");
             turn = true;
+            for (Player p: players) {
+                p.setTurn(false);
+            }
+            players.get(player).setTurn(true);
         }
         else {
             turn = false;
+            for (Player p: players) {
+                p.setTurn(false);
+            }
+            players.get(player).setTurn(true);
         }
 
     }
