@@ -312,7 +312,7 @@ public class ClientGameModel extends Observable {
             addCities(p, thisRoute);
 
             // add this Route to this players list of routes
-            mThisPlayersClaimedRoutes.add(thisRoute);
+            if (!mThisPlayersClaimedRoutes.contains(thisRoute)) mThisPlayersClaimedRoutes.add(thisRoute);
         }
 
 
@@ -413,7 +413,7 @@ public class ClientGameModel extends Observable {
                 unfinishedDestinationPoints -= destinationCard.getPointValue();
             }
         }
-        FinalGamePoints myFinalPoints = new FinalGamePoints(userPlayer, finishedDestinationPoints, unfinishedDestinationPoints, getLengthOfPath(mThisPlayersLongestPath));
+        FinalGamePoints   myFinalPoints = new FinalGamePoints(userPlayer, getRoutePoints(mThisPlayersClaimedRoutes), finishedDestinationPoints, unfinishedDestinationPoints, getLengthOfPath(mThisPlayersLongestPath));
         return  myFinalPoints;
     }
 
@@ -438,6 +438,17 @@ public class ClientGameModel extends Observable {
             }
         }
         return length;
+    }
+
+    public int getRoutePoints(List<Route> routes) {
+        if (routes.size() <= 0) {
+            return 0;
+        }
+        int points = 0;
+        for (Route r : routes) {
+            points += r.getPointValue();
+        }
+        return points;
     }
 
     // Longest Path Related
@@ -564,6 +575,7 @@ public class ClientGameModel extends Observable {
         if (players.get(userPlayer).getNumTrains() < length) return false;
         else return true;
     }
+
 
     public void setAllFinalPoints(FinalGamePoints[] allFinalPoints) {
         this.allPlayersFinalPoints = allFinalPoints;

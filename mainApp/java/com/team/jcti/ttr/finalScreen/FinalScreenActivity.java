@@ -110,12 +110,11 @@ public class FinalScreenActivity extends AppCompatActivity {
         void bind(FinalGamePoints fgp) {
             //TODO: ORDER THESE FROM WINNER TO LOSER
             this.thisPlayer = players.get(fgp.getPlayerNumber());
-            int playersRoutePoints = mPresenter.getRoutePoints(thisPlayer.getRoutesClaimed());
             playerName.setText(thisPlayer.getUser());
-            routePoints.setText(Integer.toString(playersRoutePoints));
+            routePoints.setText(Integer.toString(fgp.getRoutePoints()));
             destPoints.setText(Integer.toString(fgp.getFinishedDestPoints()));
             unfinishedDestPoints.setText(Integer.toString(fgp.getUnfinishedDestPoints()));
-            totalPoints.setText(Integer.toString(fgp.getTotalPoints() + playersRoutePoints));
+            totalPoints.setText(Integer.toString(fgp.getTotalPoints()));
             longestPath.setText(Integer.toString(fgp.getLongestPathPoints()));
         }
 

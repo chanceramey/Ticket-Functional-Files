@@ -44,19 +44,6 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
         return mClientGameModel.getPlayers();
     }
 
-    public int getRoutePoints(List<String> routes) {
-        if (routes.size() <= 0) {
-            return 0;
-        }
-        int points = 0;
-        Route r;
-        for (String s : routes) {
-            r = mClientGameModel.getmAllRoutes().get(s);
-            points += r.getPointValue();
-        }
-        return points;
-    }
-
     @Override
     public void displayError(String message) {
         mActivity.toast(message);

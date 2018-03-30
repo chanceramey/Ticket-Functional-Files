@@ -6,7 +6,8 @@ package model;
 
 public class FinalGamePoints implements Comparable {
 
-    public FinalGamePoints(int playerNumber, int finishedDestPoints, int unfinishedDestPoints, int lengthOfLongestPath) {
+    public FinalGamePoints(int playerNumber, int routePoints, int finishedDestPoints, int unfinishedDestPoints, int lengthOfLongestPath) {
+        this.routePoints = routePoints;
         this.playerNumber = playerNumber;
         this.finishedDestPoints = finishedDestPoints;
         this.unfinishedDestPoints = unfinishedDestPoints;
@@ -14,6 +15,7 @@ public class FinalGamePoints implements Comparable {
     }
 
     private int playerNumber = 0;
+    private int routePoints = 0;
     private int finishedDestPoints = 0;
     private int unfinishedDestPoints = 0;
     private int lengthOfLongestPath = 0;
@@ -61,6 +63,7 @@ public class FinalGamePoints implements Comparable {
     }
 
     public void setTotalPoints() {
+        totalPoints += routePoints;
         totalPoints += finishedDestPoints;
         totalPoints += unfinishedDestPoints;
         totalPoints += longestPathPoints;
@@ -68,6 +71,14 @@ public class FinalGamePoints implements Comparable {
 
     public int getTotalPoints() {
         return totalPoints;
+    }
+
+    public int getRoutePoints() {
+        return routePoints;
+    }
+
+    public void setRoutePoints(int routePoints) {
+        this.routePoints = routePoints;
     }
 
     public void setTotalPoints(int totalPoints) {

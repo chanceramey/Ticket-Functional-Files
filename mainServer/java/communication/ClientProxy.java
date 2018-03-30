@@ -141,7 +141,9 @@ public class ClientProxy implements IClient {
 
     @Override
     public void updateAllPlayerFinalPoints(FinalGamePoints[] allFinalPoints) {
-        this.command = createCommand("updateAllPlayerFinalPoints", allFinalPoints);
+        String[] paramTypes = {allFinalPoints.getClass().getName()};
+        Object[] params = {allFinalPoints};
+        this.command = new Command(CLIENT_TARGET, "updateAllPlayerFinalPoints", paramTypes, params);
     }
 
     public Command getCommand() {
