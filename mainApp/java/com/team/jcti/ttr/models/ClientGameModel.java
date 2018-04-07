@@ -571,4 +571,29 @@ public class ClientGameModel extends Observable {
     public boolean isFinalPointsReceived() {
         return finalPointsReceived;
     }
+
+    public void clearGame() {
+        active = false;
+
+        board = null;
+        players = new ArrayList<>();
+        gameId = null;
+        userPlayer = -1;
+        turn = false;
+        gameHistoryPosition = -1;
+        gameHistoryArr = new ArrayList<>();
+        activePresenter = null;
+        faceUpCards = new TrainCard[5];
+        allPlayersFinalPoints = null;
+        exitNum = 0;
+
+        mThisPlayersLongestPath = new ArrayList<>();
+        mThisPlayersCities = new ArrayList<>();
+        mThisPlayersDestinationCards = new ArrayList<>();
+        mThisPlayersClaimedRoutes = new ArrayList<>();
+        mThisPlayersDestinationCardStatus = new HashMap<>();
+        mAllRoutes = new HashMap<>();
+        mLengthOfLongestPath = 0;
+        finalPointsReceived = false;
+    }
 }

@@ -2,6 +2,7 @@ package com.team.jcti.ttr.finalScreen;
 
 import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.models.ClientGameModel;
+import com.team.jcti.ttr.models.ClientModel;
 import com.team.jcti.ttr.models.Route;
 
 import java.util.List;
@@ -69,5 +70,11 @@ public class FinalScreenPresenter implements IGamePresenter, Observer{
     @Override
     public void update(Observable observable, Object o) {
 
+    }
+
+    public void playAgain() {
+        mClientGameModel.clearGame();
+        ClientModel.getInstance().setGame(null);
+        mActivity.enterGameListActivity();
     }
 }

@@ -1,6 +1,7 @@
 package com.team.jcti.ttr.finalScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,10 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.gamelist.GameListActivity;
 
 import java.util.List;
 
@@ -24,11 +27,19 @@ public class FinalScreenActivity extends AppCompatActivity {
     private Adapter mAdapter;
     private TextView mWinner;
     private List<Player> players;
+    private Button mPlayAgainButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_screen);
+        mPlayAgainButton = (Button) findViewById(R.id.play_again_button);
+        mPlayAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.playAgain();
+            }
+        });
         mRecycler = (RecyclerView) findViewById(R.id.recycler_view_final_screen);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mWinner = (TextView) findViewById(R.id.final_winner);
@@ -36,8 +47,6 @@ public class FinalScreenActivity extends AppCompatActivity {
         mWinner.setText(mPresenter.getWinner());
         mPresenter.startRecyclerView();
         this.players = mPresenter.getPlayers();
-
-
     }
 
     public void startRecyclerView(FinalGamePoints[] finalGamePoints) {
@@ -49,6 +58,10 @@ public class FinalScreenActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    public void enterGameListActivity() {
+        Intent intent = new Intent(this, GameListActivity.class);
+        startActivity(intent);
+    }
 
 
     class Adapter extends RecyclerView.Adapter<Holder> {

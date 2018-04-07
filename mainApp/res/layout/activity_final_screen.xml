@@ -72,5 +72,11 @@
         android:id="@+id/recycler_view_final_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/play_again_button"
+        android:text="PLAY AGAIN"/>
 
 </LinearLayout>
