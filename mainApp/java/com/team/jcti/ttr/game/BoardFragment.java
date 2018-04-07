@@ -54,10 +54,12 @@ public class BoardFragment extends android.support.v4.app.Fragment {
     }
 
     public void update() {
-        mMap.clear();
-        drawCities();
-        drawRailLines();
-        drawMarkedCities();
+        if (mMap != null) {
+            mMap.clear();
+            drawCities();
+            drawRailLines();
+            drawMarkedCities();
+        }
     }
 
     private void drawMarkedCities() {

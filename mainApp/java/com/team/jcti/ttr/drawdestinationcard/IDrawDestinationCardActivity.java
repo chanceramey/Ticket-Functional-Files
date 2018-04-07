@@ -14,4 +14,6 @@ public interface IDrawDestinationCardActivity {
     void update();
 
     void enterFinalScreen();
+
+    void enterGameActivity();
 }

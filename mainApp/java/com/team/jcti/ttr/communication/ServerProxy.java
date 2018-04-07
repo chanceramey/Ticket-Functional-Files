@@ -164,5 +164,13 @@ public class ServerProxy implements IServer {
         new SendCommandTask().execute(command);
         return null;
     }
+
+    @Override
+    public Object rejectRestore(String authToken) {
+        Object[] params = {authToken};
+        String[] paramTypes = {authToken.getClass().getName()};
+        Command command = new Command(SERVER_TARGET, "rejectRestore", paramTypes, params);
+        return null;
+    }
 }
 

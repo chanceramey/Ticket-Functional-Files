@@ -9,6 +9,7 @@ import communication.ClientProxy;
 import model.AuthToken;
 import model.Game;
 import model.ServerModel;
+import model.User;
 
 /**
  * Created by Jeff on 2/9/2018.
@@ -20,23 +21,26 @@ public class GameListService {
 
     public Command[] getGamesList(String auth) {
         try {
-            ServerModel.getInstance().getUserFromAuth(auth);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
+            String username = mServerModel.getUserFromAuth(auth);
+            User user = mServerModel.getUser(username);
+            if (user.getGameID() != null) {
+                clientProxy.promptRestoreGame(mServerModel.getActiveGame(user.getGameID()).convertToGame());
+                return new Command[] {clientProxy.getCommand()};
+            }
+        } catch (ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException | ServerModel.GameNotFoundException e) {
             clientProxy.promptRenewSession();
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
         mServerModel.addGameListClient(auth);
-        Map<String, Game> gameMap = ServerModel.getInstance().getWaitingGames();
+        Map<String, Game> gameMap = mServerModel.getWaitingGames();
         Game[] games = new Game[gameMap.size()];
         int index = 0;
         for (Game g : gameMap.values()) {
-            games[index] = g;
-            index++;
+            games[index++] = g;
         }
         clientProxy.onGetServerGameList(games);
-        Command[] commands = {clientProxy.getCommand()};
-        return commands;
+        return new Command[] {clientProxy.getCommand()};
     }
 
     public Command[] joinGame(String authToken, String gameId) {
@@ -79,4 +83,14 @@ public class GameListService {
         return commands;
     }
 
+    public Command[] rejectRestore(String authToken) {
+        try {
+            String username = mServerModel.getUserFromAuth(authToken);
+            mServerModel.getUser(username).setGame(null);
+        } catch (ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException e) {
+            clientProxy.promptRenewSession();
+            return new Command[] { clientProxy.getCommand() };
+        }
+        return getGamesList(authToken);
+    }
 }

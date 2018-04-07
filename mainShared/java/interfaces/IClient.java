@@ -60,4 +60,5 @@ public interface IClient {
 
     public void updateAllPlayerFinalPoints(FinalGamePoints[] allFinalPoints);
 
+    void promptRestoreGame(Game game);
 }

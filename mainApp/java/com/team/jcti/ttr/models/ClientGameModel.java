@@ -2,6 +2,7 @@ package com.team.jcti.ttr.models;
 
 import com.team.jcti.ttr.IGamePresenter;
 import com.team.jcti.ttr.communication.ServerProxy;
+import com.team.jcti.ttr.drawdestinationcard.DrawDestinationCardPresenter;
 import com.team.jcti.ttr.message.MessagePresenter;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import model.AuthToken;
 import model.Color;
 import model.DestinationCard;
 import model.FinalGamePoints;
@@ -48,6 +48,8 @@ public class ClientGameModel extends Observable {
     private FinalGamePoints[] allPlayersFinalPoints;
     private int destDeckSize;
     private int trainDeckSize;
+    private int currentPlayer;
+    private int exitNum;
 
     // Longest path or destination card calculation related
     private List<Route> mThisPlayersLongestPath = new ArrayList<>();
@@ -64,6 +66,13 @@ public class ClientGameModel extends Observable {
     public boolean isMyTurn() {
         return turn;
     }
+
+    public boolean exitDrawDest() {
+        if (exitNum == 0) return false;
+        exitNum--;
+        return true;
+    }
+
 
     public void startGame(Game game) {
         this.gameId = game.getID();
@@ -152,6 +161,7 @@ public class ClientGameModel extends Observable {
         if (playerIndex == userPlayer) {
             player.addDrawnDestCards(cards);
             activePresenter.drawDestCards();
+            System.out.println(activePresenter);
         }
         else {
             player.addDestCards(numCards);
@@ -217,11 +227,10 @@ public class ClientGameModel extends Observable {
 
 
     public void discardDestCards(Integer player, Integer numCards, int[] pos, Integer deckSize) {
-        if(numCards == 0) return; //don't do anything if they didn't discard any cards
-
         Player p = players.get(player);
         if (player == userPlayer) {
             p.removeDestCards(pos);
+            exitNum++;
         }
         else {
             p.removeDestCards(numCards);
@@ -370,23 +379,6 @@ public class ClientGameModel extends Observable {
 
     }
 
-
-//    Do this on the Server
-//    private Player getLongestPathWinner() {
-//        Player winner =  null;
-//        for (Map.Entry<Player, List<Route>> playerAndZerLongestPath : mEachPlayersLongestPath.entrySet()) {
-//            int thisPlayersLongestPathLength = getLengthOfPath(playerAndZerLongestPath.getValue());
-//            if (thisPlayersLongestPathLength > mLengthOfLongestPath) {
-//                mLengthOfLongestPath = thisPlayersLongestPathLength;
-//                winner = playerAndZerLongestPath.getKey();
-//            }
-//        }
-//
-//        setLongestPathPoints(winner);
-//
-//        return winner;
-//    }
-
     public void onGameEnded(){
         endGameRouteCalcSetup();
         checkThisPlayersDestinationCardCompletion();
@@ -416,18 +408,6 @@ public class ClientGameModel extends Observable {
         FinalGamePoints   myFinalPoints = new FinalGamePoints(userPlayer, getRoutePoints(mThisPlayersClaimedRoutes), finishedDestinationPoints, unfinishedDestinationPoints, getLengthOfPath(mThisPlayersLongestPath));
         return  myFinalPoints;
     }
-
-
-//    Do this on the server
-//    private void setLongestPathPoints (Player winner) {
-//        for (Player p : players) {
-//            if (winner.getUser().equals(winner.getUser())) {
-//                p.setLongestRoutePoints(10);
-//            } else {
-//                p.setLongestRoutePoints(0);
-//            }
-//        }
-//    }
 
     private int getLengthOfPath(List<Route> path) {
         int length = 0;
@@ -560,19 +540,15 @@ public class ClientGameModel extends Observable {
         if (player == userPlayer) {
             activePresenter.displayError("It's your turn!");
             turn = true;
-            for (Player p: players) {
-                p.setTurn(false);
-            }
-            players.get(player).setTurn(true);
         }
         else {
             turn = false;
-            for (Player p: players) {
-                p.setTurn(false);
-            }
-            players.get(player).setTurn(true);
         }
+        this.currentPlayer = player;
+    }
 
+    public int getCurrentPlayer() {
+        return this.currentPlayer;
     }
 
     public void setLastTurn() {

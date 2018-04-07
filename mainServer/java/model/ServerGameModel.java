@@ -20,6 +20,7 @@ import model.playerStates.TurnState;
 public class ServerGameModel {
 
     private ClientProxy clientProxy = new ClientProxy();
+    private Game waitingGame;
 
     private int currentPlayer;
     private List<Player> players;
@@ -34,6 +35,7 @@ public class ServerGameModel {
     private Map<Integer, FinalGamePoints> allPlayersPoints = new HashMap<>();
 
     public ServerGameModel(Game game) {
+        this.waitingGame = game;
         initializePlayersList(game);
         trainCardDeck = new TrainCardDeck();
         faceUpTrainCards = new TrainCard[5];
@@ -189,8 +191,6 @@ public class ServerGameModel {
     public void returnDestinationCards(String username, int[] rejectedCardPositions) {
         Player p = getPlayerFromUsername(username);
 
-        if (rejectedCardPositions.length == 0) return;
-
         destCardDeck.discard(p.removeDestCards(rejectedCardPositions));
 
         clientProxy.discardDestCards(p.getId(), rejectedCardPositions.length, rejectedCardPositions, destCardDeck.size());
@@ -321,4 +321,7 @@ public class ServerGameModel {
     }
 
 
+    public Game convertToGame() {
+        return this.waitingGame;
+    }
 }

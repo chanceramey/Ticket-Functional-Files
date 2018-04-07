@@ -112,4 +112,10 @@ public class ServerFacade implements IServer {
         GameService service = new GameService();
         return service.updatePlayerFinalPoints(auth, gameID, finalGamePoints);
     }
+
+    @Override
+    public Object rejectRestore(String authToken) {
+        GameListService service = new GameListService();
+        return service.rejectRestore(authToken);
+    }
 }

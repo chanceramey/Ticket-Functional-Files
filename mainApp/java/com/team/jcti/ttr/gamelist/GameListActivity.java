@@ -1,7 +1,9 @@
 package com.team.jcti.ttr.gamelist;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team.jcti.ttr.R;
+import com.team.jcti.ttr.game.GameActivity;
 import com.team.jcti.ttr.gamelobby.GameLobbyActivity;
 import com.team.jcti.ttr.models.ClientModel;
 
@@ -83,6 +86,35 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     public void startGameLobbyActivity(String gameId) {
         Intent intent = new Intent(this, GameLobbyActivity.class);
         intent.putExtra("gameId", gameId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void displayRestoreGameOption(Game game) {
+        final Game restoredGame = game;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(String.format("Do you want to continue playing the game %s?", game.getGameName()));
+        builder.setCancelable(false);
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mPresenter.rejectRestore();
+            }
+        });
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(GameListActivity.this, "Restarting Game!", Toast.LENGTH_SHORT).show();
+                mPresenter.startGame(restoredGame);
+            }
+        });
+        builder.create().show();
+
+    }
+
+    @Override
+    public void enterGameActivity() {
+        Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
 

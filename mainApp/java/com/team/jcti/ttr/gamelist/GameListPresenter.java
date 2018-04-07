@@ -2,6 +2,7 @@ package com.team.jcti.ttr.gamelist;
 
 import com.team.jcti.ttr.communication.ServerProxy;
 import com.team.jcti.ttr.IPresenter;
+import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 
 import java.util.List;
@@ -65,4 +66,17 @@ public class GameListPresenter implements IGameListPresenter, IPresenter, Observ
 
     @Override
     public void update(Observable o, Object arg) {update();}
+
+    public void promptRestoreGame(Game game) {
+        mActivity.displayRestoreGameOption(game);
+    }
+
+    public void rejectRestore() {
+        mServerProxy.rejectRestore(mClientModel.getAuthToken());
+    }
+
+    public void startGame(Game game) {
+        ClientGameModel.getInstance().startGame(game);
+        mActivity.enterGameActivity();
+    }
 }

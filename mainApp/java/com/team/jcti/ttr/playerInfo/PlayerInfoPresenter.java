@@ -50,4 +50,9 @@ public class PlayerInfoPresenter implements IGamePresenter, Observer {
     public void update(Observable observable, Object o) {
         update();
     }
+
+    public String isTurn(int player) {
+        if (gameModel.getCurrentPlayer() == player) return "**YES**";
+        else return "";
+    }
 }

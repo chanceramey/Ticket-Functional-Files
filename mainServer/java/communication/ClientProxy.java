@@ -146,6 +146,11 @@ public class ClientProxy implements IClient {
         this.command = new Command(CLIENT_TARGET, "updateAllPlayerFinalPoints", paramTypes, params);
     }
 
+    @Override
+    public void promptRestoreGame(Game game) {
+        this.command = createCommand("promptRestoreGame", game);
+    }
+
     public Command getCommand() {
         return this.command;
     }

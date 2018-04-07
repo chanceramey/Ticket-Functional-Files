@@ -7,6 +7,7 @@ import model.Game;
 import model.GameHistory;
 import model.ServerGameModel;
 import model.ServerModel;
+import model.User;
 
 /**
  * Created by Jeff on 2/28/2018.
@@ -23,9 +24,7 @@ public class GameService extends AbstractService {
             String userName = mServerModel.getUserFromAuth(auth);
             historyObj.setUser(userName);
         } catch (ServerModel.AuthTokenNotFoundException e) {
-            mClientProxy.promptRenewSession();
-            Command[] commands = {mClientProxy.getCommand()};
-            return commands;
+            return promptRenewSession();
         }
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameId); // implement this method in ServerGameModel
@@ -34,9 +33,7 @@ public class GameService extends AbstractService {
             return new Command[]{};
 
         } catch (ServerModel.GameNotFoundException e) {
-            mClientProxy.promptRenewSession();
-            Command[] commands = {mClientProxy.getCommand()};
-            return commands;
+            return displayError("SERVER ERROR: Game not found");
         }
     }
 
@@ -59,13 +56,15 @@ public class GameService extends AbstractService {
             return displayError("Could Not Find Game");
         }
 
-        return new Command[]{};
+        return new Command[0];
     }
 
     public Command[] updatePlayerFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints) {
+        User user;
         try {
-            mServerModel.getUserFromAuth(auth);
-        } catch(ServerModel.AuthTokenNotFoundException e) {
+            String username = mServerModel.getUserFromAuth(auth);
+            user = mServerModel.getUser(username);
+        } catch(ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException e) {
             return promptRenewSession();
         }
 
@@ -79,6 +78,7 @@ public class GameService extends AbstractService {
         } catch (ServerModel.GameNotFoundException e) {
             return displayError("Could Not Find Game");
         }
-        return new Command[]{};
+        user.setGame(null);
+        return new Command[0];
     }
 }

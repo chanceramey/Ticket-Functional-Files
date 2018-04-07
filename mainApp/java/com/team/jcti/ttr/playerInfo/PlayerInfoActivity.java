@@ -116,9 +116,7 @@ public class PlayerInfoActivity extends AppCompatActivity {
             trains.setText(Integer.toString(p.getNumTrains()));
             numTrainCards.setText(Integer.toString(p.getNumTrainCards()));
             numDestCards.setText(Integer.toString(p.getNumDestCards()));
-            if (p.isPlayerTurn()) {
-                turn.setText("Yes");
-            }
+            turn.setText(mPresenter.isTurn(p.getId()));
             setColor();
 
         }

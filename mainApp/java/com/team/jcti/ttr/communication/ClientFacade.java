@@ -169,4 +169,9 @@ public class ClientFacade implements IClient {
     public void updateAllPlayerFinalPoints(FinalGamePoints[] allFinalPoints) {
         mGameModel.setAllFinalPoints(allFinalPoints);
     }
+
+    @Override
+    public void promptRestoreGame(Game game) {
+        ((GameListPresenter) mClientModel.getActivePresenter()).promptRestoreGame(game);
+    }
 }

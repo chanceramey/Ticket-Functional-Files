@@ -40,4 +40,6 @@ public interface IServer {
     Object drawFaceUp(String auth, String gameID, Integer i);
 
     Object sendFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints);
+
+    Object rejectRestore(String authToken);
 }

@@ -14,6 +14,8 @@ public interface IDrawDestinationCardPresenter {
 
     boolean isGameStart();
 
+    void update();
+
     void returnRejectedDestCards(List<Integer> rejectedCards);
 
     void updateCards(Integer player, Integer numCards, DestinationCard[] cards);

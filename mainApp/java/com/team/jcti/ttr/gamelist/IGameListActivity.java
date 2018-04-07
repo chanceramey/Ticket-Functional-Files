@@ -15,4 +15,8 @@ public interface IGameListActivity {
     void onJoin();
     void toast(String message);
     void startGameLobbyActivity(String gameId);
+
+    void displayRestoreGameOption(Game game);
+
+    void enterGameActivity();
 }

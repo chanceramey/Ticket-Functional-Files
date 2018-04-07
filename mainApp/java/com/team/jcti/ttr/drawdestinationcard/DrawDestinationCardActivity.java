@@ -68,8 +68,6 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
             @Override
             public void onClick(View v) {
                 drawDestinationCardPresenter.returnRejectedDestCards(getRejectedDestCards());
-
-                enterGameActivity();
             }
         });
 
@@ -146,6 +144,12 @@ public class DrawDestinationCardActivity extends AppCompatActivity implements ID
 
     public void update() {
         setImageViews();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        drawDestinationCardPresenter.update();
     }
 
     @Override

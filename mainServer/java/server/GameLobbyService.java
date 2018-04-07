@@ -8,6 +8,7 @@ import model.ServerGameModel;
 import model.ServerModel;
 import command.Command;
 import model.Game;
+import model.User;
 
 /**
  * Created by tjense25 on 2/2/18.
@@ -108,10 +109,11 @@ public class GameLobbyService {
     }
 
     public Command[] startGame(String auth, String gameId) {
-
+        User user;
         try {
-            mServerModel.getUserFromAuth(auth);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
+            String username = mServerModel.getUserFromAuth(auth);
+            user = mServerModel.getUser(username);
+        } catch (ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException e) {
             clientProxy.promptRenewSession();
             return new Command[] {clientProxy.getCommand()};
         }
@@ -123,7 +125,7 @@ public class GameLobbyService {
             clientProxy.displayError("Error: Could not find game.");
             return new Command[] {clientProxy.getCommand()};
         }
-
+        user.setGame(gameId);
         mServerModel.startGame(gameId);
 
         clientProxy.removeGameFromList(gameId);
