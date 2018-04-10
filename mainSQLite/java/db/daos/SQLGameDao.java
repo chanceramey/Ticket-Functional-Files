@@ -62,12 +62,13 @@ public class SQLGameDao extends IGameDao {
     public void updateGame(IGame game) throws DatabaseException {
         PreparedStatement stmt = null;
         try {
-            String update = "UPDATE game SET obj = ? WHERE gameid = ?;";
+            String update = "UPDATE game SET json = ? WHERE gameid = ?;";
             stmt = connection.prepareStatement(update);
             stmt.setString(1, gson.toJson(game));
             stmt.setString(2, game.getID());
             stmt.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DatabaseException();
         } finally {
             if (stmt != null) try {
@@ -84,8 +85,9 @@ public class SQLGameDao extends IGameDao {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            String query = "SELECT obj FROM game WHERE gameid = ?;";
+            String query = "SELECT json FROM game WHERE gameid = ?;";
             stmt = connection.prepareStatement(query);
+            stmt.setString(1, gameID);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 json = rs.getString(1);
