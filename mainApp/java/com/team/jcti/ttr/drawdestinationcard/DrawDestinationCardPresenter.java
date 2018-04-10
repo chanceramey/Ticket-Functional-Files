@@ -70,7 +70,7 @@ public class DrawDestinationCardPresenter implements Observer, IDrawDestinationC
         if(player.isFirstDestPick()) {
             player.setFirstDestPick();
         }
-        mServerProxy.returnDestinationCards(mClientModel.getAuthToken(), mClientGameModel.getGameID(), rejectedCardPositions);
+        mServerProxy.returnDestinationCards(mClientModel.getAuthToken(), mClientGameModel.getID(), rejectedCardPositions);
     }
 
     @Override

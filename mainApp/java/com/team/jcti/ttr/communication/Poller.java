@@ -22,6 +22,6 @@ public class Poller extends TimerTask{
     public void run() {
         if (mClientModel.getAuthToken() == null) return;
         if(!mGameModel.isActive()) mServerProxy.getCommands(mClientModel.getAuthToken());
-        else mServerProxy.getGameCommands(mClientModel.getAuthToken(), mGameModel.getGameID(), mGameModel.getGameHistoryPosition());
+        else mServerProxy.getGameCommands(mClientModel.getAuthToken(), mGameModel.getID(), mGameModel.getGameHistoryPosition());
     }
 }

@@ -7,7 +7,6 @@ import com.team.jcti.ttr.models.City;
 import com.team.jcti.ttr.models.ClientGameModel;
 import com.team.jcti.ttr.models.ClientModel;
 import com.team.jcti.ttr.models.Route;
-import com.team.jcti.ttr.utils.Util;
 
 import java.util.Collection;
 import java.util.List;
@@ -93,7 +92,7 @@ public class GamePresenter implements IGamePresenter, Observer{
             return false;
         }
 
-        mServerProxy.claimRoute(mClientModel.getAuthToken(), mActiveGame.getGameID(), selectedRoute.getRouteId(), selectedRoute.getLength(), cardPos);
+        mServerProxy.claimRoute(mClientModel.getAuthToken(), mActiveGame.getID(), selectedRoute.getRouteId(), selectedRoute.getLength(), cardPos);
         selectedRoute = null;
         return true;
     }
@@ -169,7 +168,7 @@ public class GamePresenter implements IGamePresenter, Observer{
             return;
         }
 
-        mServerProxy.drawDestinationCards(mClientModel.getAuthToken(), mActiveGame.getGameID());
+        mServerProxy.drawDestinationCards(mClientModel.getAuthToken(), mActiveGame.getID());
 
     }
 
@@ -183,7 +182,7 @@ public class GamePresenter implements IGamePresenter, Observer{
             return;
         }
 
-        mServerProxy.drawTrainCards(mClientModel.getAuthToken(), 1, mActiveGame.getGameID());
+        mServerProxy.drawTrainCards(mClientModel.getAuthToken(), 1, mActiveGame.getID());
     }
 
     public void onFaceUpClick(int pos) {
@@ -193,7 +192,7 @@ public class GamePresenter implements IGamePresenter, Observer{
         }
 
 
-        mServerProxy.drawFaceUp(mClientModel.getAuthToken(), mActiveGame.getGameID(), pos);
+        mServerProxy.drawFaceUp(mClientModel.getAuthToken(), mActiveGame.getID(), pos);
 
     }
 

@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import interfaces.IGame;
+
 /**
  * Created by Isaak on 2/2/2018.
  */
 
-public class Game {
+public class Game implements IGame {
 
     private int numPlayers;
     private String host;

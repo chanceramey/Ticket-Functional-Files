@@ -59,7 +59,7 @@ public class MessagePresenter implements IMessagePresenter, IGamePresenter, Obse
     public void sendMessage(String message) {
         GameHistory historyObj = new GameHistory(null, message);
         String auth = mClientModel.getAuthToken();
-        String gameId = mActiveGame.getGameID();
+        String gameId = mActiveGame.getID();
         mServerProxy.sendMessage(auth, gameId, historyObj);
     }
 

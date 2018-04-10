@@ -9,6 +9,7 @@ import java.util.Map;
 
 import command.Command;
 import communication.ClientProxy;
+import interfaces.IGame;
 import model.playerStates.NotTurnState;
 import model.playerStates.Player;
 import model.playerStates.TurnState;
@@ -17,10 +18,11 @@ import model.playerStates.TurnState;
  * Created by tjense25 on 2/24/18.
  */
 
-public class ServerGameModel {
+public class ServerGameModel implements IGame {
 
     private ClientProxy clientProxy = new ClientProxy();
     private Game waitingGame;
+    private String gameID;
 
     private int currentPlayer;
     private List<Player> players;
@@ -36,6 +38,7 @@ public class ServerGameModel {
 
     public ServerGameModel(Game game) {
         this.waitingGame = game;
+        this.gameID = game.getID();
         initializePlayersList(game);
         trainCardDeck = new TrainCardDeck();
         faceUpTrainCards = new TrainCard[5];
@@ -323,5 +326,10 @@ public class ServerGameModel {
 
     public Game convertToGame() {
         return this.waitingGame;
+    }
+
+    @Override
+    public String getID() {
+        return gameID;
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import interfaces.IGame;
 import model.Color;
 import model.DestinationCard;
 import model.FinalGamePoints;
@@ -24,7 +25,7 @@ import model.TrainCard;
  * Created by Jeff on 2/2/2018.
  */
 
-public class ClientGameModel extends Observable {
+public class ClientGameModel extends Observable implements IGame {
 
     private static ClientGameModel SINGLETON;
     public static ClientGameModel getInstance() {
@@ -122,7 +123,7 @@ public class ClientGameModel extends Observable {
         return gameHistoryPosition;
     }
 
-    public String getGameID() {
+    public String getID() {
         return gameId;
     }
 

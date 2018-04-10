@@ -131,6 +131,8 @@ public class FinalScreenActivity extends AppCompatActivity {
             longestPath.setText(Integer.toString(fgp.getLongestPathPoints()));
         }
 
+
+
     }
 
 }
