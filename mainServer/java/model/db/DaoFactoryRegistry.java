@@ -15,8 +15,9 @@ import database.AbstractDaoFactory;
  */
 
 public class DaoFactoryRegistry {
-    Map<String, DaoDescriptor> plugins = new HashMap<>();
-    String choice = null;
+    private Map<String, DaoDescriptor> plugins = new HashMap<>();
+    private String choice = null;
+    private int interval = 0;
 
     public DaoFactoryRegistry(){
         parseConfig();
@@ -31,15 +32,30 @@ public class DaoFactoryRegistry {
                             new File("server/src/main/java/model/db/database.cfg")));
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Use") || line.startsWith("use")) {
+                if (line.startsWith("#")) {
+                    // Do nothing. This is a comment.
+                } else if (line.toLowerCase().startsWith("use")) {
+                    // "use" is key word to identify db selection
                     String[] col = line.trim().split(" ");
                     if (col[1] != null) {
                         choice = col[1];
                         System.out.println(choice + " chosen as database option...");
 
                     }
-                }
-                else if (!line.startsWith("#")) {
+                } else if (line.toLowerCase().startsWith("interval")) {
+                    // "interval" is key word to declare game database backup interval
+                    String[] col = line.trim().split(" ");
+                    if (col[1] != null) {
+                        try {
+                            interval = Integer.parseInt(col[1]);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Interval provided is not a number");
+                            e.printStackTrace();
+                        }
+                        System.out.println(choice + " chosen as database option...");
+
+                    }
+                } else {
                     String[] col = line.trim().split("--");
                     for (int i = 0; i < col.length; i++) {
                         plugins.put(col[0], new DaoDescriptor(col[0], col[1], col[2]));
@@ -47,14 +63,24 @@ public class DaoFactoryRegistry {
                 }
             }
 
+            if (interval == 0) {
+                System.out.println("Interval cannot equal zero. Interval is not specified correctly in config file.");
+                throw new ConfigFileSyntaxException();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 
     public String getChoice() {
         return choice;
+    }
+
+    public int getInterval() {
+        return interval;
     }
 
     public Set<String> getAvailablePlugins() {
