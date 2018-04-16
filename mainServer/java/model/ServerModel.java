@@ -13,7 +13,8 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import command.Command;
-import communication.PersistenceFacade;
+import model.db.PersistenceFacade;
+
 
 /**
  * Created by tjense25 on 2/2/18.
@@ -55,8 +56,9 @@ public class ServerModel {
 
     //Queue of commands to be executed by
     private Map<String, List<Command>> sessionCommandQueue;
-
-    private PersistenceFacade mPersistenceFacade;
+  
+    //Persistence facade for accessing database
+    private PersistenceFacade persistenceFacade = new PersistenceFacade();
 
 
     /**
@@ -71,7 +73,6 @@ public class ServerModel {
         this.waitingGames = new HashMap<>();
         this.activeGames = new HashMap<>();
         this.sessionCommandQueue = new HashMap<>();
-        this.mPersistenceFacade = new PersistenceFacade();
         addComputerPlayer();
 
         Timer timer = new Timer();
