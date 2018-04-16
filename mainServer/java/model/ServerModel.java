@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import command.Command;
+import communication.PersistenceFacade;
 
 /**
  * Created by tjense25 on 2/2/18.
@@ -55,6 +56,8 @@ public class ServerModel {
     //Queue of commands to be executed by
     private Map<String, List<Command>> sessionCommandQueue;
 
+    private PersistenceFacade mPersistenceFacade;
+
 
     /**
      * Constructor of ServerModel Main function is to initialize server data collections
@@ -68,6 +71,7 @@ public class ServerModel {
         this.waitingGames = new HashMap<>();
         this.activeGames = new HashMap<>();
         this.sessionCommandQueue = new HashMap<>();
+        this.mPersistenceFacade = new PersistenceFacade();
         addComputerPlayer();
 
         Timer timer = new Timer();
