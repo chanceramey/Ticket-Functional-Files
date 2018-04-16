@@ -1,4 +1,4 @@
-package database;
+package model.db;
 
 /**
  * Created by Chance on 4/14/18.

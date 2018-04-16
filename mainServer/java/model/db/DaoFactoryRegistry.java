@@ -1,13 +1,14 @@
-package database;
+package model.db;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.lang.reflect.*;
+
+import database.AbstractDaoFactory;
+
 
 /**
  * Created by Chance on 4/11/18.
@@ -24,16 +25,18 @@ public class DaoFactoryRegistry {
     private void parseConfig() {
 
         try {
-
+            System.out.println("Parsing config file...");
             BufferedReader reader = new BufferedReader(
                     new FileReader(
-                            new File("shared/src/main/java/config/database.cfg")));
+                            new File("server/src/main/java/model/db/database.cfg")));
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Use") || line.startsWith("use")) {
                     String[] col = line.trim().split(" ");
                     if (col[1] != null) {
                         choice = col[1];
+                        System.out.println(choice + " chosen as database option...");
+
                     }
                 }
                 else if (!line.startsWith("#")) {
@@ -63,6 +66,7 @@ public class DaoFactoryRegistry {
         if (name == null) throw new ConfigFileSyntaxException();
         try {
             Class<?> klass = Class.forName(plugins.get(name).mClassName);
+            System.out.println(plugins.get(name).mClassName + " class was found. Instantiating...");
             return (AbstractDaoFactory) klass.newInstance();
         } catch (ClassNotFoundException e) {
             System.out.println(plugins.get(name).mClassName + " is not a class");

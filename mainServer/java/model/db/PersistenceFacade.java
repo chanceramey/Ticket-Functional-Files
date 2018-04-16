@@ -1,11 +1,6 @@
-package database;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+package model.db;
 
 import database.AbstractDaoFactory;
-import database.DaoFactoryRegistry;
 
 /**
  * Created by Chance on 4/11/18.
@@ -19,7 +14,7 @@ public class PersistenceFacade {
 
         try {
             daoFactory = daoFactoryRegistry.registerPlugin(daoFactoryRegistry.getChoice());
-            System.out.println(daoFactory.getClass().getName());
+            System.out.println(daoFactory.getClass().getName() + " is ready.");
         } catch (Exception e) {
             e.printStackTrace();
         }
