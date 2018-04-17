@@ -1,9 +1,13 @@
 package server;
 
+import java.util.UUID;
+
 import command.Command;
 import communication.ClientProxy;
+import model.AuthToken;
 import model.ServerModel;
 import model.User;
+import model.db.PersistenceFacade;
 
 /**
  * Created by Isaak on 2/6/2018.
@@ -16,14 +20,6 @@ public class LoginService {
     private User user;
 
     public Command[] login(String username, String password){
-        try {
-            user = serverModel.getUser(username);
-
-        } catch (ServerModel.UserNotFoundException e) {
-            clientProxy.displayError("Username or password incorrect");
-            Command[] commands = {clientProxy.getCommand()};
-            return commands;
-        }
 
         if(username == null || password == null || !password.equals(user.getPassword())){
             clientProxy.displayError("Username or password incorrect");
@@ -31,9 +27,20 @@ public class LoginService {
             return commands;
         }
 
-        String authToken = serverModel.addAuthForUser(username);
+        PersistenceFacade persistenceFacade = serverModel.getPersistenceFacade();
 
-        clientProxy.onLogin(authToken, username);
+        boolean validateCredentials = persistenceFacade.validateCredentials(username, password);
+
+        if (!validateCredentials) {
+            clientProxy.displayError("Username or password incorrect");
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+
+        AuthToken userAuthToken = new AuthToken(username, UUID.randomUUID().toString());
+        persistenceFacade.registerAuthToken(userAuthToken);
+
+        clientProxy.onLogin(userAuthToken.getToken(), username);
         Command[] commands = {clientProxy.getCommand()};
         return commands;
     }

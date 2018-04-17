@@ -56,7 +56,7 @@ public class ServerModel {
 
     //Queue of commands to be executed by
     private Map<String, List<Command>> sessionCommandQueue;
-  
+
     //Persistence facade for accessing database
     private PersistenceFacade persistenceFacade = new PersistenceFacade();
 
@@ -105,6 +105,10 @@ public class ServerModel {
             return users.get(username);
         }
         else throw new UserNotFoundException();
+    }
+
+    public PersistenceFacade getPersistenceFacade() {
+        return persistenceFacade;
     }
 
     /**

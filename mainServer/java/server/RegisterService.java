@@ -1,9 +1,13 @@
 package server;
 
+import java.util.UUID;
+
 import command.Command;
 import communication.ClientProxy;
+import model.AuthToken;
 import model.ServerModel;
 import model.User;
+import model.db.PersistenceFacade;
 
 /**
  * Created by Isaak on 2/6/2018.
@@ -21,22 +25,25 @@ public class RegisterService {
             Command[] commands = {clientProxy.getCommand()};
             return commands;
         }
-        try {
-            serverModel.getUser(username); //more checks? is this one too messy
+
+        PersistenceFacade persistenceFacade = serverModel.getPersistenceFacade();
+
+        User existingUser = persistenceFacade.getUser(username);
+        if (existingUser != null) {
             //USER ALREADY EXISTS SO DISPLAY ERROR
             clientProxy.displayError("Username already in use. Please choose another one");
             Command[] commands = {clientProxy.getCommand()};
             return commands;
-
-        } catch (ServerModel.UserNotFoundException e) {
-            //Username is not taken, so continue!
         }
 
-        User user = new User(username, password, firstName, lastName);
-        String authToken = serverModel.addAuthForUser(username);
-        serverModel.addUser(user);
 
-        clientProxy.onRegister(authToken, username);
+        User user = new User(username, password, firstName, lastName);
+        AuthToken userAuthToken = new AuthToken(username, UUID.randomUUID().toString());
+        persistenceFacade.addUser(user);
+        persistenceFacade.registerAuthToken(userAuthToken);
+
+
+        clientProxy.onRegister(userAuthToken.getToken(), username);
         Command[] commands = {clientProxy.getCommand()};
         return commands;
     }
