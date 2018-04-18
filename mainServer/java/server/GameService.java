@@ -8,6 +8,7 @@ import model.GameHistory;
 import model.ServerGameModel;
 import model.ServerModel;
 import model.User;
+import model.db.PersistenceFacade;
 
 /**
  * Created by Jeff on 2/28/2018.
@@ -20,10 +21,10 @@ public class GameService extends AbstractService {
     }
 
     public Command[] sendMessage(String auth, String gameId, GameHistory historyObj) {
-        try {
-            String userName = mServerModel.getUserFromAuth(auth);
-            historyObj.setUser(userName);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(auth);
+        boolean validateAuthToken = (username != null && !username.equals(""));
+        if (!validateAuthToken) {
             return promptRenewSession();
         }
         try {
@@ -38,17 +39,17 @@ public class GameService extends AbstractService {
     }
 
     public Command[] claimRoute(String auth, String gameID, String routeID, int length, int[] cardPos) {
-        String user;
-        try {
-            user = mServerModel.getUserFromAuth(auth);
-        } catch(ServerModel.AuthTokenNotFoundException e) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(auth);
+        boolean validateAuthToken = (username != null && !username.equals(""));
+        if (!validateAuthToken) {
             return promptRenewSession();
         }
 
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
 
-            if (!gameModel.claimRoute(user, routeID, length, cardPos)) {
+            if (!gameModel.claimRoute(username, routeID, length, cardPos)) {
                 return displayError("Invalid move");
             }
 
@@ -61,10 +62,11 @@ public class GameService extends AbstractService {
 
     public Command[] updatePlayerFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints) {
         User user;
-        try {
-            String username = mServerModel.getUserFromAuth(auth);
-            user = mServerModel.getUser(username);
-        } catch(ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException e) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(auth);
+        user = persistenceFacade.getUser(username);
+        boolean validateAuthToken = (username != null && !username.equals(""));
+        if (!validateAuthToken || user == null) {
             return promptRenewSession();
         }
 

@@ -84,7 +84,7 @@ public class Command {
             System.err.println("ERROR: Illegal argument while trying to find the method " + methodName);
             e.printStackTrace();
         } catch (InvocationTargetException e) {
-            System.err.println("ERROR: Illegal Invocation on the target class when calling " + methodName);
+            System.err.println("ERROR: Illegal Invocation on the target class when calling " + methodName + " on " + className);
             e.printStackTrace();
         } catch (SecurityException e) {
             System.err.println("ERROR: Security error when trying to access the method " + methodName);

@@ -9,6 +9,7 @@ import model.ServerModel;
 import command.Command;
 import model.Game;
 import model.User;
+import model.db.PersistenceFacade;
 
 /**
  * Created by tjense25 on 2/2/18.
@@ -20,10 +21,11 @@ public class GameLobbyService {
     private ClientProxy clientProxy = new ClientProxy();
 
     public Command[] createGame(int numPlayers, String gameName, String authToken) {
-        String username;
-        try {
-            username = mServerModel.getUserFromAuth(authToken);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
+
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(authToken);
+        boolean validateAuthToken = (username != null && !username.equals("") );
+        if (!validateAuthToken) {
             clientProxy.promptRenewSession();
             Command[] commands = {clientProxy.getCommand()};
             return commands;
@@ -37,6 +39,8 @@ public class GameLobbyService {
 
         Game game = new Game(numPlayers, username, gameName, UUID.randomUUID().toString(), authToken);
         mServerModel.addWaitingGame(game);
+        persistenceFacade.saveGameState(game);
+        persistenceFacade.addGameIdToUser(username, game.getID());
         mServerModel.removeGameListClient(authToken);
         clientProxy.addGametoList(game);
 
@@ -50,10 +54,11 @@ public class GameLobbyService {
     }
 
     public Command[] leaveGame(String authToken, String gameId) {
-        String username;
-        try {
-            username = mServerModel.getUserFromAuth(authToken);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
+
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(authToken);
+        boolean validateAuthToken = (username != null && !username.equals("") );
+        if (!validateAuthToken) {
             clientProxy.promptRenewSession();
             Command[] commands = {clientProxy.getCommand()};
             return commands;
@@ -68,6 +73,7 @@ public class GameLobbyService {
             return commands;
 
         }
+
         if (game.getHost().equals(authToken)) return removeGame(game, authToken);
 
         //Player can Leave Game!
@@ -89,10 +95,16 @@ public class GameLobbyService {
     private Command[] removeGame(Game game, String authtoken) {
         try {
             mServerModel.deleteGame(game.getID());
+
         } catch (ServerModel.GameNotFoundException e) {
             clientProxy.displayError("Error: Could not find game.");
             return new Command[] {clientProxy.getCommand()};
         }
+
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        persistenceFacade.deleteGame(game.getID());
+        String username = persistenceFacade.getUsernameFromAuthToken(authtoken);
+        persistenceFacade.addGameIdToUser(username, "");
 
         clientProxy.removeGameFromList(game.getID());
         for (String auth : mServerModel.getGameListClients()) {
@@ -109,13 +121,14 @@ public class GameLobbyService {
     }
 
     public Command[] startGame(String auth, String gameId) {
-        User user;
-        try {
-            String username = mServerModel.getUserFromAuth(auth);
-            user = mServerModel.getUser(username);
-        } catch (ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException e) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(auth);
+        User user = persistenceFacade.getUser(username);
+        boolean validateAuthToken = (username != null && !username.equals("") );
+        if (!validateAuthToken) {
             clientProxy.promptRenewSession();
-            return new Command[] {clientProxy.getCommand()};
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
         }
 
         Game game;

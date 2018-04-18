@@ -21,7 +21,7 @@ public class LoginService {
 
     public Command[] login(String username, String password){
 
-        if(username == null || password == null || !password.equals(user.getPassword())){
+        if (username == null || password == null ){
             clientProxy.displayError("Username or password incorrect");
             Command[] commands = {clientProxy.getCommand()};
             return commands;

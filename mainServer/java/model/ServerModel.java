@@ -234,9 +234,10 @@ public class ServerModel {
 
     public ServerGameModel startGame(String gameId) {
         Game game = waitingGames.remove(gameId);
-        ServerGameModel gameModel = new ServerGameModel(game);
+        ServerGameModel gameModel = new ServerGameModel(game, persistenceFacade);
         activeGames.put(gameId, gameModel);
         gameModel.startGame();
+        persistenceFacade.updateGame(gameModel);
         return gameModel;
     }
 

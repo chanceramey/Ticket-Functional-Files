@@ -8,6 +8,7 @@ import command.Command;
 import communication.ClientProxy;
 import model.ServerGameModel;
 import model.ServerModel;
+import model.db.PersistenceFacade;
 
 /**
  * Created by Tanner Jensen on 2/10/2018.
@@ -17,10 +18,11 @@ public class GetCommandsService extends AbstractService {
 
     public Command[] getCommands(String auth) {
 
-        try {
-            mServerModel.getUserFromAuth(auth);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
-           return promptRenewSession();
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(auth);
+        boolean validateAuthToken = (username != null && !username.equals(""));
+        if (!validateAuthToken) {
+            return promptRenewSession();
         }
         List<Command> userCommands = mServerModel.getCommandQueue(auth);
         Command[] commands;
@@ -36,20 +38,18 @@ public class GetCommandsService extends AbstractService {
     }
 
     public Command[] getGameCommands(String auth, String gameID, Integer gameHistoryPosition) {
-        try {
-           mServerModel.getUserFromAuth(auth);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(auth);
+        boolean validateAuthToken = (username != null && !username.equals(""));
+        if (!validateAuthToken) {
             return promptRenewSession();
         }
-
         ServerGameModel game;
         try {
             game = mServerModel.getActiveGame(gameID);
         } catch (ServerModel.GameNotFoundException e) {
             return displayError("Game Not Found");
         }
-
         return game.getGameCommands(gameHistoryPosition);
-
     }
 }

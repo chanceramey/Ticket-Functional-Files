@@ -19,6 +19,11 @@ import model.User;
 public class PersistenceFacade {
     DaoFactoryRegistry mDaoFactoryRegistry = new DaoFactoryRegistry();
     AbstractDaoFactory mDaoFactory;
+
+    public int getmBackupInterval() {
+        return mBackupInterval;
+    }
+
     int mBackupInterval = 0;
 
     public PersistenceFacade() {
@@ -130,19 +135,65 @@ public class PersistenceFacade {
     }
 
 
-    public boolean validateAuthToken(String username, String authToken){
+    public boolean validateAuthToken(String authToken){
 
         try{
             mDaoFactory.startTransaction();
-            boolean authTokenValid =  username.equals(mDaoFactory.getAuthTokenDao().getUsername(authToken));
-            mDaoFactory.rollbackTransaction();
-            return authTokenValid;
+            String username = mDaoFactory.getAuthTokenDao().getUsername(authToken);
+            mDaoFactory.commitTransaction();
+            if (username != null && !username.equals("")) {
+                return true;
+            }
 
         } catch (AbstractDaoFactory.DatabaseException e) {
             e.printStackTrace();
         }
 
         return false;
+    }
+
+    public void updateGame(IGame game) {
+        try {
+            mDaoFactory.startTransaction();
+            mDaoFactory.getGameDao().updateGame(game);
+            mDaoFactory.commitTransaction();
+        } catch (AbstractDaoFactory.DatabaseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addGameIdToUser(String username, String gameId) {
+        try {
+            mDaoFactory.startTransaction();
+            mDaoFactory.getUserDao().updateUser(username, gameId);
+            mDaoFactory.commitTransaction();
+        } catch (AbstractDaoFactory.DatabaseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getUsernameFromAuthToken(String authToken) {
+        try{
+            mDaoFactory.startTransaction();
+            String username = mDaoFactory.getAuthTokenDao().getUsername(authToken);
+            mDaoFactory.commitTransaction();
+            return username;
+
+        } catch (AbstractDaoFactory.DatabaseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void deleteGame(String gameId) {
+        try {
+            mDaoFactory.startTransaction();
+            mDaoFactory.getGameDao().deleteGame(gameId);
+            mDaoFactory.commitTransaction();
+        } catch (AbstractDaoFactory.DatabaseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void storeGameCommands(List<Command> gameCommands, String gameId){ //did I understand correctly?
@@ -158,7 +209,7 @@ public class PersistenceFacade {
             e.printStackTrace();
         }
     }
-    
+
 
 }
 

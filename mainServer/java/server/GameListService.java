@@ -10,6 +10,7 @@ import model.AuthToken;
 import model.Game;
 import model.ServerModel;
 import model.User;
+import model.db.PersistenceFacade;
 
 /**
  * Created by Jeff on 2/9/2018.
@@ -20,14 +21,23 @@ public class GameListService {
     ServerModel mServerModel = ServerModel.getInstance();
 
     public Command[] getGamesList(String auth) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(auth);
+        User user = persistenceFacade.getUser(username);
+        boolean validateAuthToken = (username != null && !username.equals("") );
+        if (!validateAuthToken) {
+            clientProxy.promptRenewSession();
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
+        }
+
         try {
-            String username = mServerModel.getUserFromAuth(auth);
-            User user = mServerModel.getUser(username);
             if (user.getGameID() != null) {
                 clientProxy.promptRestoreGame(mServerModel.getActiveGame(user.getGameID()).convertToGame());
-                return new Command[] {clientProxy.getCommand()};
+                return new Command[]{clientProxy.getCommand()};
             }
-        } catch (ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException | ServerModel.GameNotFoundException e) {
+        } catch (ServerModel.GameNotFoundException e) {
+            e.printStackTrace();
             clientProxy.promptRenewSession();
             Command[] commands = {clientProxy.getCommand()};
             return commands;
@@ -44,10 +54,10 @@ public class GameListService {
     }
 
     public Command[] joinGame(String authToken, String gameId) {
-        String username;
-        try {
-            username = mServerModel.getUserFromAuth(authToken);
-        } catch (ServerModel.AuthTokenNotFoundException e) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(authToken);
+        boolean validateAuthToken = (username != null && !username.equals("") );
+        if (!validateAuthToken) {
             clientProxy.promptRenewSession();
             Command[] commands = {clientProxy.getCommand()};
             return commands;
@@ -68,6 +78,7 @@ public class GameListService {
 
         //Player can Join Game!
         game.joinGame(username, authToken);
+        persistenceFacade.addGameIdToUser(username, gameId);
         mServerModel.removeGameListClient(authToken);
         clientProxy.updateGame(game);
         for (String auth : game.getPlayerIDs().keySet()) {
@@ -84,12 +95,13 @@ public class GameListService {
     }
 
     public Command[] rejectRestore(String authToken) {
-        try {
-            String username = mServerModel.getUserFromAuth(authToken);
-            mServerModel.getUser(username).setGame(null);
-        } catch (ServerModel.AuthTokenNotFoundException | ServerModel.UserNotFoundException e) {
+        PersistenceFacade persistenceFacade = mServerModel.getPersistenceFacade();
+        String username = persistenceFacade.getUsernameFromAuthToken(authToken);
+        boolean validateAuthToken = (username != null && !username.equals("") );
+        if (!validateAuthToken) {
             clientProxy.promptRenewSession();
-            return new Command[] { clientProxy.getCommand() };
+            Command[] commands = {clientProxy.getCommand()};
+            return commands;
         }
         return getGamesList(authToken);
     }
