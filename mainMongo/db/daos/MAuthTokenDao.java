@@ -1,30 +1,26 @@
 package db.daos;
 
-import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoException;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 
 import org.bson.Document;
-import org.bson.conversions.Bson;
-
-import java.util.List;
 
 import database.AbstractDaoFactory;
-import database.IGameDao;
-import database.IUserDao;
-import interfaces.IGame;
+import database.IAuthTokenDao;
+import model.AuthToken;
 
 import static com.mongodb.client.model.Filters.eq;
 
 /**
  * Created by Jeff on 4/11/2018.
  */
-public class MGameDao extends IGameDao {
-    MongoCollection<Document> mCollection;
-    Gson gson = new Gson();
 
-    public MGameDao(MongoCollection<Document> collection) {
+public class MAuthTokenDao extends IAuthTokenDao {
+    MongoCollection<Document> mCollection;
+    public MAuthTokenDao(MongoCollection<Document> collection) {
         mCollection = collection;
     }
     @Override
@@ -39,10 +35,10 @@ public class MGameDao extends IGameDao {
     }
 
     @Override
-    public void addGame(IGame game) throws AbstractDaoFactory.DatabaseException {
+    public void addAuth(AuthToken auth) throws AbstractDaoFactory.DatabaseException {
         try {
-            Document doc = new Document("gameId", game.getID())
-                    .append("game", gson.toJson(game));
+            Document doc = new Document("token", auth.getToken())
+                    .append("user", auth.getUser());
             mCollection.insertOne(doc);
         } catch(MongoException e) {
             throw new AbstractDaoFactory.DatabaseException();
@@ -51,25 +47,22 @@ public class MGameDao extends IGameDao {
     }
 
     @Override
-    public void updateGame(IGame game) throws AbstractDaoFactory.DatabaseException {
+    public void deleteAuth(String token) throws AbstractDaoFactory.DatabaseException {
         try {
-            mCollection.updateOne(eq("gameId", game.getID()), new Document("$set", new Document("game", gson.toJson(game))));
-        } catch(MongoException e) {
+            DeleteResult deleteResult = mCollection.deleteOne(eq("token", token));
+            System.out.println(deleteResult);
+        } catch (MongoException e) {
             throw new AbstractDaoFactory.DatabaseException();
         }
     }
 
     @Override
-    public String getGame(String gameID) throws AbstractDaoFactory.DatabaseException {
-        Document doc = mCollection.find(eq("gameId", gameID)).first();
-        String game = (String) doc.get("game");
-        return game;
-    }
-
-    @Override
-    public void deleteGame(String gameID) throws AbstractDaoFactory.DatabaseException {
-        try {
-            mCollection.deleteOne(eq("gameId", gameID));
+    public String getUsername(String token) throws AbstractDaoFactory.DatabaseException {
+        try {FindIterable<Document> docList = mCollection.find(eq("token", token));
+            Document doc = docList.first();
+            if (doc == null) return null;
+            String username = (String) doc.get("user");
+            return username;
         } catch (MongoException e) {
             throw new AbstractDaoFactory.DatabaseException();
         }

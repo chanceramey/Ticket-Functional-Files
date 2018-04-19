@@ -1,11 +1,15 @@
 package db;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoException;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.ClientSessionOptions;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.client.ListDatabasesIterable;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoCredential;
+import com.mongodb.client.MongoIterable;
+import com.mongodb.session.ClientSession;
+
+import org.bson.Document;
 
 import database.AbstractDaoFactory;
 import db.daos.MAuthTokenDao;
@@ -19,23 +23,13 @@ import jdk.nashorn.internal.runtime.ECMAErrors;
  */
 
 public class MongoDaoFactory extends AbstractDaoFactory {
-    public MongoDaoFactory() throws MongoException {
-        try {
-//            MongoClient mongoClient = new MongoClient();
-//            MongoDatabase database = mongoClient.getDatabase("ticketDB"); // name of database
-//            DBCollection authCol = database.getCollection("authCollection");
-//            DBCollection commandCol = database.getCollection("commandCollection");
-//            DBCollection gameCol = database.getCollection("gameCollection");
-//            DBCollection userCol = database.getCollection("userCollection");
-//            MongoCredential credential;
-//            credential = MongoCredential.createCredential("sampleUser", "myDb", "password".toCharArray());
-        } catch (MongoException e) {
-        }
+    public MongoDaoFactory() throws DatabaseException{
+        System.out.println("Initialize Mongo Dao Factory");
     }
 
     @Override
     public void startTransaction() throws DatabaseException {
-
+        instantiateDaos();
     }
 
     @Override
@@ -48,10 +42,11 @@ public class MongoDaoFactory extends AbstractDaoFactory {
 
     }
 
-    public void instantiateDaos() {
+    public void instantiateDaos() throws DatabaseException{
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("ticketDB"); // name of database
         System.out.println("Connected to Mongo Server");
+        System.out.println("Instantiating Mongo Daos");
         setUserDao(new MUserDao(database.getCollection("user")));
         setCommandsDao(new MCommandsDao(database.getCollection("command")));
         setAuthTokenDao(new MAuthTokenDao(database.getCollection("auth")));

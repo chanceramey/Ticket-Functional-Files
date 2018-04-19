@@ -1,20 +1,12 @@
 package db.daos;
 
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.Block;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.UpdateResult;
 
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +27,6 @@ import static com.mongodb.client.model.Filters.gte;
 
 public class MCommandsDao extends ICommandsDao {
     MongoCollection<Document> mCollection;
-    DBCollection mDBCollection;
     Gson gson = new Gson();
 
     public MCommandsDao(MongoCollection<Document> collection) {
@@ -70,11 +61,10 @@ public class MCommandsDao extends ICommandsDao {
 
     @Override
     public List<Command> getCommands(String gameID) throws AbstractDaoFactory.DatabaseException {
+        MongoCursor<Document> cursor = mCollection.find().iterator();
         try {
-
             List<Command> commands = new ArrayList<>();
-            MongoCursor<Document> cursor = mCollection.find().iterator();
-            Document doc = new Document();
+            Document doc;
             while (cursor.hasNext()) {
                 doc = cursor.next();
                 if (doc.get("gameId").equals(gameID)) {
@@ -86,6 +76,8 @@ public class MCommandsDao extends ICommandsDao {
 
         } catch (MongoException e) {
             throw new AbstractDaoFactory.DatabaseException();
+        } finally {
+            cursor.close();
         }
     }
 
