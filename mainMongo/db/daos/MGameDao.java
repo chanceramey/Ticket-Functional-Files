@@ -74,4 +74,28 @@ public class MGameDao extends IGameDao {
             throw new AbstractDaoFactory.DatabaseException();
         }
     }
+
+    @Override
+    public List<String> getWaitingGames(String className) throws AbstractDaoFactory.DatabaseException {
+        MongoCursor<Document> cursor = mCollection.find(eq("class", className)).iterator();
+        try {
+            List<String> games = new ArrayList<>();
+            Document doc;
+            if (!cursor.hasNext()) return null;
+            while (cursor.hasNext()) {
+                doc = cursor.next();
+                String tempClassName = (String) doc.get("class");
+                String tempJson = (String) doc.get("game");
+                games.add(tempClassName);
+                games.add(tempJson);
+            }
+            return games;
+        } catch (MongoException e) {
+            throw new AbstractDaoFactory.DatabaseException();
+        } finally {
+            cursor.close();
+        }
+
+    }
+
 }

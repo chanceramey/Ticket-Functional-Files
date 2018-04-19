@@ -69,6 +69,21 @@ public class MCommandsDao extends ICommandsDao {
     }
 
     @Override
+    public int getCommandCount(String gameID) throws AbstractDaoFactory.DatabaseException {
+        try {
+            MongoCursor<Document> cursor = mCollection.find(eq("gameId", gameID)).iterator();
+            int numCommands = 0;
+            while (cursor.hasNext()) {
+                cursor.next();
+                numCommands++;
+            }
+            return numCommands;
+        } catch (MongoException e) {
+            throw new AbstractDaoFactory.DatabaseException();
+        }
+    }
+
+    @Override
     public List<Command> getCommands(String gameID) throws AbstractDaoFactory.DatabaseException {
         try {
 
