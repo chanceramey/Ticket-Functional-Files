@@ -61,11 +61,10 @@ public class MCommandsDao extends ICommandsDao {
 
     @Override
     public List<Command> getCommands(String gameID) throws AbstractDaoFactory.DatabaseException {
+        MongoCursor<Document> cursor = mCollection.find().iterator();
         try {
-
             List<Command> commands = new ArrayList<>();
-            MongoCursor<Document> cursor = mCollection.find().iterator();
-            Document doc = new Document();
+            Document doc;
             while (cursor.hasNext()) {
                 doc = cursor.next();
                 if (doc.get("gameId").equals(gameID)) {
@@ -77,6 +76,8 @@ public class MCommandsDao extends ICommandsDao {
 
         } catch (MongoException e) {
             throw new AbstractDaoFactory.DatabaseException();
+        } finally {
+            cursor.close();
         }
     }
 

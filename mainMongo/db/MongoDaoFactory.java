@@ -25,17 +25,11 @@ import jdk.nashorn.internal.runtime.ECMAErrors;
 public class MongoDaoFactory extends AbstractDaoFactory {
     public MongoDaoFactory() throws DatabaseException{
         System.out.println("Initialize Mongo Dao Factory");
-        try {
-            instantiateDaos();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
     public void startTransaction() throws DatabaseException {
-
+        instantiateDaos();
     }
 
     @Override
@@ -49,10 +43,10 @@ public class MongoDaoFactory extends AbstractDaoFactory {
     }
 
     public void instantiateDaos() throws DatabaseException{
-        System.out.println("Instantiating Mongo Daos");
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("ticketDB"); // name of database
         System.out.println("Connected to Mongo Server");
+        System.out.println("Instantiating Mongo Daos");
         setUserDao(new MUserDao(database.getCollection("user")));
         setCommandsDao(new MCommandsDao(database.getCollection("command")));
         setAuthTokenDao(new MAuthTokenDao(database.getCollection("auth")));
