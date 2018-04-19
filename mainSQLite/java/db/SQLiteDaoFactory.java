@@ -19,11 +19,12 @@ public class SQLiteDaoFactory extends AbstractDaoFactory {
     private Connection connection = null;
 
     public SQLiteDaoFactory() throws DatabaseException {
+        dbFilePath = "TICKET.sqlite";
         try {
             final String driver = "org.sqlite.JDBC";
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            System.out.println("ERROR. Server could not laod Database Driver");
+            System.out.println("ERROR. Server could not load Database Driver");
             e.printStackTrace();
             throw new DatabaseException();
         }

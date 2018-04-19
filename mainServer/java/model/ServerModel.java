@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import command.Command;
+import interfaces.IGame;
 import model.db.PersistenceFacade;
 
 
@@ -56,9 +57,9 @@ public class ServerModel {
 
     //Queue of commands to be executed by
     private Map<String, List<Command>> sessionCommandQueue;
-  
+
     //Persistence facade for accessing database
-    private PersistenceFacade persistenceFacade = new PersistenceFacade();
+    private static PersistenceFacade persistenceFacade = new PersistenceFacade();
 
 
     /**
@@ -70,14 +71,14 @@ public class ServerModel {
         this.users = new HashMap<>();
         this.authTokens = new HashMap<>();
         this.gameListClients = new HashSet<>();
-        this.waitingGames = new HashMap<>();
+        this.waitingGames = null;
         this.activeGames = new HashMap<>();
         this.sessionCommandQueue = new HashMap<>();
         addComputerPlayer();
 
-        Timer timer = new Timer();
+       /* Timer timer = new Timer();
         int HOUR = 3600000; //3,600,000 milliseconds in one hour
-        timer.schedule(new ExpireAuthsTask(), 0, HOUR);
+        timer.schedule(new ExpireAuthsTask(), 0, HOUR); */
     }
 
     /**
@@ -86,6 +87,7 @@ public class ServerModel {
      */
     public void addUser(User user) {
         users.put(user.getUsername(), user);
+        persistenceFacade.addUser(user);
     }
 
 
@@ -104,7 +106,16 @@ public class ServerModel {
         if (users.containsKey(username)) {
             return users.get(username);
         }
-        else throw new UserNotFoundException();
+        else {
+            User user = persistenceFacade.getUser(username);
+            if (user == null) throw new UserNotFoundException();
+            users.put(username, user);
+            return user;
+        }
+    }
+
+    public static PersistenceFacade getPersistenceFacade() {
+        return persistenceFacade;
     }
 
     /**
@@ -115,6 +126,7 @@ public class ServerModel {
     public String addAuthForUser(String username) {
         AuthToken newAuth = new AuthToken(username, UUID.randomUUID().toString());
         authTokens.put(newAuth.getToken(), newAuth);
+        persistenceFacade.registerAuthToken(newAuth);
         return newAuth.getToken();
     }
 
@@ -127,7 +139,11 @@ public class ServerModel {
         if (authTokens.containsKey(authToken)) {
             return authTokens.get(authToken).getUser();
         }
-        else throw new AuthTokenNotFoundException();
+        else {
+            String username = persistenceFacade.getUsernameFromAuthToken(authToken);
+            if(username == null) throw new AuthTokenNotFoundException();
+            return username;
+        }
     }
 
     /**
@@ -159,7 +175,9 @@ public class ServerModel {
      */
 
     public void addWaitingGame(Game game) {
+        checkWaitingGames();
         waitingGames.put(game.getID(), game);
+        persistenceFacade.addGame(game);
     }
 
     /**
@@ -172,7 +190,12 @@ public class ServerModel {
         if (waitingGames.containsKey(gameID)) {
             return waitingGames.get(gameID);
         }
-        else throw new GameNotFoundException();
+        else {
+            Game game = (Game) persistenceFacade.getGame(gameID);
+            if(game == null) throw new GameNotFoundException();
+            waitingGames.put(gameID, game);
+            return game;
+        }
     }
 
     /**
@@ -181,6 +204,8 @@ public class ServerModel {
      * @throws GameNotFoundException if the game is not in the waiting game or active game collections
      */
     public void deleteGame(String gameID) throws GameNotFoundException {
+        persistenceFacade.deleteGame(gameID);
+
         if (waitingGames.containsKey(gameID)) {
             waitingGames.remove(gameID);
         }
@@ -228,25 +253,38 @@ public class ServerModel {
         return false;
     }
 
+    private void checkWaitingGames() {
+        if (this.waitingGames == null) {
+            waitingGames = persistenceFacade.getWaitingGames();
+        }
+    }
+
     public ServerGameModel startGame(String gameId) {
+        checkWaitingGames();
         Game game = waitingGames.remove(gameId);
         ServerGameModel gameModel = new ServerGameModel(game);
         activeGames.put(gameId, gameModel);
         gameModel.startGame();
+        persistenceFacade.updateGame(gameModel);
         return gameModel;
     }
 
     public ServerGameModel getActiveGame(String gameId) throws GameNotFoundException {
         if (activeGames.containsKey(gameId))
             return activeGames.get(gameId);
-        else throw new GameNotFoundException();
+        else {
+            ServerGameModel gameModel = (ServerGameModel) persistenceFacade.getGame(gameId);
+            if(gameModel == null) throw new GameNotFoundException();
+            activeGames.put(gameId, gameModel);
+            return gameModel;
+        }
 
     }
 
 
-    public class UserNotFoundException extends Exception {}
-    public class AuthTokenNotFoundException extends Exception {}
-    public class GameNotFoundException extends Exception {}
+    public static class UserNotFoundException extends Exception {}
+    public static class AuthTokenNotFoundException extends Exception {}
+    public static class GameNotFoundException extends Exception {}
 
     /**
      * Task called every hour to delete old AuthTokens that are more than 3 hours old
@@ -254,7 +292,7 @@ public class ServerModel {
     private class ExpireAuthsTask extends TimerTask {
         private Date now;
 
-        /**
+        /**waitingGames = new HashMap<>()
          * Iterate through each of the authTokens in the AuthToken map at check if it has been
          * 3 hours since the Token was created. If it has been 3 hours, authToken expires and it
          * is deleted from the map.

@@ -10,6 +10,7 @@ import java.util.Map;
 import command.Command;
 import communication.ClientProxy;
 import interfaces.IGame;
+import model.db.PersistenceFacade;
 import model.playerStates.NotTurnState;
 import model.playerStates.Player;
 import model.playerStates.TurnState;
@@ -49,6 +50,13 @@ public class ServerGameModel implements IGame {
         gameHistoryCommands = new ArrayList<>();
     }
 
+    private boolean checkForSave() {
+        if (gameHistoryCommands.size() % ServerModel.getPersistenceFacade().getmBackupInterval() == 0) {
+            return true;
+        }
+        return false;
+    }
+
     private void initializePlayersList(Game game) {
         this.players = new ArrayList<>();
         this.userIndexMap = new HashMap<>();
@@ -70,11 +78,14 @@ public class ServerGameModel implements IGame {
             clientProxy.drawTrainCards(p.getId(), 4, drawnTrainCards, trainCardDeck.size());
             gameHistoryCommands.add(clientProxy.getCommand());
 
+
+
             DestinationCard[] drawnDestCards = destCardDeck.drawCards(3);
             p.addDestCards(drawnDestCards);
 
             clientProxy.drawDestCards(p.getId(), 3, drawnDestCards, destCardDeck.size());
             gameHistoryCommands.add(clientProxy.getCommand());
+
         }
 
         faceUpTrainCards = trainCardDeck.drawCards(5);
@@ -86,12 +97,16 @@ public class ServerGameModel implements IGame {
         clientProxy.swapFaceUpCards(new int[] {0,1,2,3,4}, faceUpTrainCards, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
+
+
         lastPlayer = -1;
 
         currentPlayer = 0;
         players.get(currentPlayer).setState(new TurnState(players.get(currentPlayer)));
         clientProxy.setTurn(currentPlayer);
         gameHistoryCommands.add(clientProxy.getCommand());
+
+
     }
 
     public Player getPlayerFromUsername(String user) {
@@ -107,6 +122,8 @@ public class ServerGameModel implements IGame {
     public void sendMessage(GameHistory gameHistory) {
         clientProxy.receiveMessage(gameHistory);
         gameHistoryCommands.add(clientProxy.getCommand());
+
+
     }
       
     public Command[] getGameCommands(int gameHistoryPosition) {
@@ -129,14 +146,20 @@ public class ServerGameModel implements IGame {
         gameHistoryCommands.add(clientProxy.getCommand());
 
 
+
+
         if (getFaceUpNum() != 5) {
             fillFaceUp(trainCardDeck.drawCards(5 - getFaceUpNum()));
             clientProxy.swapFaceUpCards(new int[] {0,1,2,3,4}, faceUpTrainCards, trainCardDeck.size());
             gameHistoryCommands.add(clientProxy.getCommand());
+
+
         }
 
         clientProxy.claimedRoute(p.getId(), routeID);
         gameHistoryCommands.add(clientProxy.getCommand());
+
+
 
         if (!p.isTurn()) {
             setNextTurn();
@@ -156,6 +179,8 @@ public class ServerGameModel implements IGame {
         clientProxy.drawTrainCards(p.getId(), 1, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
 
+
+
         faceUpTrainCards[i] = trainCardDeck.drawCard();
         if (hasWilds(3, faceUpTrainCards) && trainCardDeck.size() != 0) {
             while(hasWilds(3, faceUpTrainCards) && trainCardDeck.hasEnoughNonWilds()) {
@@ -166,6 +191,8 @@ public class ServerGameModel implements IGame {
         }
         else clientProxy.swapFaceUpCards(new int[] {i}, new TrainCard[] {faceUpTrainCards[i]}, trainCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
+
+
 
         if(getFaceUpNum() == 0 || (hasWilds(getFaceUpNum(), faceUpTrainCards))) p.setState(new NotTurnState(p));
         if (!p.isTurn()) {
@@ -198,6 +225,8 @@ public class ServerGameModel implements IGame {
 
         clientProxy.discardDestCards(p.getId(), rejectedCardPositions.length, rejectedCardPositions, destCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
+
+
     }
 
     public boolean drawDestCards(String username) {
@@ -213,6 +242,8 @@ public class ServerGameModel implements IGame {
 
         clientProxy.drawDestCards(p.getId(), drawnCards.length, drawnCards, destCardDeck.size());
         gameHistoryCommands.add(clientProxy.getCommand());
+
+
 
 
         if (!p.isTurn()) {
@@ -236,6 +267,8 @@ public class ServerGameModel implements IGame {
         gameHistoryCommands.add(clientProxy.getCommand());
 
 
+
+
         if (!p.isTurn()) {
             setNextTurn();
         }
@@ -246,17 +279,23 @@ public class ServerGameModel implements IGame {
         if (lastPlayer == currentPlayer) {
             clientProxy.onGameEnded();
             gameHistoryCommands.add(clientProxy.getCommand());
+
+
             return;
         }
         if (lastPlayer == -1 && players.get(currentPlayer).getNumTrains() <= 2) {
             lastPlayer = currentPlayer;
             clientProxy.setLastTurn();
             gameHistoryCommands.add(clientProxy.getCommand());
+
+
         }
         currentPlayer = (currentPlayer + 1) % players.size();
         players.get(currentPlayer).setState(new TurnState(players.get(currentPlayer)));
         clientProxy.setTurn(currentPlayer);
         gameHistoryCommands.add(clientProxy.getCommand());
+
+
     }
 
     public int getFaceUpNum() {

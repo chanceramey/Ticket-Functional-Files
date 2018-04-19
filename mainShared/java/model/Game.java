@@ -19,7 +19,6 @@ public class Game implements IGame {
     private List<String> players = new ArrayList<>();
     private String gameName;
     private String gameID;
-    private List<GameHistory> gameHistory = new ArrayList<>();
 
     public Game(int numPlayers, String user, String gameName, String gameID, String auth) {
         this.numPlayers = numPlayers;
@@ -75,11 +74,4 @@ public class Game implements IGame {
         return sb.toString();
     }
 
-    public void addGameHistory(GameHistory historyObj) {
-        gameHistory.add(historyObj);
-    }
-
-    public List<GameHistory> getGameHistory() {
-        return gameHistory;
-    }
 }

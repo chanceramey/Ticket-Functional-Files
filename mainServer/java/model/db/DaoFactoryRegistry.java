@@ -3,6 +3,9 @@ package model.db;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -58,7 +61,7 @@ public class DaoFactoryRegistry {
                 } else {
                     String[] col = line.trim().split("--");
                     for (int i = 0; i < col.length; i++) {
-                        plugins.put(col[0], new DaoDescriptor(col[0], col[1], col[2]));
+                        plugins.put(col[0], new DaoDescriptor(col[0], col[1], col[2], col[3]));
                     }
                 }
             }
@@ -90,18 +93,23 @@ public class DaoFactoryRegistry {
     public AbstractDaoFactory registerPlugin(String name) throws Exception{
 
         if (name == null) throw new ConfigFileSyntaxException();
+        DaoDescriptor plugin = plugins.get(name);
         try {
-            Class<?> klass = Class.forName(plugins.get(name).mClassName);
-            System.out.println(plugins.get(name).mClassName + " class was found. Instantiating...");
+            URLClassLoader child = new URLClassLoader(new URL[] {plugin.getJarURL()}, this.getClass().getClassLoader());
+            Class<?> klass = Class.forName(plugin.getClassName(), true, child);
+            System.out.println(plugin.getClassName() + " class was found. Instantiating...");
             return (AbstractDaoFactory) klass.newInstance();
         } catch (ClassNotFoundException e) {
-            System.out.println(plugins.get(name).mClassName + " is not a class");
+            System.out.println(plugin.getClassName() + " is not a class");
             e.printStackTrace();
         } catch (InstantiationException e) {
-            System.out.println(plugins.get(name).mClassName + " could not be instantiated");
+            System.out.println(plugin.getClassName() + " could not be instantiated");
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            System.out.println(plugins.get(name).mClassName + " could not be accessed");
+            System.out.println(plugin.getClassName() + " could not be accessed");
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            System.out.println("Jar file for " + plugin.getName() + "could not be loaded");
             e.printStackTrace();
         }
 
