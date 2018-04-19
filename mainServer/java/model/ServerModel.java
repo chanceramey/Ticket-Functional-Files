@@ -162,8 +162,14 @@ public class ServerModel {
         }
     }
 
-    public Map<String, Game> getWaitingGames() {
-        return waitingGames;
+    public Game[] getWaitingGames() {
+        checkWaitingGames();
+        Game[] games = new Game[waitingGames.size()];
+        int index = 0;
+        for (Game g : waitingGames.values()) {
+            games[index++] = g;
+        }
+        return games;
     }
 
     /**

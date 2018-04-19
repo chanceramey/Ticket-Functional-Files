@@ -126,6 +126,7 @@ public class GameLobbyService {
             return new Command[] {clientProxy.getCommand()};
         }
         user.setGame(gameId);
+        mServerModel.getPersistenceFacade().addGameIdToUser(user.getUsername(), gameId);
         mServerModel.startGame(gameId);
 
         clientProxy.removeGameFromList(gameId);

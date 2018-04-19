@@ -40,7 +40,8 @@ public class Player {
 
     private int longestRoutePoints = 0;
 
-    private IPlayerState state;
+    private transient IPlayerState state;
+    private String playerStateString;
 
     public int getNumTrains() {
         return numTrains;
@@ -62,6 +63,7 @@ public class Player {
         this.numTrains = 45;
         firstDestPick = true;
         state = new NotTurnState(this);
+        playerStateString = state.getClass().getName();
     }
 
     public int getLongestRoutePoints() {
@@ -244,27 +246,39 @@ public class Player {
     }
 
     public TrainCard[] claimRoute(String routeID, int[] pos) {
+        if(state == null) setUpState();
         return state.claimRoute(routeID, pos);
     }
 
     public boolean addFaceUpCard(TrainCard card) {
+        if(state == null) setUpState();
         return state.addFaceUpCard(card);
     }
 
     public boolean addTrainDeckCard(TrainCard card) {
+        if(state == null) setUpState();
         return state.addTrainDeckCard(card);
     }
 
     public boolean addDestCards(DestinationCard[] cards) {
+        if(state == null) setUpState();
         return state.addDestCards(cards);
     }
 
     public boolean isTurn(){
+        if(state == null) setUpState();
         return state.isTurn();
     }
 
     public void setState(IPlayerState state) {
         this.state = state;
+        this.playerStateString = state.getClass().getName();
+    }
+
+    private void setUpState() {
+        if (playerStateString.equals(NotTurnState.class.getName())) state = new NotTurnState(this);
+        else if (playerStateString.equals(TurnState.class.getName())) state = new TurnState(this);
+        else if (playerStateString.equals(OneTrainCardPickedState.class.getName())) state = new OneTrainCardPickedState(this);
     }
 
 }

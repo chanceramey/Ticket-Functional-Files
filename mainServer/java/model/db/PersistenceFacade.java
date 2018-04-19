@@ -198,11 +198,15 @@ public class PersistenceFacade {
         try {
             mDaoFactory.startTransaction();
             mDaoFactory.getCommandsDao().addCommand(gameId, command);
-            if (getCommandsCount(gameId) == mBackupInterval) {
-                updateGame(ServerModel.getInstance().getActiveGame(gameId));
-                mDaoFactory.getCommandsDao().clearCommands(gameId);
-            }
             mDaoFactory.commitTransaction();
+            int count = getCommandsCount(gameId);
+            System.out.println(String.format("%d commands in Command Table For gameid: %s",count, gameId));
+            if (getCommandsCount(gameId) >= mBackupInterval) {
+                updateGame(ServerModel.getInstance().getActiveGame(gameId));
+                mDaoFactory.startTransaction();
+                mDaoFactory.getCommandsDao().clearCommands(gameId);
+                mDaoFactory.commitTransaction();
+            }
         } catch (AbstractDaoFactory.DatabaseException | ServerModel.GameNotFoundException e) {
             e.printStackTrace();
         }
@@ -228,7 +232,7 @@ public class PersistenceFacade {
             List<String> serializedGames = mDaoFactory.getGameDao().getWaitingGames(Game.class.getName());
             mDaoFactory.commitTransaction();
             for (int i = 0; i < serializedGames.size(); i++) {
-                Class<?> klass = Class.forName(serializedGames.get(++i));
+                Class<?> klass = Class.forName(serializedGames.get(i++));
                 Game game = (Game) new Gson().fromJson(serializedGames.get(i), klass);
                 waitingGames.put(game.getID(), game);
             }

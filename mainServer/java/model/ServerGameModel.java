@@ -27,7 +27,6 @@ public class ServerGameModel implements IGame {
 
     private int currentPlayer;
     private List<Player> players;
-    private Map<String, Integer> userIndexMap;
 
     private TrainCardDeck trainCardDeck;
     private TrainCard[] faceUpTrainCards;
@@ -52,13 +51,11 @@ public class ServerGameModel implements IGame {
 
     private void initializePlayersList(Game game) {
         this.players = new ArrayList<>();
-        this.userIndexMap = new HashMap<>();
         Color[] colors = Color.values();
         int playerNumber = 0;
         for (String playerName : game.getPlayers()) {
             Player player = new Player(playerName, colors[playerNumber], playerNumber);
             players.add(player);
-            userIndexMap.put(playerName, playerNumber);
             playerNumber++;
         }
     }

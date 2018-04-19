@@ -1,14 +1,11 @@
 package db.daos;
 
 import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 
 
 import org.bson.Document;
-
-import java.util.List;
 
 import database.AbstractDaoFactory;
 import database.IUserDao;
@@ -65,9 +62,7 @@ public class MUserDao extends IUserDao {
     @Override
     public User getUser(String username) throws AbstractDaoFactory.DatabaseException {
         try {
-            FindIterable<Document> docList = mCollection.find(eq("username", username));
-            Document doc = docList.first();
-            if (doc == null) return null;
+            Document doc = mCollection.find(eq("username", username)).first();
             User user;
             String password = (String) doc.get("password");
             String firstname = (String) doc.get("firstname");
@@ -78,8 +73,6 @@ public class MUserDao extends IUserDao {
             return user;
         } catch (MongoException e) {
             throw new AbstractDaoFactory.DatabaseException();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
         }
     }
 }

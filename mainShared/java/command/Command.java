@@ -32,7 +32,7 @@ public class Command {
     }
     
     public Command(InputStreamReader inputStreamReader) {
-        Command tempCommand = (Command) gson.fromJson(inputStreamReader, Command.class);
+        Command tempCommand = gson.fromJson(inputStreamReader, Command.class);
         
 	    this.className = tempCommand.getClassName();
         this.methodName = tempCommand.getMethodName();
@@ -129,10 +129,6 @@ public class Command {
                 result = Class.forName(className);
         }
         return result;
-    }
-
-    public static Gson getGson() {
-        return gson;
     }
 
     public String getClassName() {
