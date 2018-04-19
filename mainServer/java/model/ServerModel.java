@@ -278,6 +278,10 @@ public class ServerModel {
         else {
             ServerGameModel gameModel = (ServerGameModel) persistenceFacade.getGame(gameId);
             if(gameModel == null) throw new GameNotFoundException();
+            List<Command> restoreCommands = persistenceFacade.getRestoreCommands(gameId);
+            for (Command command : restoreCommands) {
+                command.execute();
+            }
             activeGames.put(gameId, gameModel);
             return gameModel;
         }

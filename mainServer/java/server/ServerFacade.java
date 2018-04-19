@@ -68,7 +68,7 @@ public class ServerFacade implements IServer {
     @Override
     public Object sendMessage(String auth, String gameId, GameHistory historyObj) {
         GameService service = new GameService();
-        return service.sendMessage(auth, gameId, historyObj);
+        return service.sendMessage(auth, gameId, historyObj, true);
     }
 
     @Override
@@ -80,37 +80,37 @@ public class ServerFacade implements IServer {
     @Override
     public Object claimRoute(String auth, String gameId, String routeId, Integer length, int[] cardPos) {
         GameService service = new GameService();
-        return service.claimRoute(auth, gameId, routeId, length, cardPos);
+        return service.claimRoute(auth, gameId, routeId, length, cardPos, true);
     }
 
     @Override
     public Object drawDestinationCards(String auth, String gameId) {
         CardService service = new CardService();
-        return service.drawDestinationCards(auth, gameId);
+        return service.drawDestinationCards(auth, gameId, true);
     }
 
     @Override
     public Object drawTrainCards(String auth, Integer numberCards, String gameId) {
         CardService service = new CardService();
-        return service.drawTrainCard(auth, numberCards, gameId);
+        return service.drawTrainCard(auth, numberCards, gameId, true);
     }
 
     @Override
     public Object returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions) {
         CardService service = new CardService();
-        return service.returnDestinationCards(auth, gameId, rejectedCardPositions);
+        return service.returnDestinationCards(auth, gameId, rejectedCardPositions, true);
     }
 
     @Override
     public Object drawFaceUp(String auth, String gameID, Integer i) {
        CardService service = new CardService();
-        return service.drawFaceUp(auth, gameID, i);
+        return service.drawFaceUp(auth, gameID, i, true);
     }
 
     @Override
     public Object sendFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints) {
         GameService service = new GameService();
-        return service.updatePlayerFinalPoints(auth, gameID, finalGamePoints);
+        return service.updatePlayerFinalPoints(auth, gameID, finalGamePoints, true);
     }
 
     @Override

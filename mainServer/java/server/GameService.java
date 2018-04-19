@@ -15,11 +15,12 @@ import model.User;
 
 public class GameService extends AbstractService {
 
+    private final String TARGET = this.getClass().getName();
 
     public GameService() {
     }
 
-    public Command[] sendMessage(String auth, String gameId, GameHistory historyObj) {
+    public Command[] sendMessage(String auth, String gameId, GameHistory historyObj, boolean addCommand) {
         try {
             String userName = mServerModel.getUserFromAuth(auth);
             historyObj.setUser(userName);
@@ -28,10 +29,11 @@ public class GameService extends AbstractService {
         }
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameId); // implement this method in ServerGameModel
-            Command restoreCommand = Command.createCommand(GAME_TARGET, "sendMessage", historyObj);
-            mServerModel.addRestoreCommand(restoreCommand, gameId);
-            gameModel.sendMessage(historyObj);
-
+            if (addCommand) {
+                Command restoreCommand = Command.createCommand(TARGET, "sendMessage", auth, gameId, historyObj, false);
+                mServerModel.addRestoreCommand(restoreCommand, gameId);
+                gameModel.sendMessage(historyObj);
+            }
             return new Command[]{};
 
         } catch (ServerModel.GameNotFoundException e) {
@@ -39,7 +41,7 @@ public class GameService extends AbstractService {
         }
     }
 
-    public Command[] claimRoute(String auth, String gameID, String routeID, int length, int[] cardPos) {
+    public Command[] claimRoute(String auth, String gameID, String routeID, int length, int[] cardPos, boolean addCommand) {
         String user;
         try {
             user = mServerModel.getUserFromAuth(auth);
@@ -49,8 +51,10 @@ public class GameService extends AbstractService {
 
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
-            Command restoreCommand = Command.createCommand(GAME_TARGET, "claimRoute", user, routeID, length, cardPos);
-            mServerModel.addRestoreCommand(restoreCommand, gameID);
+            if (addCommand) {
+                Command restoreCommand = Command.createCommand(TARGET, "claimRoute", auth, gameID, routeID, length, cardPos, false);
+                mServerModel.addRestoreCommand(restoreCommand, gameID);
+            }
             if (!gameModel.claimRoute(user, routeID, length, cardPos)) {
                 return displayError("Invalid move");
             }
@@ -62,7 +66,7 @@ public class GameService extends AbstractService {
         return new Command[0];
     }
 
-    public Command[] updatePlayerFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints) {
+    public Command[] updatePlayerFinalPoints(String auth, String gameID, FinalGamePoints finalGamePoints, boolean addCommand) {
         User user;
         try {
             String username = mServerModel.getUserFromAuth(auth);
@@ -73,8 +77,10 @@ public class GameService extends AbstractService {
 
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
-            Command restoreCommand = Command.createCommand(GAME_TARGET, "updatePlayerFinalPoints", finalGamePoints);
-            mServerModel.addRestoreCommand(restoreCommand, gameID);
+            if (addCommand) {
+                Command restoreCommand = Command.createCommand(TARGET, "updatePlayerFinalPoints", auth, gameID, finalGamePoints, false);
+                mServerModel.addRestoreCommand(restoreCommand, gameID);
+            }
             if(!gameModel.addToAllPlayersPoints(finalGamePoints)){
                 return displayError("Already added to points");
             }

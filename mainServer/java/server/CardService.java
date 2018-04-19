@@ -10,19 +10,18 @@ import model.ServerModel;
  */
 
 public class CardService extends AbstractService{
+    private final String TARGET = this.getClass().getName();
 
-    private ServerModel mServerModel = ServerModel.getInstance();
-    private ClientProxy clientProxy = new ClientProxy();
-
-
-    public Command[] drawDestinationCards(String auth, String gameId){
+    public Command[] drawDestinationCards(String auth, String gameId, boolean addCommand){
 
         String username;
         try {
             username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameId);
-            Command restoreCommand = Command.createCommand(GAME_TARGET, "drawDestCards", username);
-            mServerModel.addRestoreCommand(restoreCommand, gameId);
+            if(addCommand) {
+                Command restoreCommand = Command.createCommand(TARGET, "drawDestCards", auth, gameId, false);
+                mServerModel.addRestoreCommand(restoreCommand, gameId);
+            }
             if(game.drawDestCards(username)) {
                 return new Command[] {};
             } else {
@@ -34,13 +33,15 @@ public class CardService extends AbstractService{
         }
     }
 
-    public Command[] drawTrainCard(String auth, Integer numberCards, String gameId){
+    public Command[] drawTrainCard(String auth, Integer numberCards, String gameId, boolean addCommand){
 
         try {
             String username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameId);
-            Command restoreCommand = Command.createCommand(GAME_TARGET, "drawDeckTrainCard", username);
-            mServerModel.addRestoreCommand(restoreCommand, gameId);
+            if (addCommand) {
+                Command restoreCommand = Command.createCommand(TARGET, "drawDeckTrainCard", auth, numberCards, gameId, false);
+                mServerModel.addRestoreCommand(restoreCommand, gameId);
+            }
             if (game.drawDeckTrainCard(username)) {
                 return new Command[] {};
             }
@@ -53,14 +54,16 @@ public class CardService extends AbstractService{
         }
     }
 
-    public Command[] returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions){
+    public Command[] returnDestinationCards(String auth, String gameId, int[] rejectedCardPositions, boolean addCommand){
 
         String username;
         try {
             username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameId);
-            Command restoreCommand = Command.createCommand(GAME_TARGET, "returnDestinationCards", username, rejectedCardPositions);
-            mServerModel.addRestoreCommand(restoreCommand, gameId);
+            if (addCommand) {
+                Command restoreCommand = Command.createCommand(TARGET, "returnDestinationCards", auth, gameId, rejectedCardPositions, false);
+                mServerModel.addRestoreCommand(restoreCommand, gameId);
+            }
             game.returnDestinationCards(username, rejectedCardPositions);
 
             return new Command[] {};
@@ -72,14 +75,16 @@ public class CardService extends AbstractService{
 
     }
 
-    public Object drawFaceUp(String auth, String gameID, Integer i) {
+    public Object drawFaceUp(String auth, String gameID, Integer i, boolean addCommand) {
 
         String username;
         try {
             username = mServerModel.getUserFromAuth(auth);
             ServerGameModel game = mServerModel.getActiveGame(gameID);
-            Command restoreCommand = Command.createCommand(GAME_TARGET, username, i);
-            mServerModel.addRestoreCommand(restoreCommand, gameID);
+            if (addCommand) {
+                Command restoreCommand = Command.createCommand(TARGET, "drawFaceUp", auth, gameID, i, false);
+                mServerModel.addRestoreCommand(restoreCommand, gameID);
+            }
             if (game.drawFaceUp(username, i)) {
                 return new Command[] {};
             } else {

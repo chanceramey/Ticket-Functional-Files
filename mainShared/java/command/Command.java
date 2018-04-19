@@ -70,12 +70,17 @@ public class Command {
             int counter = 0;
             for (String str: parametersAsJsonStrings) {
                 System.out.println("Parameter "+ counter + ": " + str);
+                counter++;
             }
+            counter = 0;
             for (String str: parameterTypesNames) {
                 System.out.println("ParameterType "+ counter + ": " + str);
+                counter++;
             }
+            counter = 0;
             for (Object o: parameters) {
                 System.out.println("Actual Parameter Type "+ counter + ": " + o.getClass());
+                counter++;
             }
         } catch (IllegalAccessException e) {
             System.err.println("ERROR: Illegal access while trying to execute the method " + methodName);

@@ -13,7 +13,6 @@ public abstract class AbstractService {
 
     protected ServerModel mServerModel = ServerModel.getInstance();
     protected ClientProxy mClientProxy = new ClientProxy();
-    protected final String GAME_TARGET = ServerModel.class.getName();
 
     protected Command[] promptRenewSession() {
         mClientProxy.promptRenewSession();
