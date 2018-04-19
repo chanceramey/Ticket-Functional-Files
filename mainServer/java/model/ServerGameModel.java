@@ -21,7 +21,7 @@ import model.playerStates.TurnState;
 
 public class ServerGameModel implements IGame {
 
-    private ClientProxy clientProxy = new ClientProxy();
+    private transient ClientProxy clientProxy = new ClientProxy();
     private Game waitingGame;
     private String gameID;
 

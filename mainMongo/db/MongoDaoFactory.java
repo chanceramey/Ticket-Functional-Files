@@ -19,28 +19,24 @@ import jdk.nashorn.internal.runtime.ECMAErrors;
  */
 
 public class MongoDaoFactory extends AbstractDaoFactory {
-    public MongoDaoFactory() throws MongoException {
-        try {
-//            MongoClient mongoClient = new MongoClient();
-//            MongoDatabase database = mongoClient.getDatabase("ticketDB"); // name of database
-//            DBCollection authCol = database.getCollection("authCollection");
-//            DBCollection commandCol = database.getCollection("commandCollection");
-//            DBCollection gameCol = database.getCollection("gameCollection");
-//            DBCollection userCol = database.getCollection("userCollection");
-//            MongoCredential credential;
-//            credential = MongoCredential.createCredential("sampleUser", "myDb", "password".toCharArray());
-        } catch (MongoException e) {
-        }
+
+    private String databaseName;
+
+    public MongoDaoFactory(String databaseName) throws MongoException {
+        this.databaseName = databaseName;
     }
 
     @Override
     public void startTransaction() throws DatabaseException {
-
+        instantiateDaos();
     }
 
     @Override
     public void commitTransaction() throws DatabaseException {
-
+        setUserDao(null);
+        setCommandsDao(null);
+        setAuthTokenDao(null);
+        setGameDao(null);
     }
 
     @Override
@@ -50,7 +46,7 @@ public class MongoDaoFactory extends AbstractDaoFactory {
 
     public void instantiateDaos() {
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase database = mongoClient.getDatabase("ticketDB"); // name of database
+        MongoDatabase database = mongoClient.getDatabase(this.databaseName); // name of database
         System.out.println("Connected to Mongo Server");
         setUserDao(new MUserDao(database.getCollection("user")));
         setCommandsDao(new MCommandsDao(database.getCollection("command")));

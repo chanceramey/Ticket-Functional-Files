@@ -61,7 +61,7 @@ public class DaoFactoryRegistry {
                 } else {
                     String[] col = line.trim().split("--");
                     for (int i = 0; i < col.length; i++) {
-                        plugins.put(col[0], new DaoDescriptor(col[0], col[1], col[2], col[3]));
+                        plugins.put(col[0], new DaoDescriptor(col[0], col[1], col[2], col[3], col[4]));
                     }
                 }
             }
@@ -98,7 +98,7 @@ public class DaoFactoryRegistry {
             URLClassLoader child = new URLClassLoader(new URL[] {plugin.getJarURL()}, this.getClass().getClassLoader());
             Class<?> klass = Class.forName(plugin.getClassName(), true, child);
             System.out.println(plugin.getClassName() + " class was found. Instantiating...");
-            return (AbstractDaoFactory) klass.newInstance();
+            return (AbstractDaoFactory) klass.getDeclaredConstructor(String.class).newInstance(plugin.getFilePath());
         } catch (ClassNotFoundException e) {
             System.out.println(plugin.getClassName() + " is not a class");
             e.printStackTrace();

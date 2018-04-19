@@ -8,7 +8,7 @@ import model.TrainCard;
  */
 
 public abstract class IPlayerState {
-    protected Player player;
+    protected transient Player player;
 
     IPlayerState(Player player) {
         this.player = player;

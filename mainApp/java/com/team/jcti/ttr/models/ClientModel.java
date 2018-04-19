@@ -93,4 +93,8 @@ public class ClientModel extends Observable {
     public String getUsername() {
         return username;
     }
+
+    public void setActiveGame(Game activeGame) {
+        this.activeGame = activeGame;
+    }
 }

@@ -14,12 +14,14 @@ class DaoDescriptor {
     private File mJar;
     private String mClassName;
     private String mDescription;
+    private String filePath;
 
-    public DaoDescriptor(String mName, String mJar, String mClassName, String mDescription) {
+    public DaoDescriptor(String mName, String mJar, String mClassName, String mDescription, String filePath) {
         this.mName = mName;
         this.mJar = new File(mJar);
         this.mClassName = mClassName;
         this.mDescription = mDescription;
+        this.filePath = filePath;
     }
 
     public URL getJarURL() throws MalformedURLException {
@@ -36,5 +38,9 @@ class DaoDescriptor {
 
     public String getName() {
         return mName;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }

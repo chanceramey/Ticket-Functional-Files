@@ -162,6 +162,7 @@ public class ServerModel {
     }
 
     public Map<String, Game> getWaitingGames() {
+        checkWaitingGames();
         return waitingGames;
     }
 
@@ -247,6 +248,7 @@ public class ServerModel {
     }
 
     public boolean hasGameName(String gameName) {
+        if (waitingGames ==  null) return false;
         for (String gameID : waitingGames.keySet()) {
             if (gameName.equals(waitingGames.get(gameID).getGameName())) return true;
         }

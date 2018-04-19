@@ -18,8 +18,8 @@ public class SQLiteDaoFactory extends AbstractDaoFactory {
     private String dbFilePath;
     private Connection connection = null;
 
-    public SQLiteDaoFactory() throws DatabaseException {
-        dbFilePath = "TICKET.sqlite";
+    public SQLiteDaoFactory(String dbFilePath) throws DatabaseException {
+        this.dbFilePath = dbFilePath;
         try {
             final String driver = "org.sqlite.JDBC";
             Class.forName(driver);
