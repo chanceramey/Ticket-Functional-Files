@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.DeleteResult;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import database.AbstractDaoFactory;
@@ -43,6 +45,7 @@ public class MGameDao extends IGameDao {
     public void addGame(IGame game) throws AbstractDaoFactory.DatabaseException {
         try {
             Document doc = new Document("gameId", game.getID())
+                    .append("class",game.getClass().getName())
                     .append("game", gson.toJson(game));
             mCollection.insertOne(doc);
         } catch(MongoException e) {
@@ -55,18 +58,20 @@ public class MGameDao extends IGameDao {
     public void updateGame(IGame game) throws AbstractDaoFactory.DatabaseException {
         try {
             mCollection.updateOne(eq("gameId", game.getID()), new Document("$set", new Document("game", gson.toJson(game))));
+            mCollection.updateOne(eq("gameId", game.getID()), new Document("$set", new Document("class", game.getClass().getName())));
         } catch(MongoException e) {
             throw new AbstractDaoFactory.DatabaseException();
         }
     }
 
     @Override
-    public String getGame(String gameID) throws AbstractDaoFactory.DatabaseException {
+    public String[] getGame(String gameID) throws AbstractDaoFactory.DatabaseException {
         FindIterable<Document> docList = mCollection.find(eq("gameId", gameID));
         Document doc = docList.first();
         if (doc == null) return null;
-        String game = (String) doc.get("game");
-        return game;
+        String json = (String) doc.get("game");
+        String className = (String) doc.get("class");
+        return new String[] {className, json};
     }
 
     @Override
@@ -77,4 +82,27 @@ public class MGameDao extends IGameDao {
             throw new AbstractDaoFactory.DatabaseException();
         }
     }
+
+    @Override
+    public List<String> getWaitingGames(String className) throws AbstractDaoFactory.DatabaseException {
+        MongoCursor<Document> cursor = mCollection.find(eq("class", className)).iterator();
+        try {
+            List<String> games = new ArrayList<>();
+            Document doc;
+            while (cursor.hasNext()) {
+                doc = cursor.next();
+                String tempClassName = (String) doc.get("class");
+                String tempJson = (String) doc.get("game");
+                games.add(tempClassName);
+                games.add(tempJson);
+            }
+            return games;
+        } catch (MongoException e) {
+            throw new AbstractDaoFactory.DatabaseException();
+        } finally {
+            cursor.close();
+        }
+
+    }
+
 }
