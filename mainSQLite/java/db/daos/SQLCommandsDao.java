@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import command.Command;
+import database.AbstractDaoFactory;
 import database.AbstractDaoFactory.DatabaseException;
 import database.ICommandsDao;
 
@@ -60,6 +61,25 @@ public class SQLCommandsDao extends ICommandsDao {
                 throw new DatabaseException();
             }
         }
+    }
+
+    @Override
+    public int getCommandCount(String gameID) throws DatabaseException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            String query = "SELECT count(*) FROM commands WHERE gameid = ?";
+            stmt = connection.prepareStatement(query);
+            stmt.setString(1, gameID);
+            rs = stmt.executeQuery();
+            if(rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 
     @Override

@@ -59,7 +59,7 @@ public class ServerModel {
     private Map<String, List<Command>> sessionCommandQueue;
 
     //Persistence facade for accessing database
-    private static PersistenceFacade persistenceFacade = new PersistenceFacade();
+    private static PersistenceFacade persistenceFacade = null;
 
 
     /**
@@ -74,6 +74,7 @@ public class ServerModel {
         this.waitingGames = null;
         this.activeGames = new HashMap<>();
         this.sessionCommandQueue = new HashMap<>();
+        this.persistenceFacade = new PersistenceFacade();
         addComputerPlayer();
 
        /* Timer timer = new Timer();
@@ -163,10 +164,6 @@ public class ServerModel {
 
     public Map<String, Game> getWaitingGames() {
         return waitingGames;
-    }
-
-    public void setWaitingGames(Map<String, Game> waitingGames) {
-        this.waitingGames = waitingGames;
     }
 
     /**
@@ -279,6 +276,14 @@ public class ServerModel {
             return gameModel;
         }
 
+    }
+
+    public void addRestoreCommand(Command restoreCommand, String gameID) {
+        persistenceFacade.addGameCommand(restoreCommand, gameID);
+    }
+
+    public void updateActiveGame(ServerGameModel serverGameModel) {
+        persistenceFacade.updateGame(serverGameModel);
     }
 
 

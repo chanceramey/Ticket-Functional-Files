@@ -50,13 +50,6 @@ public class ServerGameModel implements IGame {
         gameHistoryCommands = new ArrayList<>();
     }
 
-    private boolean checkForSave() {
-        if (gameHistoryCommands.size() % ServerModel.getPersistenceFacade().getmBackupInterval() == 0) {
-            return true;
-        }
-        return false;
-    }
-
     private void initializePlayersList(Game game) {
         this.players = new ArrayList<>();
         this.userIndexMap = new HashMap<>();
@@ -85,6 +78,8 @@ public class ServerGameModel implements IGame {
 
             clientProxy.drawDestCards(p.getId(), 3, drawnDestCards, destCardDeck.size());
             gameHistoryCommands.add(clientProxy.getCommand());
+
+            ServerModel.getInstance().updateActiveGame(this);
 
         }
 
@@ -128,6 +123,7 @@ public class ServerGameModel implements IGame {
       
     public Command[] getGameCommands(int gameHistoryPosition) {
         int numNewCommands = gameHistoryCommands.size() - gameHistoryPosition;
+        if (numNewCommands < 0) return new Command[0];
         Command[] commands = new Command[numNewCommands];
         for (int i = 0; i < numNewCommands; i++) {
             commands[i] = gameHistoryCommands.get(i + gameHistoryPosition);

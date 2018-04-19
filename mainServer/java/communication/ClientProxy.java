@@ -23,36 +23,36 @@ public class ClientProxy implements IClient {
 
     @Override
     public void onLogin(String authToken, String username) {
-        this.command = createCommand("onLogin", authToken, username);
+        this.command = Command.createCommand(CLIENT_TARGET, "onLogin", authToken, username);
     }
 
     @Override
     public void onRegister(String authToken, String username) {
-        this.command = createCommand("onRegister", authToken, username);
+        this.command = Command.createCommand(CLIENT_TARGET, "onRegister", authToken, username);
     }
 
     @Override
     public void displayError(String message) {
-        this.command = createCommand("displayError", message);
+        this.command = Command.createCommand(CLIENT_TARGET, "displayError", message);
     }
 
     @Override
     public void onCreateGame(Game game) {
-        this.command = createCommand("onCreateGame", game);
+        this.command = Command.createCommand(CLIENT_TARGET, "onCreateGame", game);
     }
 
     @Override
     public void onJoinGame(Game game) {
-        this.command = createCommand("onJoinGame", game);
+        this.command = Command.createCommand(CLIENT_TARGET, "onJoinGame", game);
     }
 
     @Override
     public void onLeaveGame() {
-        this.command = createCommand("onLeaveGame");
+        this.command = Command.createCommand(CLIENT_TARGET, "onLeaveGame");
     }
 
     @Override
-    public void onGameStarted() { this.command = createCommand("onGameStarted"); }
+    public void onGameStarted() { this.command = Command.createCommand(CLIENT_TARGET, "onGameStarted"); }
 
     @Override
     public void onGetServerGameList(Game[] games) {
@@ -62,81 +62,70 @@ public class ClientProxy implements IClient {
 
     @Override
     public void addGametoList(Game game) {
-        this.command = createCommand("addGametoList", game);
+        this.command = Command.createCommand(CLIENT_TARGET, "addGametoList", game);
     }
 
     @Override
     public void removeGameFromList(String gameID) {
-        this.command = createCommand("removeGameFromList", gameID);
+        this.command = Command.createCommand(CLIENT_TARGET, "removeGameFromList", gameID);
     }
 
     @Override
     public void updateGame(Game game) {
-        this.command = createCommand("updateGame", game);
+        this.command = Command.createCommand(CLIENT_TARGET, "updateGame", game);
     }
 
     @Override
     public void receiveMessage(GameHistory gameHistory) {
-        this.command = createCommand("receiveMessage", gameHistory);
+        this.command = Command.createCommand(CLIENT_TARGET, "receiveMessage", gameHistory);
     }
     @Override
     public void drawTrainCards(Integer player, Integer numCards, TrainCard[] cards, Integer size) {
-        this.command = createCommand("drawTrainCards", player, numCards, cards, size);
+        this.command = Command.createCommand(CLIENT_TARGET, "drawTrainCards", player, numCards, cards, size);
     }
 
     @Override
     public void discardTrainCards(Integer player, Integer numCards, int[] pos, Integer size) {
-        this.command = createCommand("discardTrainCards", player, numCards, pos, size);
+        this.command = Command.createCommand(CLIENT_TARGET, "discardTrainCards", player, numCards, pos, size);
     }
 
     @Override
     public void drawDestCards(Integer player, Integer numCards, DestinationCard[] cards, Integer size) {
-        this.command = createCommand("drawDestCards", player, numCards, cards, size);
+        this.command = Command.createCommand(CLIENT_TARGET, "drawDestCards", player, numCards, cards, size);
     }
 
     @Override
     public void discardDestCards(Integer player, Integer numCards, int[] pos, Integer size) {
-        this.command = createCommand("discardDestCards", player, numCards, pos, size);
+        this.command = Command.createCommand(CLIENT_TARGET, "discardDestCards", player, numCards, pos, size);
     }
 
     @Override
     public void swapFaceUpCards(int[] pos, TrainCard[] cards, Integer size) {
-        this.command = createCommand("swapFaceUpCards", pos, cards, size);
+        this.command = Command.createCommand(CLIENT_TARGET, "swapFaceUpCards", pos, cards, size);
     }
 
     @Override
     public void claimedRoute(Integer player, String routeID) {
-        this.command = createCommand("claimedRoute", player, routeID);
+        this.command = Command.createCommand(CLIENT_TARGET, "claimedRoute", player, routeID);
     }
 
     @Override
     public void promptRenewSession() {
-        this.command = createCommand("promptRenewSession");
-    }
-
-    private Command createCommand(String methodName, Object... params) {
-        String CLIENT_TARGET = "com.team.jcti.ttr.communication.ClientFacade";
-
-        String[] paramTypes = new String[params.length];
-        for (int i = 0; i < paramTypes.length; i++) {
-            paramTypes[i] = params[i].getClass().getName();
-
-        }
-        return new Command(CLIENT_TARGET, methodName, paramTypes, params);
+        this.command = Command.createCommand(CLIENT_TARGET, "promptRenewSession");
     }
 
     public void onGameEnded() {
-        this.command = createCommand("onGameEnded");
+        this.command = Command.createCommand(CLIENT_TARGET, "onGameEnded");
     }
 
     @Override
     public void setTurn(Integer player) {
-        this.command = createCommand("setTurn", player);
+        this.command = Command.createCommand(CLIENT_TARGET, "setTurn", player);
     }
 
     @Override
     public void setLastTurn() {
-        this.command = createCommand("setLastTurn");
+        this.command = Command.createCommand(CLIENT_TARGET, "setLastTurn");
     }
 
     @Override
@@ -148,13 +137,13 @@ public class ClientProxy implements IClient {
 
     @Override
     public void promptRestoreGame(Game game) {
-        this.command = createCommand("promptRestoreGame", game);
+        this.command = Command.createCommand(CLIENT_TARGET, "promptRestoreGame", game);
     }
 
     public Command getCommand() {
         return this.command;
     }
 
-    private String CLIENT_TARGET = "com.team.jcti.ttr.communication.ClientFacade";
+    private final String CLIENT_TARGET = "com.team.jcti.ttr.communication.ClientFacade";
 
 }

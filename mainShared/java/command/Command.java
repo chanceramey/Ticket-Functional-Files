@@ -158,4 +158,14 @@ public class Command {
     public Object[] getParameters() {
         return parameters;
     }
+
+    public static Command createCommand(String targetClass, String methodName, Object... params) {
+
+        String[] paramTypes = new String[params.length];
+        for (int i = 0; i < paramTypes.length; i++) {
+            paramTypes[i] = params[i].getClass().getName();
+
+        }
+        return new Command(targetClass, methodName, paramTypes, params);
+    }
 }

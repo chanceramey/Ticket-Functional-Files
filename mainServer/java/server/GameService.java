@@ -28,8 +28,10 @@ public class GameService extends AbstractService {
         }
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameId); // implement this method in ServerGameModel
-
+            Command restoreCommand = Command.createCommand(GAME_TARGET, "sendMessage", historyObj);
+            mServerModel.addRestoreCommand(restoreCommand, gameId);
             gameModel.sendMessage(historyObj);
+
             return new Command[]{};
 
         } catch (ServerModel.GameNotFoundException e) {
@@ -47,7 +49,8 @@ public class GameService extends AbstractService {
 
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
-
+            Command restoreCommand = Command.createCommand(GAME_TARGET, "claimRoute", user, routeID, length, cardPos);
+            mServerModel.addRestoreCommand(restoreCommand, gameID);
             if (!gameModel.claimRoute(user, routeID, length, cardPos)) {
                 return displayError("Invalid move");
             }
@@ -70,7 +73,8 @@ public class GameService extends AbstractService {
 
         try {
             ServerGameModel gameModel = mServerModel.getActiveGame(gameID);
-
+            Command restoreCommand = Command.createCommand(GAME_TARGET, "updatePlayerFinalPoints", finalGamePoints);
+            mServerModel.addRestoreCommand(restoreCommand, gameID);
             if(!gameModel.addToAllPlayersPoints(finalGamePoints)){
                 return displayError("Already added to points");
             }

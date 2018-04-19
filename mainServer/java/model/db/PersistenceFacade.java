@@ -13,6 +13,7 @@ import database.IAuthTokenDao;
 import interfaces.IGame;
 import model.AuthToken;
 import model.Game;
+import model.ServerModel;
 import model.User;
 
 /**
@@ -40,23 +41,6 @@ public class PersistenceFacade {
         }
     }
 
-    public void saveGameState(IGame game){
-
-        try{
-            mDaoFactory.startTransaction();
-            mDaoFactory.getGameDao().updateGame(game);
-            mDaoFactory.commitTransaction();
-
-        } catch (AbstractDaoFactory.DatabaseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public IGame restoreGame(String username){ //expected implementation?
-
-        return getGame(getUserGameId(username));
-    }
-
     public String getUserGameId(String username){
 
         try{
@@ -81,9 +65,7 @@ public class PersistenceFacade {
             Class<?> klass = Class.forName(serialized[0]);
             return (IGame) new Gson().fromJson(serialized[1], klass);
 
-        } catch (AbstractDaoFactory.DatabaseException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (AbstractDaoFactory.DatabaseException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -212,18 +194,30 @@ public class PersistenceFacade {
         }
     }
 
-    public void storeGameCommands(List<Command> gameCommands, String gameId){ //did I understand correctly?
-
-        try{
+    public void addGameCommand(Command command, String gameId){
+        try {
             mDaoFactory.startTransaction();
-            for(Command command : gameCommands){
-                mDaoFactory.getCommandsDao().addCommand(gameId, command);
+            mDaoFactory.getCommandsDao().addCommand(gameId, command);
+            if (getCommandsCount(gameId) == mBackupInterval) {
+                updateGame(ServerModel.getInstance().getActiveGame(gameId));
+                mDaoFactory.getCommandsDao().clearCommands(gameId);
             }
             mDaoFactory.commitTransaction();
-
-        } catch (AbstractDaoFactory.DatabaseException e) {
+        } catch (AbstractDaoFactory.DatabaseException | ServerModel.GameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private int getCommandsCount(String gameId) {
+        int count = 0;
+        try {
+            mDaoFactory.startTransaction();
+            count = mDaoFactory.getCommandsDao().getCommandCount(gameId);
+            mDaoFactory.commitTransaction();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 
 
@@ -242,6 +236,18 @@ public class PersistenceFacade {
             e.printStackTrace();
         }
         return waitingGames;
+    }
+
+    public List<Command> getRestoreCommands(String gameId) {
+        List<Command> commands = null;
+        try {
+            mDaoFactory.startTransaction();
+            commands = mDaoFactory.getCommandsDao().getCommands(gameId);
+            mDaoFactory.commitTransaction();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        return commands;
     }
 }
 

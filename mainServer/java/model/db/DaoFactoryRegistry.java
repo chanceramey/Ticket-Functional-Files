@@ -98,7 +98,9 @@ public class DaoFactoryRegistry {
             URLClassLoader child = new URLClassLoader(new URL[] {plugin.getJarURL()}, this.getClass().getClassLoader());
             Class<?> klass = Class.forName(plugin.getClassName(), true, child);
             System.out.println(plugin.getClassName() + " class was found. Instantiating...");
-            return (AbstractDaoFactory) klass.newInstance();
+            AbstractDaoFactory daoFactory = (AbstractDaoFactory) klass.newInstance();
+            daoFactory.setDBFilePath("server/DB/db.sql");
+            return daoFactory;
         } catch (ClassNotFoundException e) {
             System.out.println(plugin.getClassName() + " is not a class");
             e.printStackTrace();

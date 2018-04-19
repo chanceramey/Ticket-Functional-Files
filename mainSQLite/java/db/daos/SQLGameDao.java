@@ -102,6 +102,7 @@ public class SQLGameDao extends IGameDao {
             }
             return new String[] {className, json };
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DatabaseException();
         } finally {
             try {

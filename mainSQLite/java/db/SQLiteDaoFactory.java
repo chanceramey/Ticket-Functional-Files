@@ -15,11 +15,11 @@ import db.daos.SQLUserDao;
  */
 
 public class SQLiteDaoFactory extends AbstractDaoFactory {
-    private String dbFilePath;
+    private String dbFilePath = null;
     private Connection connection = null;
 
     public SQLiteDaoFactory() throws DatabaseException {
-        dbFilePath = "TICKET.sqlite";
+        assert(dbFilePath != null);
         try {
             final String driver = "org.sqlite.JDBC";
             Class.forName(driver);
@@ -30,6 +30,7 @@ public class SQLiteDaoFactory extends AbstractDaoFactory {
         }
     }
 
+    @Override
     public void setDBFilePath(String filepath) {
         this.dbFilePath = filepath;
     }

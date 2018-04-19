@@ -10,6 +10,8 @@ public abstract class AbstractDaoFactory {
     ICommandsDao commandsDao;
     IGameDao gameDao;
 
+    public abstract void setDBFilePath(String filepath);
+
     abstract public void startTransaction() throws DatabaseException;
     abstract public void commitTransaction() throws DatabaseException;
     abstract public void rollbackTransaction() throws DatabaseException;

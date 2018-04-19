@@ -21,7 +21,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public Object register(String username, String password, String firstName, String lastName) {
-        RegisterService service = new RegisterService();
+        LoginService service = new LoginService();
         Command[] commands = service.register(username, password, firstName, lastName);
         return commands;
     }
