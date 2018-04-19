@@ -2,6 +2,7 @@ package db.daos;
 
 import com.google.gson.Gson;
 import com.mongodb.MongoException;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 
@@ -61,7 +62,9 @@ public class MGameDao extends IGameDao {
 
     @Override
     public String getGame(String gameID) throws AbstractDaoFactory.DatabaseException {
-        Document doc = mCollection.find(eq("gameId", gameID)).first();
+        FindIterable<Document> docList = mCollection.find(eq("gameId", gameID));
+        Document doc = docList.first();
+        if (doc == null) return null;
         String game = (String) doc.get("game");
         return game;
     }
