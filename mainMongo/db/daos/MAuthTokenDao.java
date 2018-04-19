@@ -1,9 +1,8 @@
 package db.daos;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoException;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 
@@ -59,8 +58,9 @@ public class MAuthTokenDao extends IAuthTokenDao {
 
     @Override
     public String getUsername(String token) throws AbstractDaoFactory.DatabaseException {
-        try {
-            Document doc = mCollection.find(eq("token", token)).first();
+        try {FindIterable<Document> docList = mCollection.find(eq("token", token));
+            Document doc = docList.first();
+            if (doc == null) return null;
             String username = (String) doc.get("user");
             return username;
         } catch (MongoException e) {
