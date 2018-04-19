@@ -89,6 +89,7 @@ public class MGameDao extends IGameDao {
         try {
             List<String> games = new ArrayList<>();
             Document doc;
+            if (!cursor.hasNext()) return null;
             while (cursor.hasNext()) {
                 doc = cursor.next();
                 String tempClassName = (String) doc.get("class");
